@@ -1,0 +1,8 @@
+#!/bin/bash
+
+UIOUSER=tt   
+GALAXYUSER=galaxy
+GALAXYUSERPID=182649
+GALAXYUSERGID=70731
+GALAXYUSERHOME=/home/galaxy
+GALAXYTREE=/home/galaxy/galaxy
