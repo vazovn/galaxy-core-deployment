@@ -3,6 +3,8 @@
 # source settings
 . settings.sh
 
+MYDIR="$(dirname "$(realpath "$0")")"
+
 # db
 read -p "Database url on the form: postgresql://username:password@localhost/mydatabase (leave empty for local sqlite)" dburl
 
@@ -18,4 +20,5 @@ sudo mkdir /home/galaxy
 sudo chown galaxy:galaxy /home/galaxy/
 sudo yum install git
 
+cd ${MYDIR}
 sudo -u galaxy -H sh -c as_galaxy_user.sh ${production} ${dburl}
