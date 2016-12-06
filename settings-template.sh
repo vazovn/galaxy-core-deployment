@@ -7,6 +7,9 @@ GALAXYUSERGID=70731
 GALAXYUSERHOME=/home/galaxy
 GALAXYTREE=/home/galaxy/galaxy
 
+# Galaxy version (branch)
+GALAXY_BRANCH=release_16.10
+
 # Only needed when abel is mounted
 GALAXY_ABEL_MOUNT = 1
 GALAXY_FILEPATH=/work/projects/galaxy/data/database_galaxy_prod01/files
