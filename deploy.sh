@@ -28,11 +28,17 @@ fi
 
 read -p "Mount /work on abel (host needs to be added to nfs on abel first)? [yN] " workonabel
 
-sudo sh -c 'echo galaxy:x:182649:70731:galaxy:/home/galaxy:/bin/bash >> /etc/passwd'
+read -p "Add galaxy user? [yN] " addgalaxyuser
+if [ "${addgalaxyuser}" == "y" ]; then
+    sudo sh -c 'echo galaxy:x:182649:70731:galaxy:/home/galaxy:/bin/bash >> /etc/passwd'
 sudo mkdir /home/galaxy
 sudo chown galaxy:galaxy /home/galaxy/
+fi
 sudo yum install git
 
-sudo sed -i.orig-$(date "+%y-%m-%d-%H%M") -e "\$a# For /work/projects/galaxy\nadmin.abel.uio.no:/work    /work    nfs4    defaults    0 0" /etc/fstab
+if [ "${workonabel}" == "y" ]; then
+    sudo sed -i.orig-$(date "+%y-%m-%d-%H%M") -e "\$a# For /work/projects/galaxy\nadmin.abel.uio.no:/work    /work    nfs4    defaults    0 0" /etc/fstab
+    sudo mount -a
+fi
 
 sudo -u galaxy -H sh -c "${MYDIR}/as_galaxy_user.sh ${production} ${dburl}"

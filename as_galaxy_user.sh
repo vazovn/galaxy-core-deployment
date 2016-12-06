@@ -8,7 +8,7 @@ dburl=$2
 . settings.sh
 
 cd /home/galaxy/
-if [ -e ${GALAXYTREE} ]; then
+if [ -e "${GALAXYTREE}" ]; then
     echo ${GALAXYTREE} exists
     #exit 1
 else
@@ -28,7 +28,7 @@ function sed_replace {
 
 
 # galaxy ini:
-echo "check if galaxy.ini exists"8(
+echo "check if galaxy.ini exists"
 cd ${GALAXYTREE}/config
 if [ ! -f galaxy.ini ]; then
     cp galaxy.ini.sample galaxy.ini
@@ -64,7 +64,7 @@ sed_replace '^#database_engine_option_server_side_cursors = False' 'database_eng
 
 ## PATHS / DIRS
 ## Abel specific
-if [ ${GALAXY_ABEL_MOUNT} == "1" ]; then
+if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     sed_replace '^#new_file_path =.*' 'new_file_path = ${GALAXY_NEW_FILEPATH}' galaxy.ini
     sed_replace '^#file_path =.*' 'file_path =${GALAXY_FILEPATH} ' galaxy.ini
     sed_replace '^#job_working_directory =.*' 'job_working_directory =  ${GALAXY_JOB_WORKING_DIRECTORY}' galaxy.ini
