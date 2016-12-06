@@ -82,7 +82,7 @@ sed_replace '^#tool_data_path = tool-data' 'tool_data_path = tool-data' galaxy.i
 ## SMTP / EMAILS
 sed_replace '^#smtp_server =.*' ' smtp_server = smtp.uio.no' galaxy.ini
 sed_replace '^#error_email_to =.*' ' error_email_to = lifeportal-help@usit.uio.no' galaxy.ini
-sed_replace '^#blacklist_file = config/disposable_email_blacklist.conf ' 'blacklist_file = config/disposable_email_blacklist.conf ' galaxy.ini
+sed_replace '^#blacklist_file = config/disposable_email_blacklist.conf' 'blacklist_file = config/disposable_email_blacklist.conf ' galaxy.ini
 
 ## BRAND
 sed_replace '^#brand = None' 'brand = ${GALAXY_BRAND}' galaxy.ini
@@ -116,10 +116,10 @@ sed_replace '^#allow_user_deletion = False' 'allow_user_deletion = True' galaxy.
 sed_replace '^#allow_user_impersonation = False' 'allow_user_impersonation = True' galaxy.ini
 sed_replace '^#allow_user_dataset_purge = True' 'allow_user_dataset_purge = True' galaxy.ini
 sed_replace '^#new_user_dataset_access_role_default_private = False' 'new_user_dataset_access_role_default_private = False ' galaxy.ini
-sed_replace '^#expose_dataset_path = False ' 'expose_dataset_path = True' galaxy.ini
+sed_replace '^#expose_dataset_path = False' 'expose_dataset_path = True' galaxy.ini
 
 ## JOBS
-sed_replace '^#job_config_file = config/job_conf.xml ' 'job_config_file = config/job_conf.xml' galaxy.ini
+sed_replace '^#job_config_file = config/job_conf.xml' 'job_config_file = config/job_conf.xml' galaxy.ini
 sed_replace '^#enable_job_recovery = True' 'enable_job_recovery = True' galaxy.ini
 sed_replace '^#cleanup_job = .*' 'cleanup_job = never' galaxy.ini
 sed_replace '^#job_resource_params_file = config/job_resource_params_conf.xml' 'job_resource_params_file = config/job_resource_params_conf.xml' galaxy.ini
