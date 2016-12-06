@@ -2,7 +2,7 @@
 echo "under construction!"
 echo "1.Install additional packges required listed below.  2.To download the RPMs from nielshenrik.abel.uio.no to current folder 3. install rpms"
 
-echo "sudo yum install rpm-build install bzip2 readline-devel munge-devel lua-devel pam-devel libibmad install hwloc gperf"
+echo "sudo yum install rpm-build install bzip2 readline-devel lua-devel pam-devel libibmad install hwloc gperf"
 
 echo "Loops to collect files to copy from nielshenrik"
 echo "cd  /export/rocks/install/contrib/6.2/x86_64/RPMS"
