@@ -11,7 +11,7 @@ GALAXYTREE=/home/galaxy/galaxy
 GALAXY_BRANCH=release_16.10
 
 # Only needed when abel is mounted
-GALAXY_ABEL_MOUNT = 1
+GALAXY_ABEL_MOUNT=1
 GALAXY_FILEPATH=/work/projects/galaxy/data/database_galaxy_prod01/files
 GALAXY_NEW_FILEPATH=/work/projects/galaxy/data/database_galaxy_prod01/tmp
 GALAXY_JOB_WORKING_DIRECTORY=/work/projects/galaxy/data/database_galaxy_prod01/job_working_directory

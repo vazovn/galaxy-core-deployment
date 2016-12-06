@@ -13,6 +13,7 @@ if [ -e "${GALAXYTREE}" ]; then
     #exit 1
 else
     git clone https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/galaxy.git
+    cd ${GALAXYTREE}
     git checkout ${GALAXY_BRANCH}
 fi
 
