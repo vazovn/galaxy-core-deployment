@@ -58,9 +58,9 @@ sed_replace '^#port =.*' 'port = 8080' galaxy.ini
 sed_replace '^#host =.*' 'host = 127.0.0.1' galaxy.ini
 
 ## DB
-sed_replace '^#database_engine_option_pool_size =.*' 'database_engine_option_pool_size = 5' galaxy.ini
-sed_replace '^#database_engine_option_max_overflow =.*' 'database_engine_option_max_overflow = 10' galaxy.ini
-sed_replace '^#database_engine_option_server_side_cursors = False' 'database_engine_option_server_side_cursors = True' galaxy.ini
+# sed_replace '^#database_engine_option_pool_size =.*' 'database_engine_option_pool_size = 5' galaxy.ini
+# sed_replace '^#database_engine_option_max_overflow =.*' 'database_engine_option_max_overflow = 10' galaxy.ini
+# sed_replace '^#database_engine_option_server_side_cursors = False' 'database_engine_option_server_side_cursors = True' galaxy.ini
 
 ## PATHS / DIRS
 ## Abel specific
@@ -73,7 +73,9 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 fi
 
 ## CONFS
-sed_replace '^#tool_config_file =.*' "tool_config_file = ${GALAXY_TOOL_CONF}" galaxy.ini
+if [ "${GALAXY_TOOL_CONF}" != "" ]; then
+    sed_replace '^#tool_config_file =.*' "tool_config_file = ${GALAXY_TOOL_CONF}" galaxy.ini
+fi
 # sed_replace '^#integrated_tool_panel_config.*' 'integrated_tool_panel_config = integrated_tool_panel.xml' galaxy.ini
 # sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' 'tool_data_table_config_path = config/tool_data_table_conf.xml' galaxy.ini
 sed_replace '^#tool_data_path = tool-data' 'tool_data_path = tool-data' galaxy.ini
