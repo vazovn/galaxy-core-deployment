@@ -63,11 +63,14 @@ sed_replace '^#database_engine_option_max_overflow =.*' 'database_engine_option_
 sed_replace '^#database_engine_option_server_side_cursors = False' 'database_engine_option_server_side_cursors = True' galaxy.ini
 
 ## PATHS / DIRS
-sed_replace '^#new_file_path =.*' 'new_file_path = ${GALAXY_NEW_FILEPATH}' galaxy.ini
-sed_replace '^#file_path =.*' 'file_path =${GALAXY_FILEPATH} ' galaxy.ini
-sed_replace '^#job_working_directory =.*' 'job_working_directory =  ${GALAXY_JOB_WORKING_DIRECTORY}' galaxy.ini
-sed_replace '^#cluster_files_directory =.*' 'cluster_files_directory = ${GALAXY_CLUSTER_FILES_DIRECTORY} ' galaxy.ini
-sed_replace '^#collect_outputs_from =.*' 'collect_outputs_from = ,job_working_directory ' galaxy.ini
+## Abel specific
+if [ ${GALAXY_ABEL_MOUNT} == "1" ]; then
+    sed_replace '^#new_file_path =.*' 'new_file_path = ${GALAXY_NEW_FILEPATH}' galaxy.ini
+    sed_replace '^#file_path =.*' 'file_path =${GALAXY_FILEPATH} ' galaxy.ini
+    sed_replace '^#job_working_directory =.*' 'job_working_directory =  ${GALAXY_JOB_WORKING_DIRECTORY}' galaxy.ini
+    sed_replace '^#cluster_files_directory =.*' 'cluster_files_directory = ${GALAXY_CLUSTER_FILES_DIRECTORY} ' galaxy.ini
+    sed_replace '^#collect_outputs_from =.*' 'collect_outputs_from = new_file_path,job_working_directory ' galaxy.ini
+fi
 
 ## CONFS
 sed_replace '^#tool_config_file =.*' 'tool_config_file = config/tool_conf.xml' galaxy.ini

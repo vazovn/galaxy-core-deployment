@@ -1,7 +1,17 @@
 #!/bin/bash
 
 # source settings
+if [ ! -f "settings.sh" ]; then
+    echo Please fill in the variables in the file settings.sh
+    cp settings-template.sh settings.sh
+    exit 1
+fi
+
 . settings.sh
+
+if [ ! -z "${UIOUSER}" ]; then
+    echo settings.sh is not complete
+fi
 
 MYDIR="$(dirname "$(realpath "$0")")"
 echo ${MYDIR}
