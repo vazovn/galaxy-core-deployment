@@ -22,3 +22,5 @@ scp -p nielshenrik.abel.uio.no:/export/rocks/install/contrib/6.2/x86_64/RPMS/slu
 
 
 echo "Install the rpms using sudo rpm -iav *rpm"
+
+echo "test munge with - service munge start"
