@@ -18,7 +18,7 @@ fi
 function sed_replace {
     # TODO check if string contains ,
     if grep --quiet "$1" $3; then
-        sed -i -E "s,$1,$2," $3
+        sed -i -E "s%$1%$2%" $3
 	echo "replaced $1 with $2"
     else
         echo "Line matching /$1/ not found in $3"
@@ -82,8 +82,8 @@ sed_replace '^#tool_data_path = tool-data' 'tool_data_path = tool-data' galaxy.i
 
 
 ## SMTP / EMAILS
-sed_replace '^#smtp_server =.*' ' smtp_server = smtp.uio.no' galaxy.ini
-sed_replace '^#error_email_to =.*' ' error_email_to = lifeportal-help@usit.uio.no' galaxy.ini
+sed_replace '^#smtp_server =.*' 'smtp_server = smtp.uio.no' galaxy.ini
+sed_replace '^#error_email_to =.*' 'error_email_to = lifeportal-help@usit.uio.no' galaxy.ini
 sed_replace '^#blacklist_file = config/disposable_email_blacklist.conf' 'blacklist_file = config/disposable_email_blacklist.conf ' galaxy.ini
 
 ## BRAND
@@ -111,7 +111,7 @@ sed_replace '^#user_library_import_dir = None' 'user_library_import_dir = databa
 sed_replace '^#use_remote_user = False' 'use_remote_user = True' galaxy.ini
 sed_replace '^#remote_user_logout_href = None' "remote_user_logout_href = https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=http://${GALAXY_PUBLIC_HOSTNAME}/" galaxy.ini
 sed_replace '^#normalize_remote_user_email = False' 'normalize_remote_user_email = True ' galaxy.ini
-sed_replace '^admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
+sed_replace '^admin_users.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
 sed_replace '^#require_login = False' 'require_login = True' galaxy.ini
 sed_replace '^#allow_user_creation = True' 'allow_user_creation = False' galaxy.ini
 sed_replace '^#allow_user_deletion = False' 'allow_user_deletion = True' galaxy.ini
