@@ -10,6 +10,9 @@ GALAXYTREE=/home/galaxy/galaxy
 # Galaxy version (branch)
 GALAXY_BRANCH=release_16.10
 
+# Config file names
+GALAXY_TOOL_CONF=config/tool_conf.xml
+
 # Only needed when abel is mounted
 GALAXY_ABEL_MOUNT=1
 GALAXY_FILEPATH=/work/projects/galaxy/data/database_galaxy_prod01/files

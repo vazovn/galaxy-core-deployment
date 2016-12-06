@@ -65,17 +65,17 @@ sed_replace '^#database_engine_option_server_side_cursors = False' 'database_eng
 ## PATHS / DIRS
 ## Abel specific
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
-    sed_replace '^#new_file_path =.*' 'new_file_path = ${GALAXY_NEW_FILEPATH}' galaxy.ini
-    sed_replace '^#file_path =.*' 'file_path =${GALAXY_FILEPATH} ' galaxy.ini
-    sed_replace '^#job_working_directory =.*' 'job_working_directory =  ${GALAXY_JOB_WORKING_DIRECTORY}' galaxy.ini
-    sed_replace '^#cluster_files_directory =.*' 'cluster_files_directory = ${GALAXY_CLUSTER_FILES_DIRECTORY} ' galaxy.ini
+    sed_replace '^#new_file_path =.*' "new_file_path = ${GALAXY_NEW_FILEPATH}" galaxy.ini
+    sed_replace '^#file_path =.*' "file_path = ${GALAXY_FILEPATH}" galaxy.ini
+    sed_replace '^#job_working_directory =.*' "job_working_directory =  ${GALAXY_JOB_WORKING_DIRECTORY}" galaxy.ini
+    sed_replace '^#cluster_files_directory =.*' "cluster_files_directory = ${GALAXY_CLUSTER_FILES_DIRECTORY}" galaxy.ini
     sed_replace '^#collect_outputs_from =.*' 'collect_outputs_from = new_file_path,job_working_directory ' galaxy.ini
 fi
 
 ## CONFS
-sed_replace '^#tool_config_file =.*' 'tool_config_file = config/tool_conf.xml' galaxy.ini
-sed_replace '^#integrated_tool_panel_config.*' 'integrated_tool_panel_config = integrated_tool_panel.xml' galaxy.ini
-sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' 'tool_data_table_config_path = config/tool_data_table_conf.xml' galaxy.ini
+sed_replace '^#tool_config_file =.*' "tool_config_file = ${GALAXY_TOOL_CONF}" galaxy.ini
+# sed_replace '^#integrated_tool_panel_config.*' 'integrated_tool_panel_config = integrated_tool_panel.xml' galaxy.ini
+# sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' 'tool_data_table_config_path = config/tool_data_table_conf.xml' galaxy.ini
 sed_replace '^#tool_data_path = tool-data' 'tool_data_path = tool-data' galaxy.ini
 
 
@@ -85,7 +85,7 @@ sed_replace '^#error_email_to =.*' ' error_email_to = lifeportal-help@usit.uio.n
 sed_replace '^#blacklist_file = config/disposable_email_blacklist.conf' 'blacklist_file = config/disposable_email_blacklist.conf ' galaxy.ini
 
 ## BRAND
-sed_replace '^#brand = None' 'brand = ${GALAXY_BRAND}' galaxy.ini
+sed_replace '^#brand = None' "brand = ${GALAXY_BRAND}" galaxy.ini
 
 ## STATIC CONTENT
 sed_replace '^#static_enabled = True' 'static_enabled = True' galaxy.ini
@@ -107,9 +107,9 @@ sed_replace '^#user_library_import_dir = None' 'user_library_import_dir = databa
 
 ## USERS / SECURITY
 sed_replace '^#use_remote_user = False' 'use_remote_user = True' galaxy.ini
-sed_replace '^#remote_user_logout_href = None' 'remote_user_logout_href = https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=http://${GALAXY_PUBLIC_HOSTNAME}/' galaxy.ini
+sed_replace '^#remote_user_logout_href = None' "remote_user_logout_href = https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=http://${GALAXY_PUBLIC_HOSTNAME}/" galaxy.ini
 sed_replace '^#normalize_remote_user_email = False' 'normalize_remote_user_email = True ' galaxy.ini
-sed_replace '^admin_users =.*' 'admin_users = ${GALAXY_ADMIN_USERS}' galaxy.ini
+sed_replace '^admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
 sed_replace '^#require_login = False' 'require_login = True' galaxy.ini
 sed_replace '^#allow_user_creation = True' 'allow_user_creation = False' galaxy.ini
 sed_replace '^#allow_user_deletion = False' 'allow_user_deletion = True' galaxy.ini
