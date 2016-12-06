@@ -12,9 +12,7 @@ if [ -e "${GALAXYTREE}" ]; then
     echo ${GALAXYTREE} exists
     #exit 1
 else
-    git clone https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/galaxy.git
-    cd ${GALAXYTREE}
-    git checkout ${GALAXY_BRANCH}
+    git clone -b ${GALAXY_BRANCH} https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/galaxy.git
 fi
 
 function sed_replace {
