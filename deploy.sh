@@ -37,6 +37,7 @@ fi
 sudo yum install git
 
 if [ "${workonabel}" == "y" ]; then
+    sudo mkdir /work
     sudo sed -i.orig-$(date "+%y-%m-%d-%H%M") -e "\$a# For /work/projects/galaxy\nadmin.abel.uio.no:/work    /work    nfs4    defaults    0 0" /etc/fstab
     sudo mount -a
 fi
