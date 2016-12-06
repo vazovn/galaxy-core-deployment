@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo "under construction!"
 echo "1.Install additional packges required listed below.  2.To download the RPMs from nielshenrik.abel.uio.no to current folder 3. install rpms"
 
 echo "sudo yum install rpm-build install bzip2 readline-devel munge-devel lua-devel pam-devel libibmad install hwloc"
