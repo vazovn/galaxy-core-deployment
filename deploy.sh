@@ -34,7 +34,6 @@ if [ "${addgalaxyuser}" == "y" ]; then
 sudo mkdir /home/galaxy
 sudo chown galaxy:galaxy /home/galaxy/
 fi
-sudo yum install git
 
 if [ "${workonabel}" == "y" ]; then
     sudo mkdir /work
