@@ -11,7 +11,7 @@ GALAXYTREE=/home/galaxy/galaxy
 GALAXY_BRANCH=release_16.10
 
 # Config file names
-GALAXY_TOOL_CONF=config/tool_conf.xml
+GALAXY_TOOL_CONF=config/tool_conf.xml.main
 
 # Only needed when abel is mounted
 GALAXY_ABEL_MOUNT=1
@@ -19,8 +19,12 @@ GALAXY_FILEPATH=/work/projects/galaxy/data/database_galaxy_prod01/files
 GALAXY_NEW_FILEPATH=/work/projects/galaxy/data/database_galaxy_prod01/tmp
 GALAXY_JOB_WORKING_DIRECTORY=/work/projects/galaxy/data/database_galaxy_prod01/job_working_directory
 GALAXY_CLUSTER_FILES_DIRECTORY=/work/projects/galaxy/data/database_galaxy_prod01/slurm
+EXTERNAL_DBS_LINK_NAME=/home/galaxy/galaxy/lib/usit/external_dbs
+EXTERNAL_DBS_PATH=/work/projects/galaxy/external_dbs
 
 #
 GALAXY_BRAND=Lifeportal
 GALAXY_PUBLIC_HOSTNAME=lifeportal.uio.no
 GALAXY_ADMIN_USERS=n.a.vazov@usit.uio.no,sabry.razick@usit.uio.no,trond.thorbjornsen@usit.uio.no
+
+
