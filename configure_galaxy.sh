@@ -126,3 +126,6 @@ sed_replace '^#enable_job_recovery = True' 'enable_job_recovery = True' galaxy.i
 sed_replace '^#cleanup_job = .*' 'cleanup_job = never' galaxy.ini
 sed_replace '^#job_resource_params_file = config/job_resource_params_conf.xml' 'job_resource_params_file = config/job_resource_params_conf.xml' galaxy.ini
 
+## copy startup script to /etc/init.d
+sudo cp galaxyd /etc/init.d/
+sudo chown root:root /etc/init.d/galaxyd
