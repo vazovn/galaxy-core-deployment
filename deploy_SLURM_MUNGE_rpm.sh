@@ -5,7 +5,6 @@ echo "Install munge and slurm client!"
 
 # -T - disable pseudo-tty allocation
 slurm_rpms=$(cat get_slurm_rpms_from_nielshenrik.sh | ssh -T ${USER}@nielshenrik.abel.uio.no)
-slurm_rpms=${slurm_rpms//rpm/rpm }
 
 if [ -z "$slurm_rpms" ]; then
 	echo "SLURM RPMS NOT FOUND "
@@ -20,7 +19,6 @@ scp -p nielshenrik.abel.uio.no:"${slurm_rpms}" .
 ### MUNGE RPMS
 
 munge_rpms=$(cat get_munge_rpms_from_nielshenrik.sh | ssh -T ${USER}@nielshenrik.abel.uio.no)
-munge_rpms=${munge_rpms//rpm/rpm }
 
 if [ -z "$munge_rpms" ]; then
 	echo "MUNGE RPMS NOT FOUND "
