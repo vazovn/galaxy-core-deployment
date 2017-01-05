@@ -69,6 +69,7 @@ sudo cp galaxyd /etc/init.d/
 sudo chown root:root /etc/init.d/galaxyd
 
 echo -e "\nAll features installed! What remains to be done:\n"
-echo -e "Editing: \n1. Edit job_conf.xml\n2. Edit job_resource_params_conf.xml\n3. Edit /etc/sudoers for the galaxy-gold commands (see README.md in galaxy-project-management.repo)\n"
-echo -e "Starting: \n1. Start munge service (sudo systemctl start munge.service)\n2. Start Galaxy (sudo /etc/init.d/galaxyd start)\n3. Check the log (tail -f /home/galaxy/galaxy/paster.log)\n"
-echo -e "DO NOT FORGET TO RUN THE SCRIPT venv_config.sh after the first Galaxy start!!\n"
+echo -e "Copy:  \n1. The munge.key from nielshenrik:/etc/munge/munge.key to <your host>:/etc/munge/munge.key\n"
+echo -e "Editing: \n2. Edit job_conf.xml\n2. Edit job_resource_params_conf.xml\n3. Edit /etc/sudoers for the galaxy-gold commands (see README.md in galaxy-project-management.repo)\n"
+echo -e "Starting: \n3.1. Start munge service (sudo systemctl start munge.service)\n3.2. Start Galaxy (sudo /etc/init.d/galaxyd start)\n3.3. Check the log (tail -f /home/galaxy/galaxy/paster.log)\n"
+echo -e "DO NOT FORGET TO RUN THE SCRIPT venv_config.sh AFTER Galaxy START!!\n"
