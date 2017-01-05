@@ -16,9 +16,6 @@ fi
 MYDIR="$(dirname "$(realpath "$0")")"
 echo ${MYDIR}
 
-# db
-read -p "Database url on the form: postgresql://username:password@localhost/mydatabase (leave empty for local sqlite)\n> " dburl
-
 # setup
 if [ "$1" == "production" ]; then
     production=y
