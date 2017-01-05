@@ -50,10 +50,10 @@ sudo chown root:root /etc/init.d/galaxyd
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 
 	# Install SLURM and MUNGE
-	sh -c deploy_SLURM_MUNGE_rpm.sh
+	sh -c  "${MYDIR}/deploy_SLURM_MUNGE_rpm.sh"
 	
 	# Install Polish DRMAA library
-	sh -c deploy_DRMAA_poznan.sh
+	sh -c "${MYDIR}/deploy_DRMAA_poznan.sh"
 	
 	## Install Project management issues (most of them come from the lifeportal galaxy branch)
 	sudo ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
