@@ -31,20 +31,23 @@ if [ "${addgalaxyuser}" == "y" ]; then
 sudo mkdir /home/galaxy
 sudo chown galaxy:galaxy /home/galaxy/
 fi
+
 sudo yum install git
 
+# Needed  to uglify the js files
+sudo yum install npm.x86_64
+
+## Check it /work is a mounted directory
 if [ "${workonabel}" == "y" ]; then
-    sudo mkdir /work
-    sudo sed -i.orig-$(date "+%y-%m-%d-%H%M") -e "\$a# For /work/projects/galaxy\nadmin.abel.uio.no:/work    /work    nfs4    defaults    0 0" /etc/fstab
-    sudo mount -a
+	if [ ! $(mount | grep "^admin.abel.uio.no:/work on /work") ]; then
+		sudo mkdir /work
+		sudo sed -i.orig-$(date "+%y-%m-%d-%H%M") -e "\$a# For /work/projects/galaxy\nadmin.abel.uio.no:/work    /work    nfs4    defaults    0 0" /etc/fstab
+		sudo mount -a
+	fi
 fi
 
 ## Start main Galaxy platform installation/configuration script
 sudo -u galaxy -H sh -c "${MYDIR}/configure_galaxy.sh ${production}"
-
-## copy daemon script to /etc/init.d
-sudo cp galaxyd /etc/init.d/
-sudo chown root:root /etc/init.d/galaxyd
 
 ## Customize Galaxy platform with Cluster and Project Management issues
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
@@ -59,18 +62,11 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	sudo ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
 	sudo chown galaxy:galaxy ${EXTERNAL_DBS_LINK_NAME}
 	
-	# Uglify the new menu
-	sudo yum install npm.x86_64
-	sudo su galaxy
-	cd ${GALAXYTREE}/client
-	make client
-	
-	# Modify $PYTHONPATH in .venv
-	echo 'export GALAXY_LIB=/home/galaxy/galaxy/lib' >> /home/galaxy/galaxy/.venv/bin/activate
-	echo 'export PYTHONPATH=$GALAXY_LIB:/home/galaxy/galaxy/lib/usit/python' >> /home/galaxy/galaxy/.venv/bin/activate
-	echo "PYTHONPATH SET IN .venv/bin/activate " $PYTHONPATH 
-	
 fi
+
+## copy daemon script to /etc/init.d
+sudo cp galaxyd /etc/init.d/
+sudo chown root:root /etc/init.d/galaxyd
 
 echo -e "\nAll features installed! What remains to be done:\n"
 echo -e "Editing: \n1. Edit job_conf.xml\n2. Edit job_resource_params_conf.xml\n3. Edit /etc/sudoers for the galaxy-gold commands (see README.md in galaxy-project-management.repo)\n"
