@@ -5,7 +5,7 @@ if [ ! -f "settings.sh" ]; then
     echo Please fill in the variables in the file settings.sh
     cp settings-template.sh settings.sh
     exit 1
-fib.h.m.jakobsen@usit.uio.no
+fi
 
 . settings.sh
 
