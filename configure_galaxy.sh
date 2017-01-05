@@ -128,7 +128,7 @@ sed_replace '^#cleanup_job = .*' 'cleanup_job = never' galaxy.ini
 sed_replace '^#job_resource_params_file = config/job_resource_params_conf.xml' 'job_resource_params_file = config/job_resource_params_conf.xml' galaxy.ini
 
 # Uglify the new main Galaxy menu
-cd ${GALAXYTREE}/client
+cd ${GALAXYTREE}
 make client
 	
 # Modify $PYTHONPATH in .venv
