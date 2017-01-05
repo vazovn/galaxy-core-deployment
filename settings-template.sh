@@ -10,6 +10,12 @@ GALAXYTREE=/home/galaxy/galaxy
 # Galaxy version (branch)
 GALAXY_BRANCH=release_16.10
 
+# Galaxy DB
+GALAXYDB=
+GALAXYDBUSER=
+GALAXYDBPASSWD=
+GALAXYDBHOST=
+
 # Config file names
 GALAXY_TOOL_CONF=config/tool_conf.xml.main
 

@@ -1,8 +1,7 @@
 #!/bin/bash
 
-echo "Params: $1, $2"
+echo "Params: $1"
 production=$1
-dburl=$2
 
 # source settings
 . settings.sh
@@ -43,12 +42,6 @@ if [ "${production}" == "y" ]; then
         echo "replaced debug and use_interactive from galaxy.ini"
 fi
 
-echo ${dburl}
-
-if [ ! -z ${dburl} ]; then
-    sed_replace '#database_connection.*' "database_connection = ${dburl}" galaxy.ini
-    echo "replaced dburl from galaxy.ini"
-fi
 
 # Fra Nikolay
 sed_replace '^#admin_users.*' 'admin_users = ' galaxy.ini
@@ -61,6 +54,14 @@ sed_replace '^#host =.*' 'host = 127.0.0.1' galaxy.ini
 # sed_replace '^#database_engine_option_pool_size =.*' 'database_engine_option_pool_size = 5' galaxy.ini
 # sed_replace '^#database_engine_option_max_overflow =.*' 'database_engine_option_max_overflow = 10' galaxy.ini
 # sed_replace '^#database_engine_option_server_side_cursors = False' 'database_engine_option_server_side_cursors = True' galaxy.ini
+
+
+## DB config
+if [[ -n "${GALAXYDB}" && -n "${GALAXYDBUSER}" && -n "${GALAXYDBPASSWD}" && -n "${GALAXYDBHOST}" ]]; then
+	dbstring="postgresql://${GALAXYDBUSER}:${GALAXYDBPASSWD}@${GALAXYDBHOST}/${GALAXYDB}"
+	sed_replace '#database_connection.*' "database_connection = ${dbstring}" galaxy.ini
+	echo "replaced db in galaxy.ini"
+fi
 
 ## PATHS / DIRS
 ## Abel specific
