@@ -40,7 +40,7 @@ if [ "${workonabel}" == "y" ]; then
 fi
 
 ## Start main Galaxy platform installation/configuration script
-sudo -u galaxy -H sh -c "${MYDIR}/configure_galaxy.sh ${production} ${dburl}"
+sudo -u galaxy -H sh -c "${MYDIR}/configure_galaxy.sh ${production}"
 
 ## Customize Galaxy platform with Cluster and Project Management issues
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
