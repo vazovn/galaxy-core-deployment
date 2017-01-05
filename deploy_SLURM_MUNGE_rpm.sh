@@ -31,6 +31,11 @@ scp -p nielshenrik.abel.uio.no:"${munge_rpms}" .
 
 
 ### INSTALL ALL THE RPMs
+
+# 1. disable automatic update of slurm and munge
+sudo sed -i '$ a exclude=slurm* munge*' /etc/yum.conf
+
+# 2. install them
 sudo rpm -iav *.rpm
 
 ### Add slurm user
