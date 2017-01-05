@@ -52,6 +52,11 @@ sudo -u galaxy -H sh -c "${MYDIR}/configure_galaxy.sh ${production}"
 ## Customize Galaxy platform with Cluster and Project Management issues
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 
+	sudo mkdir -p  ${GALAXY_FILEPATH}     	# /work/projects/galaxy/data/database... /files
+	sudo mkdir ${GALAXY_NEW_FILEPATH}   # /work/projects/galaxy/data/database... /tmp
+	sudo mkdir ${GALAXY_JOB_WORKING_DIRECTORY} # /work/projects/galaxy/data/database... /job_working_directory
+	sudo mkdir ${GALAXY_CLUSTER_FILES_DIRECTORY} # /work/projects/galaxy/data/database... /slurm
+
 	# Install SLURM and MUNGE
 	sh -c  "${MYDIR}/deploy_SLURM_MUNGE_rpm.sh"
 	
