@@ -9,7 +9,7 @@ fi
 
 . settings.sh
 
-if [ ! -z "${UIOUSER}" ]; then
+if [ -z "${UIOUSER}" ]; then
     echo settings.sh is not complete
 fi
 
