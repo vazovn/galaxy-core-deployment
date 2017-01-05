@@ -131,9 +131,4 @@ sed_replace '^#job_resource_params_file = config/job_resource_params_conf.xml' '
 cd ${GALAXYTREE}
 make client
 	
-# Modify $PYTHONPATH in .venv
-echo 'export GALAXY_LIB=/home/galaxy/galaxy/lib' >> /home/galaxy/galaxy/.venv/bin/activate
-echo 'export PYTHONPATH=$GALAXY_LIB:/home/galaxy/galaxy/lib/usit/python' >> /home/galaxy/galaxy/.venv/bin/activate
-echo "PYTHONPATH SET IN .venv/bin/activate " $PYTHONPATH 
-
 echo "Exiting configure_galaxy.sh!!"
