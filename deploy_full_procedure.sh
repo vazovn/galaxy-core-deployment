@@ -42,6 +42,10 @@ fi
 ## Start main Galaxy platform installation/configuration script
 sudo -u galaxy -H sh -c "${MYDIR}/configure_galaxy.sh ${production}"
 
+## copy daemon script to /etc/init.d
+sudo cp galaxyd /etc/init.d/
+sudo chown root:root /etc/init.d/galaxyd
+
 ## Customize Galaxy platform with Cluster and Project Management issues
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 
