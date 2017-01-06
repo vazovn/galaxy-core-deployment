@@ -25,15 +25,45 @@ function sed_replace {
     fi
     }
 
+# Manage config files
+
+# Add the customized environment variables file (local_env.sh)
+if [ -f local_env.sh ]; then
+	cp local_env.sh ${GALAXYTREE}/config
+fi
+
+# Add the customized job_resource_params_conf.xml
+if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
+	if [ -f job_resource_params_conf.xml ]; then
+		cp job_resource_params_conf.xml ${GALAXYTREE}/config
+	fi
+fi
+
+# Rename the galaxy conf files
+cd ${GALAXYTREE}/config
 
 # galaxy ini:
-echo "check if galaxy.ini exists"
-cd ${GALAXYTREE}/config
 if [ ! -f galaxy.ini ]; then
     cp galaxy.ini.sample galaxy.ini
 else
     cp galaxy.ini galaxy.ini.orig-$(date "+%y-%m-%d-%H%M") 
 fi
+
+# job_conf.xml:
+if [ ! -f job_conf.xml ]; then
+    cp job_conf.xml.sample job_conf.xml
+else
+    cp job_conf.xml job_conf.xml.orig-$(date "+%y-%m-%d-%H%M") 
+fi
+
+# job_resource_params_conf.xml :
+if [ ! -f job_resource_params_conf.xml ]; then
+    echo -e "\nSomething is wrong here!!! Your job_resource_params_conf.xml is missing, copying job_resource_params_conf.xml.sample  ..."
+    echo -e "Are you going to use cluster job parameters?\n"
+    cp job_resource_params_conf.xml.sample job_resource_params_conf.xml
+fi
+
+
 # disable debug and use_interactive for production
 echo "production?"
 echo ${production}
@@ -41,10 +71,6 @@ if [ "${production}" == "y" ]; then
         sed_replace '^use_interactive = .*' 'use_interactive = False' galaxy.ini
         echo "replaced debug and use_interactive from galaxy.ini"
 fi
-
-
-# Fra Nikolay
-sed_replace '^#admin_users.*' 'admin_users = ' galaxy.ini
 
 ## General
 sed_replace '^#port =.*' 'port = 8080' galaxy.ini
