@@ -147,13 +147,17 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 
 	# Add the customized environment variables file (local_env.sh)
 	## GOLD DB setup
+
 	if [ -f local_env.sh ]; then
 		cp local_env.sh ${GALAXYTREE}/config
-		sed -i -E "s,GOLDUSER,${GOLDDBUSER},"  local_env.sh
-		sed -i -E "s,GOLDPASSWORD,${GOLDDBPASSWD},"  local_env.sh
-		sed -i -E "s,GOLDHOST,${GOLDDBHOST},"  local_env.sh
-		sed -i -E "s,GOLDDBNAME,${GOLDDB},"  local_env.sh
 	fi
+	
+	if [[ -n "${GOLDDBUSER}" && -n "${GOLDDBPASSWD}" && -n "${GOLDDBHOST}" && -n "${GOLDDB}" ]]; then
+		golddbstring="postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB}"
+		sed_replace '^export GOLDDB=.*' 'export GOLDDB=${golddbstring}' local_env.sh
+		echo "replaced db in local_env.sh"
+	fi
+	
 
 	# job_resource_params_conf.xml :
 	if [ -f job_resource_params_conf.xml ]; then
