@@ -27,18 +27,6 @@ function sed_replace {
 
 # Manage config files
 
-# Add the customized environment variables file (local_env.sh)
-if [ -f local_env.sh ]; then
-	cp local_env.sh ${GALAXYTREE}/config
-fi
-
-# Add the customized job_resource_params_conf.xml
-if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
-	if [ -f job_resource_params_conf.xml ]; then
-		cp job_resource_params_conf.xml ${GALAXYTREE}/config
-	fi
-fi
-
 # Rename the galaxy conf files
 cd ${GALAXYTREE}/config
 
@@ -55,14 +43,6 @@ if [ ! -f job_conf.xml ]; then
 else
     cp job_conf.xml job_conf.xml.orig-$(date "+%y-%m-%d-%H%M") 
 fi
-
-# job_resource_params_conf.xml :
-if [ ! -f job_resource_params_conf.xml ]; then
-    echo -e "\nSomething is wrong here!!! Your job_resource_params_conf.xml is missing, copying job_resource_params_conf.xml.sample  ..."
-    echo -e "Are you going to use cluster job parameters?\n"
-    cp job_resource_params_conf.xml.sample job_resource_params_conf.xml
-fi
-
 
 # disable debug and use_interactive for production
 echo "production?"

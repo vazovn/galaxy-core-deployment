@@ -20,7 +20,7 @@ echo "DRMAA_LIBRARY_PATH : " $DRMAA_LIBRARY_PATH
 
 ### Gold Database ###
 ### Used by drmaa_usit.py, Accounting_jobs.py, Accounting_project_management.py
-export GOLDDB="postgresql://USER:PASSWORD@dbpg-abel.uio.no/DBNAME"
+export GOLDDB="postgresql://GOLDUSER:GOLDPASSWORD@GOLDHOST/GOLDDBNAME"
 echo "GOLDDB : " $GOLDDB
 
 ## Lifeportal project ID
