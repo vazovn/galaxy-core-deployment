@@ -31,7 +31,7 @@ echo "Apache is running ..."
 else
     echo "Waiting for Apache to start..."
     sleep 120
-    daemon --user="galaxy" /home/galaxy/galaxy/galaxy/run.sh --daemon
+    daemon --user="galaxy" /home/galaxy/galaxy/run.sh --daemon
 fi
 
 }
