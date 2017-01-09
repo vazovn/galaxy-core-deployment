@@ -38,6 +38,8 @@ GOLDDB=
 GOLDDBUSER=
 GOLDDBPASSWD=
 GOLDDBHOST=
+# Project admins
+PROJECT_ADMIN_USERS=n.a.vazov@usit.uio.no,sabry.razick@usit.uio.no,trond.thorbjornsen@usit.uio.no
 
 
 
