@@ -63,34 +63,6 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	# Install Polish DRMAA library
 	sh -c "${MYDIR}/deploy_DRMAA_poznan.sh"
 	
-	## Install Project management issues (most of them come from the lifeportal galaxy branch)
-	sudo ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
-	sudo chown galaxy:galaxy ${EXTERNAL_DBS_LINK_NAME}
-	
-	## Change path to the Galaxy database (all files) directory (from local to cluster database)
-	sudo mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp
-	sudo ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
-	
-
-	# Add the customized environment variables file (local_env.sh)
-
-	## GOLD DB setup
-	if [ -f local_env.sh ]; then
-		cp local_env.sh ${GALAXYTREE}/config
-		sed -i -E "s,GOLDUSER,${GOLDDBUSER},"  local_env.sh
-		sed -i -E "s,GOLDPASSWORD,${GOLDDBPASSWD},"  local_env.sh
-		sed -i -E "s,GOLDHOST,${GOLDDBHOST},"  local_env.sh
-		sed -i -E "s,GOLDDBNAME,${GOLDDB},"  local_env.sh
-	fi
-
-	# job_resource_params_conf.xml :
-	if [ -f job_resource_params_conf.xml ]; then
-		cp job_resource_params_conf.xml ${GALAXYTREE}/config
-	elif [ ! -f job_resource_params_conf.xml ]; then
-		echo -e "\nSomething is wrong here!!! Your job_resource_params_conf.xml is missing, copying job_resource_params_conf.xml.sample  ..."
-		echo -e "Are you going to use cluster job parameters?\n"
-		cp job_resource_params_conf.xml.sample job_resource_params_conf.xml
-	fi
 fi
 
 ## copy daemon script to /etc/init.d
