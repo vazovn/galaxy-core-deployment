@@ -38,7 +38,10 @@ scp -p nielshenrik.abel.uio.no:"${munge_rpms}" .
 sudo sed -i '$ a exclude=slurm* munge*' /etc/yum.conf
 
 # 2. install them
-sudo rpm -iav *.rpm
+# + libraries needed (localinstall did not work)
+sudo yum install hwloc-libs libibumad libibmad
+sudo rpm -ivh mun*.rpm
+sudo rpm -ivh slu*.rpm
 
 ### Add slurm user
 sudo sed -i '$ a slurm:x:501:501:Slurm:/etc/slurm:/sbin/nologin' /etc/passwd

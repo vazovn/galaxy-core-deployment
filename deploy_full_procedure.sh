@@ -26,6 +26,10 @@ fi
 read -p "Mount /work on abel (host needs to be added to nfs on abel first)? [yN] " workonabel
 
 read -p "Add galaxy user? [yN] " addgalaxyuser
+
+read -p "Install Slurm and Munge? [yN] " installslurmandmunge
+read -p "Install DRMAA poznan? [yN] " installdrmaapoznan
+
 if [ "${addgalaxyuser}" == "y" ]; then
     sudo sh -c 'echo galaxy:x:182649:70731:galaxy:/home/galaxy:/bin/bash >> /etc/passwd'
 	sudo mkdir /home/galaxy
@@ -51,6 +55,18 @@ sudo -u galaxy -H sh -c "${MYDIR}/configure_galaxy.sh ${production}"
 
 ## Customize Galaxy platform with Cluster and Project Management issues
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
+        # check if rpcidmapd is not running
+	if [[ -n $(systemctl status rpcidmapd | grep inactive) ]]; then 
+            if grep --quiet "^#Domain = local.domain.edu" /etc/idmapd.conf; then
+                sudo sed -i.orig-$(date "+%y-%m-%d-%H%M") "/^#Domain = local.domain.edu/a Domain = uio.no" /etc/idmapd.conf
+                sudo systemctl enable rpcidmapd
+                sudo systemctl start rpcidmapd
+            else
+                echo "Is idmapd installed?"
+                exit 1
+            fi
+        fi
+
 
 	sudo mkdir -p  ${GALAXY_FILEPATH}     	# /work/projects/galaxy/data/database... /files
 	sudo mkdir ${GALAXY_NEW_FILEPATH}   # /work/projects/galaxy/data/database... /tmp
@@ -58,11 +74,15 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	sudo mkdir ${GALAXY_CLUSTER_FILES_DIRECTORY} # /work/projects/galaxy/data/database... /slurm
 
 	# Install SLURM and MUNGE
-	sh -c  "${MYDIR}/deploy_SLURM_MUNGE_rpm.sh"
+	if [ "${installslurmandmunge}" == "y" ]; then 
+	    sh -c  "${MYDIR}/deploy_SLURM_MUNGE_rpm.sh"
+        fi
 	
 	# Install Polish DRMAA library
-	sh -c "${MYDIR}/deploy_DRMAA_poznan.sh"
-	
+	if [ "${installdrmaapoznan}" == "y" ]; then 
+	    sh -c "${MYDIR}/deploy_DRMAA_poznan.sh"
+        fi
+
 fi
 
 ## copy daemon script to /etc/init.d
