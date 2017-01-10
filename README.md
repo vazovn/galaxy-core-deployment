@@ -1,5 +1,9 @@
 # galaxy-core-management   
 
+## Prerequistes
+
+* If project management is needed, GOLD must be installed: see the galaxy-gold-no-gui-installation repo.
+
 ## The script deploys:
 
 * Galaxy framework 
