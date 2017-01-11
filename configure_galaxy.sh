@@ -169,7 +169,7 @@ sed_replace '^#job_resource_params_file = config/job_resource_params_conf.xml' '
 
 # job_conf.xml:
 if [ ! -f job_conf.xml ]; then
-    cp job_conf.xml.sample job_conf.xml
+    cp job_conf.xml.sample_basic job_conf.xml
 else
     cp job_conf.xml job_conf.xml.orig-$(date "+%y-%m-%d-%H%M") 
 fi
