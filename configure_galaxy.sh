@@ -1,8 +1,7 @@
 #!/bin/bash
 
-echo "Params: $1, $2"
+echo "Params: $1"
 production=$1
-dburl=$2
 
 # source settings
 . settings.sh
@@ -26,15 +25,52 @@ function sed_replace {
     fi
     }
 
+## Customize Galaxy platform with Cluster and Project Management issues
+if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
+
+	## Install Project management issues (most of them come from the lifeportal galaxy branch)
+	ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
+	
+	## Change path to the Galaxy database (all files) directory (from local to cluster database)
+	mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp
+	ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
+	
+
+	# Customized environment variables file (local_env.sh)
+	
+	## GOLD DB setup
+
+	if [ -f local_env.sh ]; then
+		if [[ -n "${GOLDDBUSER}" && -n "${GOLDDBPASSWD}" && -n "${GOLDDBHOST}" && -n "${GOLDDB}" ]]; then
+			golddbstring="postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB}"
+			sed_replace '^export GOLDDB=.*' 'export GOLDDB=${golddbstring}' local_env.sh
+			echo "replaced db in local_env.sh"
+		fi
+		cp local_env.sh ${GALAXYTREE}/config
+	fi
+
+	# job_resource_params_conf.xml :
+	if [ -f job_resource_params_conf.xml ]; then
+		cp job_resource_params_conf.xml ${GALAXYTREE}/config
+	elif [ ! -f job_resource_params_conf.xml ]; then
+		echo -e "\nSomething is wrong here!!! Your job_resource_params_conf.xml is missing, copying job_resource_params_conf.xml.sample  ..."
+		echo -e "Are you going to use cluster job parameters?\n"
+		cp ${GALAXYTREE}/config/job_resource_params_conf.xml.sample ${GALAXYTREE}/config/job_resource_params_conf.xml
+	fi
+fi
+
+
+# Manage Galaxy config files
+
+cd ${GALAXYTREE}/config
 
 # galaxy ini:
-echo "check if galaxy.ini exists"
-cd ${GALAXYTREE}/config
 if [ ! -f galaxy.ini ]; then
     cp galaxy.ini.sample galaxy.ini
 else
     cp galaxy.ini galaxy.ini.orig-$(date "+%y-%m-%d-%H%M") 
 fi
+
 # disable debug and use_interactive for production
 echo "production?"
 echo ${production}
@@ -42,16 +78,6 @@ if [ "${production}" == "y" ]; then
         sed_replace '^use_interactive = .*' 'use_interactive = False' galaxy.ini
         echo "replaced debug and use_interactive from galaxy.ini"
 fi
-
-echo ${dburl}
-
-if [ ! -z ${dburl} ]; then
-    sed_replace '#database_connection.*' "database_connection = ${dburl}" galaxy.ini
-    echo "replaced dburl from galaxy.ini"
-fi
-
-# Fra Nikolay
-sed_replace '^#admin_users.*' 'admin_users = ' galaxy.ini
 
 ## General
 sed_replace '^#port =.*' 'port = 8080' galaxy.ini
@@ -61,6 +87,14 @@ sed_replace '^#host =.*' 'host = 127.0.0.1' galaxy.ini
 # sed_replace '^#database_engine_option_pool_size =.*' 'database_engine_option_pool_size = 5' galaxy.ini
 # sed_replace '^#database_engine_option_max_overflow =.*' 'database_engine_option_max_overflow = 10' galaxy.ini
 # sed_replace '^#database_engine_option_server_side_cursors = False' 'database_engine_option_server_side_cursors = True' galaxy.ini
+
+
+## DB config
+if [[ -n "${GALAXYDB}" && -n "${GALAXYDBUSER}" && -n "${GALAXYDBPASSWD}" && -n "${GALAXYDBHOST}" ]]; then
+	dbstring="postgresql://${GALAXYDBUSER}:${GALAXYDBPASSWD}@${GALAXYDBHOST}/${GALAXYDB}"
+	sed_replace '#database_connection.*' "database_connection = ${dbstring}" galaxy.ini
+	echo "replaced db in galaxy.ini"
+fi
 
 ## PATHS / DIRS
 ## Abel specific
@@ -111,7 +145,13 @@ sed_replace '^#user_library_import_dir = None' 'user_library_import_dir = databa
 sed_replace '^#use_remote_user = False' 'use_remote_user = True' galaxy.ini
 sed_replace '^#remote_user_logout_href = None' "remote_user_logout_href = https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=http://${GALAXY_PUBLIC_HOSTNAME}/" galaxy.ini
 sed_replace '^#normalize_remote_user_email = False' 'normalize_remote_user_email = True ' galaxy.ini
-sed_replace '^admin_users.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
+sed_replace '^admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
+
+if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
+	sed -i  "s/admin_users =.*/&\n## Project Admins\n${PROJECT_ADMIN_USERS}/"  galaxy.ini
+fi
+
+
 sed_replace '^#require_login = False' 'require_login = True' galaxy.ini
 sed_replace '^#allow_user_creation = True' 'allow_user_creation = False' galaxy.ini
 sed_replace '^#allow_user_deletion = False' 'allow_user_deletion = True' galaxy.ini
@@ -126,3 +166,16 @@ sed_replace '^#enable_job_recovery = True' 'enable_job_recovery = True' galaxy.i
 sed_replace '^#cleanup_job = .*' 'cleanup_job = never' galaxy.ini
 sed_replace '^#job_resource_params_file = config/job_resource_params_conf.xml' 'job_resource_params_file = config/job_resource_params_conf.xml' galaxy.ini
 
+
+# job_conf.xml:
+if [ ! -f job_conf.xml ]; then
+    cp job_conf.xml.sample_basic job_conf.xml
+else
+    cp job_conf.xml job_conf.xml.orig-$(date "+%y-%m-%d-%H%M") 
+fi
+
+# Uglify the new main Galaxy menu
+cd ${GALAXYTREE}
+make client
+	
+echo "Exiting configure_galaxy.sh!!"

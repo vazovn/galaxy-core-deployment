@@ -8,19 +8,45 @@ GALAXYUSERHOME=/home/galaxy
 GALAXYTREE=/home/galaxy/galaxy
 
 # Galaxy version (branch)
-GALAXY_BRANCH=release_16.10
+GALAXY_BRANCH=lifeportal_16.10
+
+# Galaxy DB
+GALAXYDB=
+GALAXYDBUSER=
+GALAXYDBPASSWD=
+GALAXYDBHOST=
 
 # Config file names
-GALAXY_TOOL_CONF=config/tool_conf.xml
+GALAXY_TOOL_CONF=config/tool_conf.xml.main
 
-# Only needed when abel is mounted
-GALAXY_ABEL_MOUNT=1
-GALAXY_FILEPATH=/work/projects/galaxy/data/database_galaxy_prod01/files
-GALAXY_NEW_FILEPATH=/work/projects/galaxy/data/database_galaxy_prod01/tmp
-GALAXY_JOB_WORKING_DIRECTORY=/work/projects/galaxy/data/database_galaxy_prod01/job_working_directory
-GALAXY_CLUSTER_FILES_DIRECTORY=/work/projects/galaxy/data/database_galaxy_prod01/slurm
-
-#
 GALAXY_BRAND=Lifeportal
 GALAXY_PUBLIC_HOSTNAME=lifeportal.uio.no
 GALAXY_ADMIN_USERS=n.a.vazov@usit.uio.no,sabry.razick@usit.uio.no,trond.thorbjornsen@usit.uio.no
+
+
+# Only needed when abel is mounted
+GALAXY_ABEL_MOUNT=1
+# Example: GALAXY_DATABASE_DIRNAME=database_galaxy_prod01
+GALAXY_DATABASE_DIRNAME=
+if [ -z ${GALAXY_DATABASE_DIRNAME} ]; then
+    echo Please fill out GALAXY_DATABASE_DIRNAME in settings.sh
+fi
+GALAXY_DATABASE_DIRECTORY_ON_CLUSTER=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}
+GALAXY_FILEPATH=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}/files
+GALAXY_NEW_FILEPATH=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}/tmp
+GALAXY_JOB_WORKING_DIRECTORY=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}/job_working_directory
+GALAXY_CLUSTER_FILES_DIRECTORY=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}/slurm
+EXTERNAL_DBS_LINK_NAME=/home/galaxy/galaxy/lib/usit/external_dbs
+EXTERNAL_DBS_PATH=/work/projects/galaxy/external_dbs
+# GOLD DB
+GOLDDB=
+GOLDDBUSER=
+GOLDDBPASSWD=
+GOLDDBHOST=
+# Project admins
+PROJECT_ADMIN_USERS=n.a.vazov@usit.uio.no,sabry.razick@usit.uio.no,trond.thorbjornsen@usit.uio.no
+
+
+
+
+
