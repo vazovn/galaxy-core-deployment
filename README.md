@@ -43,7 +43,7 @@ add the following lines
 
     Cmnd_Alias GOLD = /opt/gold/bin/*
     Defaults:galaxy !requiretty
-    galaxy <HOSTNAME>=(root) NOPASSWD: GOLD  
+    galaxy <HOSTNAME>=(gold) NOPASSWD: GOLD  
 
 and edit the *hostname* to match your hostname's name
 
