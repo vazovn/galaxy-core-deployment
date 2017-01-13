@@ -1,0 +1,5 @@
+{
+  'install_path' => {
+                      'lib' => '/opt/gold/lib/perl5'
+                    }
+}

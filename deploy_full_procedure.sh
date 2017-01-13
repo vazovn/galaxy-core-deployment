@@ -1,5 +1,12 @@
 #!/bin/bash
 
+## This is the main script for the full portal "Galaxy installation"
+## It
+## -- installs SLURM, MUNGE, DRMAA, GOLD
+## -- implements the customized features for the USIT postals (Project/Job management, etc.)
+## -- configures Galaxy framework respectively
+
+
 # source settings
 if [ ! -f "settings.sh" ]; then
     echo Please fill in the variables in the file settings.sh
@@ -27,6 +34,7 @@ read -p "Mount /work on abel (host needs to be added to nfs on abel first)? [yN]
 
 read -p "Add galaxy user? [yN] " addgalaxyuser
 
+read -p "Install GOLD? [yN] " installgold
 read -p "Install Slurm and Munge? [yN] " installslurmandmunge
 read -p "Install DRMAA poznan? [yN] " installdrmaapoznan
 
@@ -73,6 +81,23 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	sudo mkdir ${GALAXY_JOB_WORKING_DIRECTORY} # /work/projects/galaxy/data/database... /job_working_directory
 	sudo mkdir ${GALAXY_CLUSTER_FILES_DIRECTORY} # /work/projects/galaxy/data/database... /slurm
 
+	
+	# Install GOLD
+	if [ "${installgold}" == "y" ]; then 
+	    
+	    ## need gcc and cpanm 
+		sudo yum install gcc.x86_64
+		sudo yum install perl-App-cpanminus.noarch
+	    
+	    sudo useradd -m gold
+	    sudo passwd gold
+        sudo chown -R gold:gold "${MYDIR}/gold-2.2.0.5"
+	    
+	    sudo -u gold -H sh -c "${MYDIR}/deploy-gold-user.sh"
+	    sh -c "${MYDIR}/deploy-gold-root.sh"
+	    
+        fi
+	
 	# Install SLURM and MUNGE
 	if [ "${installslurmandmunge}" == "y" ]; then 
 	    sh -c  "${MYDIR}/deploy_SLURM_MUNGE_rpm.sh"
