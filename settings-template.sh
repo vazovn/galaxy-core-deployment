@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# exit on all errors
+set -e
+# To ignore error from command, append this to command:
+## 2>&1 || $?
+
 UIOUSER=
 GALAXYUSER=galaxy
 GALAXYUSERPID=182649

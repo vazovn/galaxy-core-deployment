@@ -32,7 +32,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
 	
 	## Change path to the Galaxy database (all files) directory (from local to cluster database)
-	mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp
+	mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp 2>&1 || $?
 	ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
 	
 
@@ -145,7 +145,7 @@ sed_replace '^#user_library_import_dir = None' 'user_library_import_dir = databa
 sed_replace '^#use_remote_user = False' 'use_remote_user = True' galaxy.ini
 sed_replace '^#remote_user_logout_href = None' "remote_user_logout_href = https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=http://${GALAXY_PUBLIC_HOSTNAME}/" galaxy.ini
 sed_replace '^#normalize_remote_user_email = False' 'normalize_remote_user_email = True ' galaxy.ini
-sed_replace '^admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
+sed_replace '^#admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
 
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	sed -i  "s/admin_users =.*/&\n## Project Admins\n${PROJECT_ADMIN_USERS}/"  galaxy.ini
