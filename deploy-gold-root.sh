@@ -35,9 +35,9 @@ cd ${GOLD_INSTALLATION_DIRECTORY}/gold/etc
 
 ## server setup : edit etc/goldd.conf
 sudo sed -i -E "s/^server.host =.*/server.host = ${hostname}/" goldd.conf
-sudo sed -i -E "s/^database.datasource =.*/database.datasource = DBI:Pg:dbname=${GOLD_DB};host=${GOLD_DB_HOST}/" goldd.conf
-sudo sed -i -E "s/^# database.user =.*/database.user = ${GOLD_DB_USER}/" goldd.conf
-sudo sed -i -E "s/^# database.password =.*/database.password = ${GOLD_DB_PASSWORD}/" goldd.conf
+sudo sed -i -E "s/^database.datasource =.*/database.datasource = DBI:Pg:dbname=${GOLDDB};host=${GOLDDBHOST}/" goldd.conf
+sudo sed -i -E "s/^# database.user =.*/database.user = ${GOLDDBUSER}/" goldd.conf
+sudo sed -i -E "s/^# database.password =.*/database.password = ${GOLDDBPASSWD}/" goldd.conf
 sudo sed -i -E "s/^# account.autogen =.*/account.autogen = false/" goldd.conf
 sudo sed -i -E "s/^# allocation.autogen =.*/allocation.autogen = false/" goldd.conf
 
