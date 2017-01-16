@@ -52,37 +52,18 @@ sudo scp -p ${USER}@nielshenrik.abel.uio.no:/etc/slurm/slurm*.conf /etc/slurm
 
 ### Copy munge key from nielshenrik
 
-echo "Copying munge key ... "
+echo "Copying munge key ... check that /tmp/newmungekey.key is deleted"
 
-if [ -f echo_passwd.sh ]; then
-	chmod 755 echo_passwd.sh
-else
-	echo -e "#!/bin/bash\n\necho \"password\"" >> echo_passwd.sh
-	chmod 755 echo_passwd.sh
+if [ -e /tmp/newmungekey.key ]; then
+    rm /tmp/newmungekey.key
 fi
 
-echo "Type your password:"
-read -s password
-
-## edit the echo_passwd.sh file to echo your password
-sed -i "s/password/${password}/" echo_passwd.sh
-
-scp -p echo_passwd.sh ${USER}@nielshenrik.abel.uio.no:/tmp/
-
-ssh ${USER}@nielshenrik.abel.uio.no "export SUDO_ASKPASS=/tmp/echo_passwd.sh; cd /tmp; sudo -A /bin/cp /etc/munge/munge.key /tmp/newmungekey.key; sudo -A /bin/chown ${USER}:users /tmp/newmungekey.key; rm echo_passwd.sh"
-
-## revert echo_passwd.sh to template mode
-sed -i "s/${password}/password/" echo_passwd.sh
-
-if [ -f newmungekey.key ]; then
-	rm -f newmungekey.key
-fi
-
-scp  -p ${USER}@nielshenrik.abel.uio.no:/tmp/newmungekey.key .
-
-ssh ${USER}@nielshenrik.abel.uio.no "cd /tmp; rm newmungekey.key"
+THISHOST=${HOSTNAME}
+ssh ${USER}@nielshenrik.abel.uio.no "sudo /bin/scp /etc/munge/munge.key ${USER}@${THISHOST}:/tmp/newmungekey.key"
 
 sudo mv newmungekey.key /etc/munge/munge.key
-sudo chown daemon:munge /etc/munge/munge.key
+sudo chown daemon:root /etc/munge/munge.key
+sudo rm /tmp/newmungekey.key
 
+echo "/tmp/newmungekey.key is deleted"
 echo "Munge key copied successfully!"
