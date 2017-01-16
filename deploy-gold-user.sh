@@ -4,6 +4,7 @@
 ## Gold's GUI is _NOT_ installed by this script!!
 
 
+
 # source settings
 if [ ! -f "settings.sh" ]; then
     echo Please fill in the variables in the file settings.sh
@@ -13,11 +14,12 @@ fi
 
 . settings.sh
 
-if [ -d "$GOLD_SRC_DIRECTORY" ]; then
-	cd ${GOLD_SRC_DIRECTORY}
+
+## clone GOLD
+if [ -e "gold-2.2.0.5" ]; then
+	echo "GOLD source found ..."
 else
-	echo "Download gold source code from http://www.adaptivecomputing.com/downloading?file=/gold/gold-2.2.0.5.tar.gz. Login required!"
-	exit 1
+	git clone https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/gold-code.git gold-2.2.0.5
 fi
 
 ./configure --prefix=${GOLD_INSTALLATION_DIRECTORY}/gold --with-db=Pg --with-log-dir=${GOLD_INSTALLATION_DIRECTORY}/gold/log --with-perl-libs=local --with-gold-libs=local 

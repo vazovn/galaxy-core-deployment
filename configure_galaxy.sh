@@ -32,7 +32,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
 	
 	## Change path to the Galaxy database (all files) directory (from local to cluster database)
-	mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp 2>&1 || $?
+	mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp 2>&1 || echo $?
 	ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
 	
 

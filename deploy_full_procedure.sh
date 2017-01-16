@@ -91,12 +91,10 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	    
 	    sudo useradd -m gold
 	    sudo passwd gold
-        sudo chown -R gold:gold "${MYDIR}/gold-2.2.0.5"
-	    
 	    sudo -u gold -H sh -c "${MYDIR}/deploy-gold-user.sh"
 	    sh -c "${MYDIR}/deploy-gold-root.sh"
 	    
-        fi
+    fi
 	
 	# Install SLURM and MUNGE
 	if [ "${installslurmandmunge}" == "y" ]; then 
