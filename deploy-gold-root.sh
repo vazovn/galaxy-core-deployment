@@ -27,7 +27,7 @@ make auth_key
 cd ${GOLD_INSTALLATION_DIRECTORY}/gold/etc
 
 ## server setup : edit etc/goldd.conf
-sed -i -E "s/^server.host =.*/server.host = ${hostname}/" goldd.conf
+sed -i -E "s/^server.host =.*/server.host = ${HOSTNAME}/" goldd.conf
 sed -i -E "s/^database.datasource =.*/database.datasource = DBI:Pg:dbname=${GOLDDB};host=${GOLDDBHOST}/" goldd.conf
 sed -i -E "s/^# database.user =.*/database.user = ${GOLDDBUSER}/" goldd.conf
 sed -i -E "s/^# database.password =.*/database.password = ${GOLDDBPASSWD}/" goldd.conf
