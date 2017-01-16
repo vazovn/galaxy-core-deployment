@@ -118,7 +118,6 @@ sed_replace '^#tool_data_path = tool-data' 'tool_data_path = tool-data' galaxy.i
 ## SMTP / EMAILS
 sed_replace '^#smtp_server =.*' 'smtp_server = smtp.uio.no' galaxy.ini
 sed_replace '^#error_email_to =.*' 'error_email_to = lifeportal-help@usit.uio.no' galaxy.ini
-sed_replace '^#blacklist_file = config/disposable_email_blacklist.conf' 'blacklist_file = config/disposable_email_blacklist.conf ' galaxy.ini
 
 ## BRAND
 sed_replace '^#brand = None' "brand = ${GALAXY_BRAND}" galaxy.ini
