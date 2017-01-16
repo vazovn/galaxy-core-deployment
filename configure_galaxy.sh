@@ -6,6 +6,8 @@ production=$1
 # source settings
 . settings.sh
 
+MYDIR="$(dirname "$(realpath "$0")")"
+
 cd /home/galaxy/
 if [ -e "${GALAXYTREE}" ]; then
     echo ${GALAXYTREE} exists
@@ -28,10 +30,10 @@ function sed_replace {
 ## Customize Galaxy platform with Cluster and Project Management issues
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 
-    sudo mkdir ${GALAXY_FILEPATH}     	# /work/projects/galaxy/data/database... /files
-    sudo mkdir ${GALAXY_NEW_FILEPATH}   # /work/projects/galaxy/data/database... /tmp
-    sudo mkdir ${GALAXY_JOB_WORKING_DIRECTORY} # /work/projects/galaxy/data/database... /job_working_directory
-    sudo mkdir ${GALAXY_CLUSTER_FILES_DIRECTORY} # /work/projects/galaxy/data/database... /slurm
+    mkdir -p ${GALAXY_FILEPATH}     	# /work/projects/galaxy/data/database... /files
+    mkdir -p ${GALAXY_NEW_FILEPATH}   # /work/projects/galaxy/data/database... /tmp
+    mkdir -p ${GALAXY_JOB_WORKING_DIRECTORY} # /work/projects/galaxy/data/database... /job_working_directory
+    mkdir -p ${GALAXY_CLUSTER_FILES_DIRECTORY} # /work/projects/galaxy/data/database... /slurm
 
     ## Install Project management issues (most of them come from the lifeportal galaxy branch)
     ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
@@ -45,24 +47,28 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     
     ## GOLD DB setup
 
-    if [ -f local_env.sh ]; then
-        if [[ -n "${GOLDDBUSER}" && -n "${GOLDDBPASSWD}" && -n "${GOLDDBHOST}" && -n "${GOLDDB}" ]]; then
-            golddbstring="postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB}"
-            sed_replace '^export GOLDDB=.*' 'export GOLDDB=${golddbstring}' local_env.sh
-            echo "replaced db in local_env.sh"
-        fi
-        cp local_env.sh ${GALAXYTREE}/config
+    # if [ -f ${MYDIR}/local_env.sh ]; then
+    cp ${MYDIR}/local_env.sh ${GALAXYTREE}/config
+    if [[ -n "${GOLDDBUSER}" && -n "${GOLDDBPASSWD}" && -n "${GOLDDBHOST}" && -n "${GOLDDB}" ]]; then
+        golddbstring="postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB}"
+        sed_replace '^export GOLDDB=.*' "export GOLDDB=${golddbstring}" ${GALAXYTREE}/config/local_env.sh
+        echo "replaced db in local_env.sh"
+    else
+	echo "Gold db settings missing from settings.sh"
     fi
+    # fi
 
     # job_resource_params_conf.xml :
-    if [ -f job_resource_params_conf.xml ]; then
-        cp job_resource_params_conf.xml ${GALAXYTREE}/config
-    elif [ ! -f job_resource_params_conf.xml ]; then
+    if [ -f ${MYDIR}/job_resource_params_conf.xml ]; then
+        cp ${MYDIR}/job_resource_params_conf.xml ${GALAXYTREE}/config
+    else
         echo -e "\nSomething is wrong here!!! Your job_resource_params_conf.xml is missing, copying job_resource_params_conf.xml.sample  ..."
         echo -e "Are you going to use cluster job parameters?\n"
         cp ${GALAXYTREE}/config/job_resource_params_conf.xml.sample ${GALAXYTREE}/config/job_resource_params_conf.xml
     fi
 fi
+
+exit 0
 
 
 # Manage Galaxy config files
