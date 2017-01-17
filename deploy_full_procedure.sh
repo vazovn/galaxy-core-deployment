@@ -108,8 +108,4 @@ fi
 sudo cp galaxyd /etc/init.d/
 sudo chown root:root /etc/init.d/galaxyd
 
-echo -e "\nAll features installed! What remains to be done:\n"
-# echo -e "Copy:  \n1. The munge.key from nielshenrik:/etc/munge/munge.key to <your host>:/etc/munge/munge.key\n"
-echo -e "Editing: \n2.1. Edit job_conf.xml (Your job_resource_params_conf.xml is already configured, make sure your setup matches!)\n2.2. Edit /etc/sudoers for the galaxy-gold commands (see README.md)\n"
-echo -e "Starting: \n3.1. Start munge service (sudo systemctl start munge.service)\n3.2. Start Galaxy (sudo /etc/init.d/galaxyd start)\n3.3. Check the log (tail -f /home/galaxy/galaxy/paster.log)\n"
-echo -e "\nATTENTION!! When started for the first time, Galaxy will complain of missing python packages (e.g. drmaa_usit.py). Run the script venv_config.sh provided here and restart Galaxy again\n"
+cat ${MYDIR}/POST_INSTALLATION.md

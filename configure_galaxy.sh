@@ -68,9 +68,6 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     fi
 fi
 
-exit 0
-
-
 # Manage Galaxy config files
 
 cd ${GALAXYTREE}/config
