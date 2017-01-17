@@ -37,15 +37,33 @@ sed -i -E "s/^# allocation.autogen =.*/allocation.autogen = false/" goldd.conf
 ## client setup : edit etc/gold.conf
 sed -i -E "s/^# project.show =.*/project.show = Name,Organization,Active,Users,Machines,Description/" gold.conf
 
-## add roles to user gold
-/opt/gold/bin/goldsh RoleUser Create Role=SystemAdmin Name=gold
-/opt/gold/bin/goldsh RoleUser Create Role=Scheduler Name=gold
+echo "1. Is gold database imported from an older version? (Please read README.md) "
+echo "2. If so, do you want to create a gold user and give necessary roles?"
+read -p " [yN] " addgolduser
+
+## create gold user and add roles to user gold
+if [ "${addgolduser}" == "y" ]; then
+    /opt/gold/bin/gmkuser gold
+    /opt/gold/bin/goldsh RoleUser Create Role=SystemAdmin Name=gold
+    /opt/gold/bin/goldsh RoleUser Create Role=Scheduler Name=gold
+else
+    echo "If you are creating db from scratch, this should be bootstrapped. Do you want to run:"
+    echo "$ /usr/local/pgsql/bin/psql postgresql://dbuser:dbpass@dbserver/dbname < /home/gold/${GOLD_SRC_DIRECTORY}/bank.sql"
+    read -p " [yN] " bootstrapgolddb
+    if [ "${bootstrapgolddb}" == "y" ]; then
+        if ! rpm -q postgresql; then
+            yum -y install postgresql
+        fi
+        psql postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB} < /home/gold/${GOLD_SRC_DIRECTORY}/bank.sql
+
+    fi
+fi
 
 ## go back to the repo directory (/tmp/..) to execute patch
 cd ${MYDIR}
 
 ############ patch /opt/gold/lib/perl5/Log/Log4perl/Config.pm (deprecated methods) ############ 
-patch ${GOLD_INSTALLATION_DIRECTORY}/gold/lib/perl5/Log/Log4perl/Config.pm < Config.pm.patch
+patch ${GOLD_INSTALLATION_DIRECTORY}/gold/lib/perl5/Log/Log4perl/Config.pm < Config.pm.patch 2>&1 || echo $?
 
 ############ start/stop scripts ############ 
 

@@ -2,8 +2,8 @@
 
 ## Prerequistes
 
-* If project management is needed, GOLD must be installed: see the
-  galaxy-gold-no-gui-installation repo.
+* If using data from existing galaxy and gold databases, these should be dumped
+  and imported to the current databases
 
 ## The script deploys:
 
