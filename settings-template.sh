@@ -1,7 +1,13 @@
 #!/bin/bash
 
 # exit on all errors
-set -e
+error() {
+    local sourcefile=$1
+    local lineno=$2
+    echo "Error on line ${lineno} in ${sourcefile}"
+    exit 1
+}
+trap 'error "${BASH_SOURCE}" "${LINENO}"' ERR
 # To ignore error from command, append this to command:
 ## 2>&1 || echo $?
 
