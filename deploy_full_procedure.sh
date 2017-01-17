@@ -8,7 +8,7 @@
 
 
 # source settings
-if [ ! -f "^settings.sh$" ]; then
+if [ ! -f settings.sh ]; then
     echo Please fill in the variables in the file settings.sh
     cp settings-template.sh settings.sh
     exit 1
