@@ -37,7 +37,9 @@ sed -i -E "s/^# allocation.autogen =.*/allocation.autogen = false/" goldd.conf
 ## client setup : edit etc/gold.conf
 sed -i -E "s/^# project.show =.*/project.show = Name,Organization,Active,Users,Machines,Description/" gold.conf
 
-
+## add roles to user gold
+/opt/gold/bin/goldsh RoleUser Create Role=SystemAdmin Name=gold
+/opt/gold/bin/goldsh RoleUser Create Role=Scheduler Name=gold
 
 ## go back to the repo directory (/tmp/..) to execute patch
 cd ${MYDIR}
