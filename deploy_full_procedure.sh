@@ -8,7 +8,7 @@
 
 
 # source settings
-if [ ! -f "settings.sh" ]; then
+if [ ! -f "^settings.sh$" ]; then
     echo Please fill in the variables in the file settings.sh
     cp settings-template.sh settings.sh
     exit 1
@@ -86,7 +86,6 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 		sudo yum install perl-App-cpanminus.noarch
 	    
 	    sudo useradd -m gold
-	    sudo passwd gold
 	    sudo -u gold -H sh -c "${MYDIR}/deploy-gold-user.sh"
 	    sudo sh -c "${MYDIR}/deploy-gold-root.sh"
 	    

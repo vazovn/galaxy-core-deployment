@@ -3,16 +3,10 @@
 ## Script installing GOLD components as gold user
 ## Gold's GUI is _NOT_ installed by this script!!
 
-
+MYDIR="$(dirname "$(realpath "$0")")"
 
 # source settings
-if [ ! -f "settings.sh" ]; then
-    echo Please fill in the variables in the file settings.sh
-    cp settings-template.sh settings.sh
-    exit 1
-fi
-
-. settings.sh
+. ${MYDIR}/settings.sh
 
 cd
 

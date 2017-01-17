@@ -3,7 +3,7 @@
 # exit on all errors
 set -e
 # To ignore error from command, append this to command:
-## 2>&1 || $?
+## 2>&1 || echo $?
 
 UIOUSER=
 GALAXYUSER=galaxy
