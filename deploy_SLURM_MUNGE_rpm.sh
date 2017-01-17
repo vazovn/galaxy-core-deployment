@@ -49,21 +49,3 @@ sudo sed -i '$ a slurm:x:501:501:Slurm:/etc/slurm:/sbin/nologin' /etc/passwd
 ### Copy slurm.conf setup from nielshenrik
 sudo scp -p ${USER}@nielshenrik.abel.uio.no:/etc/slurm/slurm*.conf /etc/slurm
 
-
-### Copy munge key from nielshenrik
-
-echo "Copying munge key ... check that /tmp/newmungekey.key is deleted"
-
-if [ -e /tmp/newmungekey.key ]; then
-    rm /tmp/newmungekey.key
-fi
-
-THISHOST=${HOSTNAME}
-ssh ${USER}@nielshenrik.abel.uio.no "sudo /bin/scp /etc/munge/munge.key ${USER}@${THISHOST}:/tmp/newmungekey.key"
-
-sudo mv newmungekey.key /etc/munge/munge.key
-sudo chown daemon:root /etc/munge/munge.key
-sudo rm /tmp/newmungekey.key
-
-echo "/tmp/newmungekey.key is deleted"
-echo "Munge key copied successfully!"

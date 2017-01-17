@@ -107,4 +107,10 @@ fi
 sudo cp galaxyd /etc/init.d/
 sudo chown root:root /etc/init.d/galaxyd
 
+echo "# All features installed! What remains to be done:"
+echo
+echo "## Copy Munge key (if munge is installed):"
+echo "ssh -t ${USER}@nielshenrik.abel.uio.no \"sudo scp /etc/munge/munge.key ${USER}@${HOSTNAME}:/tmp/newmungekey.key\""
+echo "sudo cp /tmp/newmungekey.key /etc/munge/" 
+
 cat ${MYDIR}/POST_INSTALLATION.md
