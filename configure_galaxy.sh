@@ -6,6 +6,8 @@ production=$1
 # source settings
 . settings.sh
 
+MYDIR="$(dirname "$(realpath "$0")")"
+
 cd /home/galaxy/
 if [ -e "${GALAXYTREE}" ]; then
     echo ${GALAXYTREE} exists
@@ -18,7 +20,7 @@ function sed_replace {
     # TODO check if string contains ,
     if grep --quiet "$1" $3; then
         sed -i -E "s%$1%$2%" $3
-	echo "replaced $1 with $2"
+    echo "replaced $1 with $2"
     else
         echo "Line matching /$1/ not found in $3"
         exit 1
@@ -28,37 +30,43 @@ function sed_replace {
 ## Customize Galaxy platform with Cluster and Project Management issues
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 
-	## Install Project management issues (most of them come from the lifeportal galaxy branch)
-	ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
-	
-	## Change path to the Galaxy database (all files) directory (from local to cluster database)
-	mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp
-	ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
-	
+    mkdir -p ${GALAXY_FILEPATH}     	# /work/projects/galaxy/data/database... /files
+    mkdir -p ${GALAXY_NEW_FILEPATH}   # /work/projects/galaxy/data/database... /tmp
+    mkdir -p ${GALAXY_JOB_WORKING_DIRECTORY} # /work/projects/galaxy/data/database... /job_working_directory
+    mkdir -p ${GALAXY_CLUSTER_FILES_DIRECTORY} # /work/projects/galaxy/data/database... /slurm
 
-	# Customized environment variables file (local_env.sh)
-	
-	## GOLD DB setup
+    ## Install Project management issues (most of them come from the lifeportal galaxy branch)
+    ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
+    
+    ## Change path to the Galaxy database (all files) directory (from local to cluster database)
+    mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp 2>&1 || echo $?
+    ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
+    
 
-	if [ -f local_env.sh ]; then
-		if [[ -n "${GOLDDBUSER}" && -n "${GOLDDBPASSWD}" && -n "${GOLDDBHOST}" && -n "${GOLDDB}" ]]; then
-			golddbstring="postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB}"
-			sed_replace '^export GOLDDB=.*' 'export GOLDDB=${golddbstring}' local_env.sh
-			echo "replaced db in local_env.sh"
-		fi
-		cp local_env.sh ${GALAXYTREE}/config
-	fi
+    # Customized environment variables file (local_env.sh)
+    
+    ## GOLD DB setup
 
-	# job_resource_params_conf.xml :
-	if [ -f job_resource_params_conf.xml ]; then
-		cp job_resource_params_conf.xml ${GALAXYTREE}/config
-	elif [ ! -f job_resource_params_conf.xml ]; then
-		echo -e "\nSomething is wrong here!!! Your job_resource_params_conf.xml is missing, copying job_resource_params_conf.xml.sample  ..."
-		echo -e "Are you going to use cluster job parameters?\n"
-		cp ${GALAXYTREE}/config/job_resource_params_conf.xml.sample ${GALAXYTREE}/config/job_resource_params_conf.xml
-	fi
+    # if [ -f ${MYDIR}/local_env.sh ]; then
+    cp ${MYDIR}/local_env.sh ${GALAXYTREE}/config
+    if [[ -n "${GOLDDBUSER}" && -n "${GOLDDBPASSWD}" && -n "${GOLDDBHOST}" && -n "${GOLDDB}" ]]; then
+        golddbstring="postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB}"
+        sed_replace '^export GOLDDB=.*' "export GOLDDB=${golddbstring}" ${GALAXYTREE}/config/local_env.sh
+        echo "replaced db in local_env.sh"
+    else
+	echo "Gold db settings missing from settings.sh"
+    fi
+    # fi
+
+    # job_resource_params_conf.xml :
+    if [ -f ${MYDIR}/job_resource_params_conf.xml ]; then
+        cp ${MYDIR}/job_resource_params_conf.xml ${GALAXYTREE}/config
+    else
+        echo -e "\nSomething is wrong here!!! Your job_resource_params_conf.xml is missing, copying job_resource_params_conf.xml.sample  ..."
+        echo -e "Are you going to use cluster job parameters?\n"
+        cp ${GALAXYTREE}/config/job_resource_params_conf.xml.sample ${GALAXYTREE}/config/job_resource_params_conf.xml
+    fi
 fi
-
 
 # Manage Galaxy config files
 
@@ -91,9 +99,9 @@ sed_replace '^#host =.*' 'host = 127.0.0.1' galaxy.ini
 
 ## DB config
 if [[ -n "${GALAXYDB}" && -n "${GALAXYDBUSER}" && -n "${GALAXYDBPASSWD}" && -n "${GALAXYDBHOST}" ]]; then
-	dbstring="postgresql://${GALAXYDBUSER}:${GALAXYDBPASSWD}@${GALAXYDBHOST}/${GALAXYDB}"
-	sed_replace '#database_connection.*' "database_connection = ${dbstring}" galaxy.ini
-	echo "replaced db in galaxy.ini"
+    dbstring="postgresql://${GALAXYDBUSER}:${GALAXYDBPASSWD}@${GALAXYDBHOST}/${GALAXYDB}"
+    sed_replace '#database_connection.*' "database_connection = ${dbstring}" galaxy.ini
+    echo "replaced db in galaxy.ini"
 fi
 
 ## PATHS / DIRS
@@ -118,7 +126,6 @@ sed_replace '^#tool_data_path = tool-data' 'tool_data_path = tool-data' galaxy.i
 ## SMTP / EMAILS
 sed_replace '^#smtp_server =.*' 'smtp_server = smtp.uio.no' galaxy.ini
 sed_replace '^#error_email_to =.*' 'error_email_to = lifeportal-help@usit.uio.no' galaxy.ini
-sed_replace '^#blacklist_file = config/disposable_email_blacklist.conf' 'blacklist_file = config/disposable_email_blacklist.conf ' galaxy.ini
 
 ## BRAND
 sed_replace '^#brand = None' "brand = ${GALAXY_BRAND}" galaxy.ini
@@ -145,10 +152,10 @@ sed_replace '^#user_library_import_dir = None' 'user_library_import_dir = databa
 sed_replace '^#use_remote_user = False' 'use_remote_user = True' galaxy.ini
 sed_replace '^#remote_user_logout_href = None' "remote_user_logout_href = https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=http://${GALAXY_PUBLIC_HOSTNAME}/" galaxy.ini
 sed_replace '^#normalize_remote_user_email = False' 'normalize_remote_user_email = True ' galaxy.ini
-sed_replace '^admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
+sed_replace '^#admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
 
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
-	sed -i  "s/admin_users =.*/&\n## Project Admins\n${PROJECT_ADMIN_USERS}/"  galaxy.ini
+    sed -i  "s/admin_users =.*/&\n## Project Admins\nproject_admin_users = ${PROJECT_ADMIN_USERS}/"  galaxy.ini
 fi
 
 
@@ -177,5 +184,5 @@ fi
 # Uglify the new main Galaxy menu
 cd ${GALAXYTREE}
 make client
-	
+    
 echo "Exiting configure_galaxy.sh!!"
