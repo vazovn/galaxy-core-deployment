@@ -1,1 +1,1 @@
-/opt/test_gold/gold/sbin/goldd start
+/opt/gold/sbin/goldd start
