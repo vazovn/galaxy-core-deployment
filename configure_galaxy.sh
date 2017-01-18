@@ -181,6 +181,13 @@ else
     cp job_conf.xml job_conf.xml.orig-$(date "+%y-%m-%d-%H%M") 
 fi
 
+# Updating galaxy database
+read -p "Upgrade galaxy database: ./manage_db.sh upgrade [yN] " upgradegalaxydb
+
+if [ "${upgradegalaxydb}" == "y" ]; then 
+    ${GALAXYTREE}/manage_db.sh upgrade
+fi
+
 # Uglify the new main Galaxy menu
 cd ${GALAXYTREE}
 make client

@@ -47,5 +47,5 @@ sudo rpm -ivh slu*.rpm
 sudo sed -i '$ a slurm:x:501:501:Slurm:/etc/slurm:/sbin/nologin' /etc/passwd
 
 ### Copy slurm.conf setup from nielshenrik
-sudo scp -p ${USER}@nielshenrik.abel.uio.no:/etc/slurm/slurm*.conf /etc/slurm
+sudo scp -p ${USER}@nielshenrik.abel.uio.no:/etc/slurm/slurm*.conf /etc/slurm 2>&1 || echo $?
 

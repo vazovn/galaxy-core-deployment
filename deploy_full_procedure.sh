@@ -85,7 +85,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 		sudo yum install gcc.x86_64
 		sudo yum install perl-App-cpanminus.noarch
 	    
-	    sudo useradd -m gold
+	    sudo useradd -m gold 2>&1 || echo $?
 	    sudo -u gold -H sh -c "${MYDIR}/deploy-gold-user.sh"
 	    sudo sh -c "${MYDIR}/deploy-gold-root.sh"
 	    
@@ -110,7 +110,7 @@ sudo chown root:root /etc/init.d/galaxyd
 echo "# All features installed! What remains to be done:"
 echo
 echo "## Copy Munge key (if munge is installed):"
-echo "ssh -t ${USER}@nielshenrik.abel.uio.no \"sudo scp /etc/munge/munge.key ${USER}@${HOSTNAME}:/tmp/newmungekey.key\""
-echo "sudo cp /tmp/newmungekey.key /etc/munge/" 
+echo " ssh -t ${USER}@nielshenrik.abel.uio.no \"sudo scp /etc/munge/munge.key ${USER}@${HOSTNAME}:/tmp/newmungekey.key\""
+echo " sudo mv /tmp/newmungekey.key /etc/munge/munge.key" 
 
 cat ${MYDIR}/POST_INSTALLATION.md
