@@ -12,7 +12,15 @@
      sudo -u galaxy -H sh -c /home/galaxy/galaxy/run.sh
 
 3.3. Fix galaxy .venv by running .venv_config script
-3.4. Start galaxy again, and see that it listens to the correct port.
+3.5. If galaxy is using an old database: 
+     3.5.1 Start galaxy again, and
+     3.5.2 run manage.db with galaxy user:
+
+     sudo -iu galaxy
+     cd galaxy
+     ./manage_db.sh upgrade
+
+3.5. Start galaxy again, and see that it listens to the correct port.
 
 ## Install Apache httpd server and set up authentication
 
