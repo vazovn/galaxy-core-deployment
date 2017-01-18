@@ -1,9 +1,8 @@
 #!/bin/bash
 
-GOLD_PID=$(sudo ps -ef | grep perl | awk '/goldd start/{print $2}')
-
-if [ -z "${GOLD_PID}" ]; then
-   echo "GOLD is not running"
-else
-   kill -9 $GOLD_PID
+if [[ ${USER} != "gold" && ${USER} != "root" ]]; then
+    echo "Gold can not be stopped from ${USER}"
+    exit 1
 fi
+
+/opt/gold/sbin/goldd --stop
