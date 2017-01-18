@@ -112,5 +112,6 @@ echo
 echo "## Copy Munge key (if munge is installed):"
 echo " ssh -t ${USER}@nielshenrik.abel.uio.no \"sudo scp /etc/munge/munge.key ${USER}@${HOSTNAME}:/tmp/newmungekey.key\""
 echo " sudo mv /tmp/newmungekey.key /etc/munge/munge.key" 
+echo " sudo chown daemon:root /etc/munge/munge.key"
 
 cat ${MYDIR}/POST_INSTALLATION.md
