@@ -18,7 +18,7 @@ fi
 
 function sed_replace {
     # TODO check if string contains ,
-    if [ -z $2 ]; then
+    if [ -z "$2" ]; then
         echo "Error in replacing of line $1 in $3"
         exit 1
     fi
