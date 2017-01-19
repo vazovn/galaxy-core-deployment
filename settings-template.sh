@@ -28,7 +28,7 @@ GALAXYDBPASSWD=
 GALAXYDBHOST=
 
 # Config file names
-GALAXY_TOOL_CONF=config/tool_conf.xml.main
+GALAXY_TOOL_CONF=config/tool_conf.xml
 
 GALAXY_BRAND=Lifeportal
 GALAXY_PUBLIC_HOSTNAME=lifeportal.uio.no
@@ -45,11 +45,15 @@ if [ -z ${GALAXY_DATABASE_DIRNAME} ]; then
     echo Please fill out GALAXY_DATABASE_DIRNAME in settings.sh
 fi
 
-GALAXY_DATABASE_DIRECTORY_ON_CLUSTER=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}
-GALAXY_FILEPATH=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}/files
-GALAXY_NEW_FILEPATH=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}/tmp
-GALAXY_JOB_WORKING_DIRECTORY=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}/job_working_directory
-GALAXY_CLUSTER_FILES_DIRECTORY=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME=}/slurm
+GALAXY_DATABASE_DIRECTORY_ON_CLUSTER=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME}
+GALAXY_FILEPATH=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME}/files
+GALAXY_NEW_FILEPATH=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME}/tmp
+GALAXY_JOB_WORKING_DIRECTORY=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME}/job_working_directory
+GALAXY_CLUSTER_FILES_DIRECTORY=/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME}/slurm
+
+# Example : TOOL_DATA_PATH =/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME}/galaxy_tool_data
+GALAXY_TOOL_DATA_PATH =/work/projects/galaxy/data/${GALAXY_DATABASE_DIRNAME}
+
 EXTERNAL_DBS_LINK_NAME=/home/galaxy/galaxy/lib/usit/external_dbs
 EXTERNAL_DBS_PATH=/work/projects/galaxy/external_dbs
 
