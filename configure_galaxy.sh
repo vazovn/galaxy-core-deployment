@@ -40,16 +40,10 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
     
     ## Change path to the Galaxy database (all files) directory (from local to cluster database)
-    mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp 2>&1 || echo $?
+    mv ${GALAXYTREE}/database ${GALAXYTREE}/database.orig-$(date "+%y-%m-%d-%H%M") 2>&1 || echo $?
     ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
 
-    ## Instatiate the new tools directory
-    mv ${GALAXYTREE}/tools ${GALAXYTREE}/tools.local.bkp
-    git clone https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/galaxy_tool_data.git ${GALAXYTREE}/tools
 
-    ## Clone galaxy-tool-data
-    git clone https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/galaxy_tool_data.git  ${GALAXY_TOOL_DATA_PATH}
-    
 
     # Customized environment variables file (local_env.sh)
     
@@ -74,6 +68,13 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
         echo -e "Are you going to use cluster job parameters?\n"
         cp ${GALAXYTREE}/config/job_resource_params_conf.xml.sample ${GALAXYTREE}/config/job_resource_params_conf.xml
     fi
+fi
+
+if [ ${GALAXY_TOOLS_REPO} != "none" ]; then
+    git clone https://${GALAXY_TOOLS_REPO} ${GALAXYTREE}/${GALAXY_TOOLS}
+fi
+if [ ${GALAXY_TOOL_DATA_REPO} != "none" ]; then
+    git clone https://${GALAXY_TOOL_DATA_REPO} ${GALAXY_TOOL_DATA_PATH}
 fi
 
 # Manage Galaxy config files
@@ -127,14 +128,16 @@ if [ "${GALAXY_TOOL_CONF}" != "" ]; then
     sed_replace '^#tool_config_file =.*' "tool_config_file = ${GALAXY_TOOL_CONF}" galaxy.ini
 fi
 # sed_replace '^#integrated_tool_panel_config.*' 'integrated_tool_panel_config = integrated_tool_panel.xml' galaxy.ini
-sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' 'tool_data_table_config_path = config/tool_data_table_conf.xml' galaxy.ini
+sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' "tool_data_table_config_path = ${GALAXY_TOOL_DATA_TABLE_CONF}" galaxy.ini
 
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
-	sed_replace '^#tool_data_path = tool-data' 'tool_data_path = ${GALAXY_TOOL_DATA_PATH}' galaxy.ini
+	sed_replace '^#tool_data_path = tool-data' "tool_data_path = ${GALAXY_TOOL_DATA_PATH}" galaxy.ini
 else
-	sed_replace '^#tool_data_path = tool-data' 'tool_data_path = tool-data' galaxy.ini
+	sed_replace '^#tool_data_path = tool-data' "tool_data_path = ${GALAXY_TOOL_DATA_LOCAL}" galaxy.ini
 fi
 
+## TOOLS FOLDER
+sed_replace '^#tool_path.*' "${GALAXY_TOOL_PATH}"
 
 ## SMTP / EMAILS
 sed_replace '^#smtp_server =.*' 'smtp_server = smtp.uio.no' galaxy.ini
@@ -181,7 +184,7 @@ sed_replace '^#new_user_dataset_access_role_default_private = False' 'new_user_d
 sed_replace '^#expose_dataset_path = False' 'expose_dataset_path = True' galaxy.ini
 
 ## JOBS
-sed_replace '^#job_config_file = config/job_conf.xml' 'job_config_file = config/job_conf.xml' galaxy.ini
+sed_replace '^#job_config_file = config/job_conf.xml' "job_config_file = ${GALAXY_JOB_CONF}" galaxy.ini
 sed_replace '^#enable_job_recovery = True' 'enable_job_recovery = True' galaxy.ini
 sed_replace '^#cleanup_job = .*' 'cleanup_job = never' galaxy.ini
 sed_replace '^#job_resource_params_file = config/job_resource_params_conf.xml' 'job_resource_params_file = config/job_resource_params_conf.xml' galaxy.ini
