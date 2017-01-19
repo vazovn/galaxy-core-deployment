@@ -34,6 +34,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     mkdir -p ${GALAXY_NEW_FILEPATH}   # /work/projects/galaxy/data/database... /tmp
     mkdir -p ${GALAXY_JOB_WORKING_DIRECTORY} # /work/projects/galaxy/data/database... /job_working_directory
     mkdir -p ${GALAXY_CLUSTER_FILES_DIRECTORY} # /work/projects/galaxy/data/database... /slurm
+    mkdir -p ${GALAXY_TOOL_DATA_PATH} # work/projects/galaxy/data/galaxy-tool-data
 
     ## Install Project management issues (most of them come from the lifeportal galaxy branch)
     ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
@@ -41,6 +42,13 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     ## Change path to the Galaxy database (all files) directory (from local to cluster database)
     mv ${GALAXYTREE}/database ${GALAXYTREE}/database.local.bkp 2>&1 || echo $?
     ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
+
+    ## Instatiate the new tools directory
+    mv ${GALAXYTREE}/tools ${GALAXYTREE}/tools.local.bkp
+    git clone https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/galaxy_tool_data.git ${GALAXYTREE}/tools
+
+    ## Clone galaxy-tool-data
+    git clone https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/galaxy_tool_data.git  ${GALAXY_TOOL_DATA_PATH}
     
 
     # Customized environment variables file (local_env.sh)
@@ -119,8 +127,13 @@ if [ "${GALAXY_TOOL_CONF}" != "" ]; then
     sed_replace '^#tool_config_file =.*' "tool_config_file = ${GALAXY_TOOL_CONF}" galaxy.ini
 fi
 # sed_replace '^#integrated_tool_panel_config.*' 'integrated_tool_panel_config = integrated_tool_panel.xml' galaxy.ini
-# sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' 'tool_data_table_config_path = config/tool_data_table_conf.xml' galaxy.ini
-sed_replace '^#tool_data_path = tool-data' 'tool_data_path = tool-data' galaxy.ini
+sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' 'tool_data_table_config_path = config/tool_data_table_conf.xml' galaxy.ini
+
+if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
+	sed_replace '^#tool_data_path = tool-data' 'tool_data_path = ${GALAXY_TOOL_DATA_PATH}' galaxy.ini
+else
+	sed_replace '^#tool_data_path = tool-data' 'tool_data_path = tool-data' galaxy.ini
+fi
 
 
 ## SMTP / EMAILS
