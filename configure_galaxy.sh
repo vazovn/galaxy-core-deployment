@@ -71,7 +71,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 fi
 
 if [ ${GALAXY_TOOLS_REPO} != "none" ]; then
-    git clone https://${GALAXY_TOOLS_REPO} ${GALAXYTREE}/${GALAXY_TOOLS}
+    git clone https://${GALAXY_TOOLS_REPO} ${GALAXYTREE}/${GALAXY_TOOL_PATH}
 fi
 if [ ${GALAXY_TOOL_DATA_REPO} != "none" ]; then
     git clone https://${GALAXY_TOOL_DATA_REPO} ${GALAXY_TOOL_DATA_PATH}
