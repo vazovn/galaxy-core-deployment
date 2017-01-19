@@ -75,10 +75,24 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 fi
 
 if [ ${GALAXY_TOOLS_REPO} != "none" ]; then
-    git clone https://${GALAXY_TOOLS_REPO} ${GALAXYTREE}/${GALAXY_TOOL_PATH}
+    if [ -d "${GALAXYTREE}/${GALAXY_TOOL_PATH}" ]; then
+        THISDIR=${PWD}
+        cd ${GALAXYTREE}/${GALAXY_TOOL_PATH}
+        git pull
+        cd ${THISDIR}
+    else
+        git clone https://${GALAXY_TOOLS_REPO} ${GALAXYTREE}/${GALAXY_TOOL_PATH}
+    fi
 fi
 if [ ${GALAXY_TOOL_DATA_REPO} != "none" ]; then
-    git clone https://${GALAXY_TOOL_DATA_REPO} ${GALAXY_TOOL_DATA_PATH}
+    if [ -d "${GALAXY_TOOL_DATA_PATH}" ]; then
+        THISDIR=${PWD}
+        cd ${GALAXY_TOOL_DATA_PATH}
+        git pull
+        cd ${THISDIR}
+    else
+        git clone https://${GALAXY_TOOL_DATA_REPO} ${GALAXY_TOOL_DATA_PATH}
+    fi
 fi
 
 # Manage Galaxy config files
