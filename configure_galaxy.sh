@@ -155,7 +155,7 @@ else
 fi
 
 ## TOOLS FOLDER
-sed_replace '^#tool_path.*' "${GALAXY_TOOL_PATH}"
+sed_replace '^#tool_path.*' "${GALAXY_TOOL_PATH}" galaxy.ini
 
 ## SMTP / EMAILS
 sed_replace '^#smtp_server =.*' 'smtp_server = smtp.uio.no' galaxy.ini
