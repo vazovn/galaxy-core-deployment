@@ -18,6 +18,10 @@ fi
 
 function sed_replace {
     # TODO check if string contains ,
+    if [ -z $2 ]; then
+        echo "Error in replacing of line $1 in $3"
+        exit 1
+    fi
     if grep --quiet "$1" $3; then
         sed -i -E "s%$1%$2%" $3
     echo "replaced $1 with $2"
