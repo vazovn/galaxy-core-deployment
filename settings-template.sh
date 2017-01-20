@@ -33,7 +33,7 @@ GALAXYDBHOST=
 # Config file names
 GALAXY_TOOL_CONF=config/tool_conf.xml.lifeportal
 GALAXY_JOB_CONF=config/job_conf.xml.lifeportal
-GALAXY_TOOL_DATA_TABLE_CONF=tool_data_table_conf.xml.lifeportal
+GALAXY_TOOL_DATA_TABLE_CONF=config/tool_data_table_conf.xml.lifeportal
 
 # Tools and tools_data folder
 GALAXY_TOOL_PATH=tools_lifeportal
