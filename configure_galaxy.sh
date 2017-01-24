@@ -74,7 +74,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     fi
 fi
 
-if [ ${GALAXY_TOOLS_REPO} != "none" ]; then
+if [[ ${GALAXY_TOOLS_REPO} != "none" ]]; then
     if [ -d "${GALAXYTREE}/${GALAXY_TOOL_PATH}" ]; then
         THISDIR=${PWD}
         cd ${GALAXYTREE}/${GALAXY_TOOL_PATH}
@@ -84,7 +84,7 @@ if [ ${GALAXY_TOOLS_REPO} != "none" ]; then
         git clone https://${GALAXY_TOOLS_REPO} ${GALAXYTREE}/${GALAXY_TOOL_PATH}
     fi
 fi
-if [ ${GALAXY_TOOL_DATA_REPO} != "none" ]; then
+if [[ ${GALAXY_TOOL_DATA_REPO} != "none" ]]; then
     if [ -d "${GALAXY_TOOL_DATA_PATH}" ]; then
         THISDIR=${PWD}
         cd ${GALAXY_TOOL_DATA_PATH}
