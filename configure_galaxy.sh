@@ -184,7 +184,10 @@ sed_replace '^#user_library_import_dir = None' 'user_library_import_dir = databa
 
 ## USERS / SECURITY
 sed_replace '^#use_remote_user = False' 'use_remote_user = True' galaxy.ini
-sed_replace '^#remote_user_logout_href = None' "remote_user_logout_href = https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=http://${GALAXY_PUBLIC_HOSTNAME}/logout" galaxy.ini
+
+if [ -n "${GALAXY_LOGOUT_URL}" ]; then
+    sed_replace '^#remote_user_logout_href = None' "remote_user_logout_href = ${GALAXY_LOGOUT_URL}" galaxy.ini
+fi
 sed_replace '^#normalize_remote_user_email = False' 'normalize_remote_user_email = True ' galaxy.ini
 sed_replace '^#admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
 

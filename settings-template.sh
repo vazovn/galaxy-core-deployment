@@ -48,6 +48,9 @@ GALAXY_BRAND=Lifeportal
 GALAXY_PUBLIC_HOSTNAME=lifeportal.uio.no
 GALAXY_ADMIN_USERS=n.a.vazov@usit.uio.no,sabry.razick@usit.uio.no,trond.thorbjornsen@usit.uio.no
 
+# When using remote authentication, this shall be set:
+GALAXY_LOGOUT_URL=https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=${GALAXY_PUBLIC_HOSTNAME}/logout
+
 # ==== The rest of the file is only needed when abel is mounted !!
 
 # Will this server have abel mounted:
