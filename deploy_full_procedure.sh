@@ -31,17 +31,17 @@ else
 fi
 
 read -p "Mount /work on abel (host needs to be added to nfs on abel first)? [yN] " workonabel
-
 read -p "Add galaxy user? [yN] " addgalaxyuser
-
 read -p "Install GOLD? [yN] " installgold
 read -p "Install Slurm and Munge? [yN] " installslurmandmunge
 read -p "Install DRMAA poznan? [yN] " installdrmaapoznan
 
 if [ "${addgalaxyuser}" == "y" ]; then
-    sudo sh -c 'echo galaxy:x:182649:70731:galaxy:/home/galaxy:/bin/bash >> /etc/passwd'
-	sudo mkdir /home/galaxy
-	sudo chown galaxy:galaxy /home/galaxy/
+    passwdstring="${GALAXYUSER}:x:${GALAXYUSERUID}:${GALAXYUSERGID}"
+    passwdstring+=":${GALAXYGROUP}:${GALAXYUSERHOME}:/bin/bash"
+    sudo sh -c "${passwdstring} >> /etc/passwd"
+	sudo mkdir ${GALAXYUSERHOME}
+	sudo chown ${GALAXYUSER}:${GALAXYGROUP} ${GALAXYUSERHOME}
 fi
 
 sudo yum install git
@@ -108,10 +108,14 @@ sudo cp galaxyd /etc/init.d/
 sudo chown root:root /etc/init.d/galaxyd
 
 echo "# All features installed! What remains to be done:"
-echo
-echo "## Copy Munge key (if munge is installed):"
-echo " ssh -t ${USER}@nielshenrik.abel.uio.no \"sudo scp /etc/munge/munge.key ${USER}@${HOSTNAME}:/tmp/newmungekey.key\""
-echo " sudo mv /tmp/newmungekey.key /etc/munge/munge.key" 
-echo " sudo chown daemon:root /etc/munge/munge.key"
 
-cat ${MYDIR}/POST_INSTALLATION.md
+if [[ "${GALAXY_ABEL_MOUNT}" == "1" ]]; then
+    echo
+    echo "## Copy Munge key (if munge is installed):"
+    echo " ssh -t ${USER}@nielshenrik.abel.uio.no \"sudo scp /etc/munge/munge.key ${USER}@${HOSTNAME}:/tmp/newmungekey.key\""
+    echo " sudo mv /tmp/newmungekey.key /etc/munge/munge.key" 
+    echo " sudo chown daemon:root /etc/munge/munge.key"
+    cat ${MYDIR}/POST_INSTALLATION_ABEL_MOUNT.md
+else
+    cat ${MYDIR}/POST_INSTALLATION_INDEPENDENT.md
+

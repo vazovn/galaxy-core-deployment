@@ -1,6 +1,17 @@
 #!/bin/bash
 
-# exit on all errors
+# -------------------------------------------------------------- #
+#                                                                #
+#             settings for galaxy deployment script              #
+#                       USIT/UiO, 2017                           #
+#                                                                #
+# This file contains the settings for the deployment script.     #
+# Many of these options are specific for galaxy.ini. Please see  # 
+# galaxy.ini.sample for description of these.                    #
+#                                                                #
+# -------------------------------------------------------------- #
+
+# Exit on all errors
 error() {
     local sourcefile=$1
     local lineno=$2
@@ -11,24 +22,35 @@ trap 'error "${BASH_SOURCE}" "${LINENO}"' ERR
 # To ignore error from command, append this to command:
 ## 2>&1 || echo $?
 
-# Must be specified:
-UIOUSER=
 
+# General settings
+# ---------------- 
+
+# Galaxy version (branch)
+GALAXY_GIT_BRANCH=lifeportal_16.10
+# Galaxy repository
+uiouser=
+GALAXY_GIT_REPO=https://${uiouser}@bitbucket.usit.uio.no/scm/ft/galaxy.git
+
+# Galaxy user (for /etc/passwd)
 GALAXYUSER=galaxy
-GALAXYUSERPID=182649
+GALAXYGROUP=galaxy
+GALAXYUSERUID=182649
 GALAXYUSERGID=70731
 GALAXYUSERHOME=/home/galaxy
 GALAXYTREE=/home/galaxy/galaxy
 
-# Galaxy version (branch)
-GALAXY_BRANCH=lifeportal_16.10
-
 # Galaxy DB
-# Must be specified:
+# If left empty, local sqlite3 is used:
 GALAXYDB=
 GALAXYDBUSER=
 GALAXYDBPASSWD=
 GALAXYDBHOST=
+
+
+# Galaxy.ini settings in configure_galaxy.sh
+# Set to SKIP for skipping change
+# ------------------------------------------
 
 # Config file names
 GALAXY_TOOL_CONF=config/tool_conf.xml.lifeportal
@@ -47,11 +69,14 @@ GALAXY_TOOL_DATA_REPO=${UIOUSER}@bitbucket.usit.uio.no/scm/ft/lifeportal_tool_da
 GALAXY_BRAND=Lifeportal
 GALAXY_PUBLIC_HOSTNAME=lifeportal.uio.no
 GALAXY_ADMIN_USERS=n.a.vazov@usit.uio.no,sabry.razick@usit.uio.no,trond.thorbjornsen@usit.uio.no
+GALAXY_HELP_EMAIL=lifeportal-help@usit.uio.no
 
-# When using remote authentication, this shall be set:
+# When using remote authentication, this shall be set
 GALAXY_LOGOUT_URL=https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=${GALAXY_PUBLIC_HOSTNAME}/logout
 
-# ==== The rest of the file is only needed when abel is mounted !!
+
+# The rest of the file is only needed when abel is mounted
+# --------------------------------------------------------
 
 # Will this server have abel mounted:
 GALAXY_ABEL_MOUNT=1
@@ -59,27 +84,34 @@ GALAXY_ABEL_MOUNT=1
 # Example: GALAXY_DATABASE_DIRNAME=database_galaxy_prod01
 # Must be set, when abel is mounted:
 GALAXY_DATABASE_DIRNAME=
-if [ -z ${GALAXY_DATABASE_DIRNAME} ]; then
+
+if [[ ${GALAXY_ABEL_MOUNT} != 1 ]] && [ -z ${GALAXY_DATABASE_DIRNAME} ]; then
     echo Please fill out GALAXY_DATABASE_DIRNAME in settings.sh
 fi
 
-### <-- Generated
 ABEL_WORK_PATH=/work/projects/galaxy/data
-GALAXY_DATABASE_DIRECTORY_ON_CLUSTER=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}
-GALAXY_FILEPATH=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/files
-GALAXY_NEW_FILEPATH=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/tmp
-GALAXY_JOB_WORKING_DIRECTORY=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/job_working_directory
-GALAXY_CLUSTER_FILES_DIRECTORY=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/slurm
-GALAXY_TOOL_DATA_PATH=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/${GALAXY_TOOL_DATA_LOCAL}
-### -->
+
+# Generate variables from ABEL_WORK_PATH and GALAXY_DATABASE_DIRNAME                            
+# --------------------------------------------------------------------------------------------- #
+GALAXY_DATABASE_DIRECTORY_ON_CLUSTER=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}               #
+GALAXY_FILEPATH=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/files                              #
+GALAXY_NEW_FILEPATH=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/tmp                            # 
+GALAXY_JOB_WORKING_DIRECTORY=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/job_working_directory #
+GALAXY_CLUSTER_FILES_DIRECTORY=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/slurm               #
+GALAXY_TOOL_DATA_PATH=${ABEL_WORK_PATH}/${GALAXY_DATABASE_DIRNAME}/${GALAXY_TOOL_DATA_LOCAL}    #
+# --------------------------------------------------------------------------------------------- #
 
 EXTERNAL_DBS_LINK_NAME=/home/galaxy/galaxy/lib/usit/external_dbs
 EXTERNAL_DBS_PATH=/work/projects/galaxy/external_dbs
 
+
 # Project admins
+# --------------
 PROJECT_ADMIN_USERS=n.a.vazov@usit.uio.no,sabry.razick@usit.uio.no,trond.thorbjornsen@usit.uio.no
 
+
 # GOLD settings
+# -------------
 
 GOLD_SRC_DIRECTORY=gold-2.2.0.5
 GOLD_INSTALLATION_DIRECTORY=/opt
