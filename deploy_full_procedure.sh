@@ -118,4 +118,6 @@ if [[ "${GALAXY_ABEL_MOUNT}" == "1" ]]; then
     cat ${MYDIR}/POST_INSTALLATION_ABEL_MOUNT.md
 else
     cat ${MYDIR}/POST_INSTALLATION_INDEPENDENT.md
+fi
+
 
