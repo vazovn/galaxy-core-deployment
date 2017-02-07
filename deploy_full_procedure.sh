@@ -35,6 +35,7 @@ read -p "Add galaxy user? [yN] " addgalaxyuser
 read -p "Install GOLD? [yN] " installgold
 read -p "Install Slurm and Munge? [yN] " installslurmandmunge
 read -p "Install DRMAA poznan? [yN] " installdrmaapoznan
+read -p "Install Galaxy maintenance kit ? [yN] " installgalaxymaintenancekit
 
 if [ "${addgalaxyuser}" == "y" ]; then
     passwdstring="${GALAXYUSER}:x:${GALAXYUSERUID}:${GALAXYUSERGID}"
@@ -99,6 +100,11 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	# Install Polish DRMAA library
 	if [ "${installdrmaapoznan}" == "y" ]; then 
 	    sh -c "${MYDIR}/deploy_DRMAA_poznan.sh"
+        fi
+        
+    # Install galaxy maintenance kit
+    if [ "${installgalaxymaintenancekit}" == "y" ]; then 
+        sh -c "${MYDIR}/deploy-galaxy-maintenance.sh"
         fi
 
 fi
