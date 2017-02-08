@@ -16,9 +16,7 @@ fi
 git clone https://${USER}@bitbucket.usit.uio.no/scm/ft/galaxy-maintenance.git 
 
 sudo chown -R galaxy:galaxy galaxy-maintenance
-sudo chown -R root:root galaxy-maintenance/scripts/galaxy_emails_management/
 sudo chmod go-x galaxy-maintenance/scripts/galaxy_emails_management/*
-sudo chown -R root:root galaxy-maintenance/scripts/manipulate_project_allocations/
 sudo chmod go-x galaxy-maintenance/scripts/manipulate_project_allocations/*
     
 sudo mv galaxy-maintenance ${GALAXYUSERHOME}/
