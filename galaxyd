@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# Author: toutain, vazov, 20a12
+# Author: toutain, vazov, 20a12, tt
 
 # chkconfig:    35 87 15
 # description: Galaxy start/stop daemon
-
 
 . /etc/init.d/functions
 
@@ -12,25 +11,21 @@ start ()
 {
 
 
-## Check if apache is running
- 
-http_running="$(service httpd status)"
-if [[ $http_running  == *"running"* ]]; then
+## Check if apache httpd is running if exists
+if ! type apachectl > /dev/null || apachectl status > /dev/null; then
 
-echo "Apache is running ..."
-
-# Make sure configuration file exists and has information we can use
+    # Make sure galaxy tree exists
     if [ -d '/home/galaxy/galaxy' ]; then
         daemon --user="galaxy" /home/galaxy/galaxy/run.sh --daemon
         return 0
     else
-        sleep 120
-        daemon --user="galaxy" /home//galaxy/galaxy/run.sh --daemon
+        >&2 echo "Galaxy tree not found"
+        return 1
     fi
 
 else
     echo "Waiting for Apache to start..."
-    sleep 120
+    apachectl restart
     daemon --user="galaxy" /home/galaxy/galaxy/run.sh --daemon
 fi
 

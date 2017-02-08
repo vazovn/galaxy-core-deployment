@@ -8,21 +8,23 @@ production=$1
 
 MYDIR="$(dirname "$(realpath "$0")")"
 
-cd /home/galaxy/
+cd ${GALAXYUSERHOME}
 if [ -e "${GALAXYTREE}" ]; then
     echo ${GALAXYTREE} exists
     #exit 1
 else
-    git clone -b ${GALAXY_BRANCH} https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/galaxy.git
+    git clone -b ${GALAXY_GIT_BRANCH} ${GALAXY_GIT_REPO} 
 fi
 
 function sed_replace {
-    # TODO check if string contains ,
+    # TODO check if string contains %
     if [ -z "$2" ]; then
         echo "Error in replacing of line $1 in $3"
         exit 1
     fi
-    if grep --quiet "$1" $3; then
+    if [[ "${2:(-4)}" == "SKIP" ]]; then
+        echo "$1 not changed"
+    elif grep --quiet "$1" $3; then
         sed -i -E "s%$1%$2%" $3
     echo "replaced $1 with $2"
     else
@@ -74,24 +76,24 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     fi
 fi
 
-if [[ ${GALAXY_TOOLS_REPO} != "none" ]]; then
-    if [ -d "${GALAXYTREE}/${GALAXY_TOOL_PATH}" ]; then
+if [[ ${GALAXY_TOOLS_REPO} != "SKIP" ]]; then
+    if [ -d "${GALAXY_TOOL_PATH}/.git" ]; then
         THISDIR=${PWD}
-        cd ${GALAXYTREE}/${GALAXY_TOOL_PATH}
+        cd ${GALAXY_TOOL_PATH}
         git pull
         cd ${THISDIR}
     else
-        git clone https://${GALAXY_TOOLS_REPO} ${GALAXYTREE}/${GALAXY_TOOL_PATH}
+        git clone ${GALAXY_TOOLS_REPO} ${GALAXY_TOOL_PATH}
     fi
 fi
-if [[ ${GALAXY_TOOL_DATA_REPO} != "none" ]]; then
-    if [ -d "${GALAXY_TOOL_DATA_PATH}" ]; then
+if [[ ${GALAXY_TOOL_DATA_REPO} != "SKIP" ]]; then
+    if [ -d "${GALAXY_TOOL_DATA_PATH}/.git" ]; then
         THISDIR=${PWD}
         cd ${GALAXY_TOOL_DATA_PATH}
         git pull
         cd ${THISDIR}
     else
-        git clone https://${GALAXY_TOOL_DATA_REPO} ${GALAXY_TOOL_DATA_PATH}
+        git clone ${GALAXY_TOOL_DATA_REPO} ${GALAXY_TOOL_DATA_PATH}
     fi
 fi
 
@@ -100,11 +102,10 @@ fi
 cd ${GALAXYTREE}/config
 
 # galaxy ini:
-if [ ! -f galaxy.ini ]; then
-    cp galaxy.ini.sample galaxy.ini
-else
+if [ -f galaxy.ini ]; then
     cp galaxy.ini galaxy.ini.orig-$(date "+%y-%m-%d-%H%M") 
 fi
+cp galaxy.ini.sample galaxy.ini
 
 # disable debug and use_interactive for production
 echo "production?"
@@ -159,7 +160,7 @@ sed_replace '^#tool_path.*' "tool_path = ${GALAXY_TOOL_PATH}" galaxy.ini
 
 ## SMTP / EMAILS
 sed_replace '^#smtp_server =.*' 'smtp_server = smtp.uio.no' galaxy.ini
-sed_replace '^#error_email_to =.*' 'error_email_to = lifeportal-help@usit.uio.no' galaxy.ini
+sed_replace '^#error_email_to =.*' "error_email_to = ${GALAXY_HELP_EMAIL}" galaxy.ini
 
 ## BRAND
 sed_replace '^#brand = None' "brand = ${GALAXY_BRAND}" galaxy.ini

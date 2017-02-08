@@ -60,3 +60,8 @@ where <HOSTNAME> is the hostname of the server.
 ATTENTION : In order to use the project management feature, GOLD shall be
 running on your Galaxy instance!
 
+## Issues
+
+- /etc/init.d/galaxyd is not modified according to settings.sh, and may need 
+  manual changes.
+
