@@ -58,12 +58,12 @@ GALAXY_JOB_CONF=config/job_conf.xml.lifeportal
 GALAXY_TOOL_DATA_TABLE_CONF=config/tool_data_table_conf.xml.lifeportal
 
 # Tools and tools_data folder
-GALAXY_TOOL_PATH=tools_lifeportal
+GALAXY_TOOL_PATH=${GALAXYUSERHOME}/tools_lifeportal
 GALAXY_TOOL_DATA_LOCAL=tool_data_lifeportal
 
-# Tools and tools_data repository (set to "none", to not use this)
-GALAXY_TOOLS_REPO=${UIOUSER}@bitbucket.usit.uio.no/scm/ft/lifeportal_tool_config.git
-GALAXY_TOOL_DATA_REPO=${UIOUSER}@bitbucket.usit.uio.no/scm/ft/lifeportal_tool_data.git
+# Tools and tools_data repository (set to "SKIP", to not use this)
+GALAXY_TOOLS_REPO=https://${uiouser}@bitbucket.usit.uio.no/scm/ft/lifeportal_tool_config.git
+GALAXY_TOOL_DATA_REPO=https://${uiouser}@bitbucket.usit.uio.no/scm/ft/lifeportal_tool_data.git
 
 # Brand and public hostname
 GALAXY_BRAND=Lifeportal
@@ -72,7 +72,7 @@ GALAXY_ADMIN_USERS=n.a.vazov@usit.uio.no,sabry.razick@usit.uio.no,trond.thorbjor
 GALAXY_HELP_EMAIL=lifeportal-help@usit.uio.no
 
 # When using remote authentication, this shall be set
-GALAXY_LOGOUT_URL=https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=${GALAXY_PUBLIC_HOSTNAME}/logout
+GALAXY_LOGOUT_URL=https://${GALAXY_PUBLIC_HOSTNAME}/callback?logout=https://${GALAXY_PUBLIC_HOSTNAME}/logout
 
 
 # The rest of the file is only needed when abel is mounted
