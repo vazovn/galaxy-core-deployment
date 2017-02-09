@@ -146,6 +146,7 @@ fi
 if [ "${GALAXY_TOOL_CONF}" != "" ]; then
     sed_replace '^#tool_config_file =.*' "tool_config_file = ${GALAXY_TOOL_CONF}" galaxy.ini
 fi
+sed_replace '^#datatypes_config_file.*' "datatypes_config_file = ${GALAXY_DATATYPES_CONF}" galaxy.ini
 # sed_replace '^#integrated_tool_panel_config.*' 'integrated_tool_panel_config = integrated_tool_panel.xml' galaxy.ini
 sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' "tool_data_table_config_path = ${GALAXY_TOOL_DATA_TABLE_CONF}" galaxy.ini
 
