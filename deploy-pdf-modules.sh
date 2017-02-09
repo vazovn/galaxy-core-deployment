@@ -1,5 +1,7 @@
 #! /bin/bash
 
+## This script installs the modules necessary to generate pdf reports
+
 source settings.sh
 source ${GALAXYTREE}/.venv/bin/activate
 
