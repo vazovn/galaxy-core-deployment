@@ -23,13 +23,7 @@ sed -i "s#GALAXYTREE=.*#GALAXYTREE=$GALAXYTREE#"  galaxy-maintenance/maintenance
 # e.g.  /home/galaxy
 sed -i  "s#GALAXYUSERHOME=.*#GALAXYUSERHOME=$GALAXYUSERHOME#" galaxy-maintenance/maintenance_local_env.sh
 
-# sudo chown -R galaxy:galaxy galaxy-maintenance
-# sudo chmod go-x galaxy-maintenance/scripts/galaxy_emails_management/*
-# sudo chmod go-x galaxy-maintenance/scripts/manipulate_project_allocations/*
-    
-# sudo mv galaxy-maintenance ${GALAXYUSERHOME}/
-
-echo Galaxy maintenance kit installed in galaxy-maintenance. Do not forget to set the cron jobs for:
-echo galaxy email management and mas_projects_maintenance as galaxy
+echo "Galaxy maintenance kit installed in galaxy-maintenance. Do not forget to set the cron jobs for:"
+echo "galaxy email management and mas_projects_maintenance as galaxy"
 
 cd ${THISDIR}

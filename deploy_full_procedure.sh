@@ -102,7 +102,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     # Install galaxy maintenance kit
     if [ "${installgalaxymaintenancekit}" == "y" ]; then 
         sudo -u ${GALAXYUSER} -H sh -c "${MYDIR}/deploy-galaxy-maintenance.sh"
-        # TODO add calls (as galaxy) to /etc/cron.daily or /etc/crontab
+        sudo -H sh -c "echo 30 0 \* \* \* $GALAXYUSER $GALAXYUSERHOME/galaxy-maintenance/scripts/mas_projects_maintenance/run_mas_projects_management.sh >> /etc/crontab"
     fi
 
 fi
