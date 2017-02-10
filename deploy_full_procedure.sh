@@ -76,9 +76,6 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
             fi
         fi
 
-	sudo mkdir -p ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER}     	# /work/projects/galaxy/data/database... /files
-	sudo chown galaxy:galaxy ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER}
-	
 	# Install GOLD
 	if [ "${installgold}" == "y" ]; then 
 	    
