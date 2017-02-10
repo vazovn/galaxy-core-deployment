@@ -60,7 +60,7 @@ if [ "${workonabel}" == "y" ]; then
 fi
 
 ## Start main Galaxy platform installation/configuration script
-sudo -u galaxy -H sh -c "${MYDIR}/configure_galaxy.sh ${production}"
+sudo -u ${GALAXYUSER} -H sh -c "${MYDIR}/configure_galaxy.sh ${production}"
 
 ## Customize Galaxy platform with Cluster and Project Management issues
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
@@ -92,17 +92,18 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 	# Install SLURM and MUNGE
 	if [ "${installslurmandmunge}" == "y" ]; then 
 	    sh -c  "${MYDIR}/deploy_SLURM_MUNGE_rpm.sh"
-        fi
+    fi
 	
 	# Install Polish DRMAA library
 	if [ "${installdrmaapoznan}" == "y" ]; then 
 	    sh -c "${MYDIR}/deploy_DRMAA_poznan.sh"
-        fi
+    fi
         
     # Install galaxy maintenance kit
     if [ "${installgalaxymaintenancekit}" == "y" ]; then 
-        sh -c "${MYDIR}/deploy-galaxy-maintenance.sh"
-        fi
+        sudo -u ${GALAXYUSER} -H sh -c "${MYDIR}/deploy-galaxy-maintenance.sh"
+        # TODO add calls (as galaxy) to /etc/cron.daily or /etc/crontab
+    fi
 
 fi
 
