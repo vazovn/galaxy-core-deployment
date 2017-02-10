@@ -13,14 +13,23 @@ else
         exit 1
 fi
 
+THISDIR=${PWD}
+cd ${GALAXYUSERHOME}
+
 git clone https://${USER}@bitbucket.usit.uio.no/scm/ft/galaxy-maintenance.git 
 
-sudo chown -R galaxy:galaxy galaxy-maintenance
-sudo chmod go-x galaxy-maintenance/scripts/galaxy_emails_management/*
-sudo chmod go-x galaxy-maintenance/scripts/manipulate_project_allocations/*
+# e.g. /home/galaxy/galaxy
+sed -i "s#GALAXYTREE=.*#GALAXYTREE=$GALAXYTREE#"  galaxy-maintenance/maintenance_local_env.sh
+# e.g.  /home/galaxy
+sed -i  "s#GALAXYUSERHOME=.*#GALAXYUSERHOME=$GALAXYUSERHOME#" galaxy-maintenance/maintenance_local_env.sh
+
+# sudo chown -R galaxy:galaxy galaxy-maintenance
+# sudo chmod go-x galaxy-maintenance/scripts/galaxy_emails_management/*
+# sudo chmod go-x galaxy-maintenance/scripts/manipulate_project_allocations/*
     
-sudo mv galaxy-maintenance ${GALAXYUSERHOME}/
+# sudo mv galaxy-maintenance ${GALAXYUSERHOME}/
 
-echo -e "Galaxy maintenance kit installed in galaxy-maintenance! Do not forget to set the cron jobs for :\ngalaxy email management (root) and mas_projects_maintenance (galaxy)!"
+echo Galaxy maintenance kit installed in galaxy-maintenance. Do not forget to set the cron jobs for:
+echo galaxy email management and mas_projects_maintenance as galaxy
 
-
+cd ${THISDIR}

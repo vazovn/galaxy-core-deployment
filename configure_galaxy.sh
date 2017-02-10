@@ -36,6 +36,8 @@ function sed_replace {
 ## Customize Galaxy platform with Cluster and Project Management issues
 if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 
+	mkdir -p ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER}     	# /work/projects/galaxy/data/database... /files
+	
     mkdir -p ${GALAXY_FILEPATH}     	# /work/projects/galaxy/data/database... /files
     mkdir -p ${GALAXY_NEW_FILEPATH}   # /work/projects/galaxy/data/database... /tmp
     mkdir -p ${GALAXY_JOB_WORKING_DIRECTORY} # /work/projects/galaxy/data/database... /job_working_directory
@@ -146,6 +148,7 @@ fi
 if [ "${GALAXY_TOOL_CONF}" != "" ]; then
     sed_replace '^#tool_config_file =.*' "tool_config_file = ${GALAXY_TOOL_CONF}" galaxy.ini
 fi
+sed_replace '^#datatypes_config_file.*' "datatypes_config_file = ${GALAXY_DATATYPES_CONF}" galaxy.ini
 # sed_replace '^#integrated_tool_panel_config.*' 'integrated_tool_panel_config = integrated_tool_panel.xml' galaxy.ini
 sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' "tool_data_table_config_path = ${GALAXY_TOOL_DATA_TABLE_CONF}" galaxy.ini
 
