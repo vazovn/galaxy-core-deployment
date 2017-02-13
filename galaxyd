@@ -11,7 +11,7 @@ start ()
 {
 
 
-## Check if apache httpd is running if exists
+## Check if apache exists and is running
 if ! type apachectl > /dev/null || apachectl status > /dev/null; then
 
     # Make sure galaxy tree exists
@@ -28,6 +28,27 @@ else
     apachectl restart
     daemon --user="galaxy" /home/galaxy/galaxy/run.sh --daemon
 fi
+
+## Check if munge exists and is running
+if ! type munge > /dev/null  || systemctl status munge.service > /dev/null; then
+    
+    if [ ! -f /var/run/munged.pid ]; then
+        echo "Munge PID missing. Restarting Munge!"
+        rm -rf /var/run/munge/*
+        systemctl restart munge.service
+    fi
+    echo "Munge is running!"
+        
+else
+    echo "Waiting for Munge to start..."
+    if [ -f /var/run/munged.pid ]; then
+        echo "Removing trailing munge pid!"
+        rm -rf /var/run/munge/*
+    fi
+    systemctl start munge.service
+    echo "Started Munge!"
+fi
+
 
 }
 

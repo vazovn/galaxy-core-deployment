@@ -43,6 +43,11 @@ sudo yum install hwloc-libs libibumad libibmad
 sudo rpm -ivh mun*.rpm
 sudo rpm -ivh slu*.rpm
 
+# 3. remove old munge pid if found, it prevents munge from starting properly
+if [ -f /var/run/munged.pid ]; then
+    sudo rm /var/run/munge/*
+fi
+
 ### Add slurm user
 sudo sed -i '$ a slurm:x:501:501:Slurm:/etc/slurm:/sbin/nologin' /etc/passwd
 
