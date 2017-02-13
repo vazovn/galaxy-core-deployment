@@ -32,7 +32,7 @@ fi
 ## Check if munge exists and is running
 if ! type munge > /dev/null  || systemctl status munge.service > /dev/null; then
     
-    if [ ! -f /var/run/munged.pid ]; then
+    if [ ! -f /var/run/munge/munged.pid ]; then
         echo "Munge PID missing. Restarting Munge!"
         rm -rf /var/run/munge/*
         systemctl restart munge.service
@@ -41,7 +41,7 @@ if ! type munge > /dev/null  || systemctl status munge.service > /dev/null; then
         
 else
     echo "Waiting for Munge to start..."
-    if [ -f /var/run/munged.pid ]; then
+    if [ -f /var/run/munge/munged.pid ]; then
         echo "Removing trailing munge pid!"
         rm -rf /var/run/munge/*
     fi
