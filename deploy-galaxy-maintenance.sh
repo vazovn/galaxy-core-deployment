@@ -16,7 +16,13 @@ fi
 THISDIR=${PWD}
 cd ${GALAXYUSERHOME}
 
-git clone https://${USER}@bitbucket.usit.uio.no/scm/ft/galaxy-maintenance.git 
+if [ -e "galaxy-maintenance" ]; then
+    echo "Galaxy maintenance kit found ... Removing old installation ..."
+    rm -rf galaxy-maintenance
+    git clone https://${USER}@bitbucket.usit.uio.no/scm/ft/galaxy-maintenance.git 
+else
+    git clone https://${USER}@bitbucket.usit.uio.no/scm/ft/galaxy-maintenance.git
+fi
 
 # e.g. /home/galaxy/galaxy
 sed -i "s#GALAXYTREE=.*#GALAXYTREE=$GALAXYTREE#"  galaxy-maintenance/maintenance_local_env.sh
