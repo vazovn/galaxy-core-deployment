@@ -82,6 +82,7 @@ if [[ ${GALAXY_TOOLS_REPO} != "SKIP" ]]; then
     if [ -d "${GALAXY_TOOL_PATH}/.git" ]; then
         THISDIR=${PWD}
         cd ${GALAXY_TOOL_PATH}
+        git remote set-url origin ${GALAXY_TOOLS_REPO}
         git pull
         cd ${THISDIR}
     else
@@ -92,6 +93,7 @@ if [[ ${GALAXY_TOOL_DATA_REPO} != "SKIP" ]]; then
     if [ -d "${GALAXY_TOOL_DATA_PATH}/.git" ]; then
         THISDIR=${PWD}
         cd ${GALAXY_TOOL_DATA_PATH}
+        git remote set-url origin ${GALAXY_TOOL_DATA_REPO}
         git pull
         cd ${THISDIR}
     else
