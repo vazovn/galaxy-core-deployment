@@ -11,6 +11,9 @@ MYDIR="$(dirname "$(realpath "$0")")"
 cd ${GALAXYUSERHOME}
 if [ -e "${GALAXYTREE}" ]; then
     echo ${GALAXYTREE} exists
+    cd ${GALAXYTREE}
+    git remote set-url origin ${GALAXY_GIT_REPO} 
+    git pull
     #exit 1
 else
     git clone -b ${GALAXY_GIT_BRANCH} ${GALAXY_GIT_REPO} 
