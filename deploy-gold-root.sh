@@ -16,7 +16,7 @@ make deps
 make install
 
 ## missing dependency
-cpanm Log::Dispatch::FileRotate
+cpanm --force Log::Dispatch::FileRotate
 
 ## make auth keys and give pass phrase
 randomstring=$(python -c 'import random, string; print "".join(random.choice(string.ascii_uppercase + string.digits) for n in range(random.randint(30,50)))')
