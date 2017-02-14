@@ -14,7 +14,7 @@ cd
 if [ -e "gold-2.2.0.5" ]; then
 	echo "GOLD source found ..."
 else
-	git clone https://${UIOUSER}@bitbucket.usit.uio.no/scm/ft/gold-code.git gold-2.2.0.5
+	git clone https://${uiouser}@bitbucket.usit.uio.no/scm/ft/gold-code.git gold-2.2.0.5
 fi
 
 cd gold-2.2.0.5
