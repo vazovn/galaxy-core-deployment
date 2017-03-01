@@ -6,6 +6,8 @@
 ## -- implements the customized features for the USIT postals (Project/Job management, etc.)
 ## -- configures Galaxy framework respectively
 
+# add prompt rule
+sudo cp galaxyprompt.sh /etc/profile.d/z_galaxyprompt.sh
 
 # source settings
 if [ ! -f settings.sh ]; then
