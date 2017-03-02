@@ -42,6 +42,9 @@ sudo yum install git
 # Needed to implement the Logout button
 sudo yum install npm.x86_64
 
+# Needed to install psycopg2 by pip
+sudo yum install gcc.x86_64
+
 ## Check it /work is a mounted directory
 if [ "${workonabel}" == "y" ]; then
 	if [ ! $(mount | grep "^admin.abel.uio.no:/work on /work") ]; then
