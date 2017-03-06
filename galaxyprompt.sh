@@ -28,7 +28,7 @@ function _branch_nt {
 local _branch=$1
 local _branch_n=$(echo ${_branch} | sed "s/${BRANCH_RE}/\1/")
 local _branch_f=${_branch:(-2):1}
-if [ -z ${_branch_n} ]; then
+if [[ ${_branch_n:0:1} == "(" ]]; then
     echo "${_branch}"
 else
     case ${_branch_f} in
