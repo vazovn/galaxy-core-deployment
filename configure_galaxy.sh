@@ -62,6 +62,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 
     # if [ -f ${MYDIR}/local_env.sh ]; then
     cp ${MYDIR}/local_env.sh ${GALAXYTREE}/config
+
     if [[ -n "${GOLDDBUSER}" && -n "${GOLDDBPASSWD}" && -n "${GOLDDBHOST}" && -n "${GOLDDB}" ]]; then
         golddbstring="postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB}"
         sed_replace '^export GOLDDB=.*' "export GOLDDB=${golddbstring}" ${GALAXYTREE}/config/local_env.sh
@@ -69,6 +70,11 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     else
 	echo "Gold db settings missing from settings.sh"
     fi
+
+    if [ -n "${GALAXYUSERHOME}" ]; then
+		sed_replace '^export GALAXY_HOME=.*' "export GALAXY_HOME=${GALAXYUSERHOME}" ${GALAXYTREE}/config/local_env.sh
+    fi
+
     # fi
 
     # job_resource_params_conf.xml :

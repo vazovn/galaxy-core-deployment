@@ -32,3 +32,7 @@ echo "LP_PROJECT_ID: " $LP_PROJECT_ID
 ## used in lib/galaxy/web/base/controllers/project_admin.py
 export PDF_REPORTS_DIRECTORY="/work/projects/galaxy/PDF_reports/"
 echo "PDF_REPORTS_DIRECTORY : " $PDF_REPORTS_DIRECTORY 
+
+## Galaxy home containing Galaxy root
+export GALAXY_HOME="<GALAXYUSERHOME>"
+echo "GALAXY_HOME: " $GALAXY_HOME
