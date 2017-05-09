@@ -38,6 +38,7 @@ read -p "Install GOLD? [yN] " installgold
 read -p "Install Slurm and Munge? [yN] " installslurmandmunge
 read -p "Install DRMAA poznan? [yN] " installdrmaapoznan
 read -p "Install Galaxy maintenance kit ? [yN] " installgalaxymaintenancekit
+read -p "Install Filesender (Big file upload) ? [yN] " installfilesender
 
 if [ "${addgalaxyuser}" == "y" ]; then
     passwdstring="${GALAXYUSER}:x:${GALAXYUSERUID}:${GALAXYUSERGID}"
@@ -106,7 +107,44 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
         sudo -u ${GALAXYUSER} -H sh -c "${MYDIR}/deploy-galaxy-maintenance.sh"
         sudo -H sh -c "echo 30 0 \* \* \* $GALAXYUSER $GALAXYUSERHOME/galaxy-maintenance/scripts/mas_projects_maintenance/run_mas_projects_management.sh >> /etc/crontab"
     fi
-
+    
+    # Install Filesender
+    if [ "${installfilesender}" == "y" ]; then 
+		
+		# Install php55 and fastcgi server
+		sudo yum install php55.x86_64
+		sudo yum install php55-php-pgsql.x86_64
+		sudo yum install yum install php55-php-pdo.x86_64
+		sudo yum install php55-php-mbstring.x86_64
+		sudo yum install php55-php-fpm.x86_64
+		# fast-cgi server config
+		sudo cp ${MYDIR}/php.conf /etc/httpd/conf.d/
+		
+		# check if the following is permanent, if not edit /etc/profile.d/bash_login.sh
+		sudo source /opt/rh/php55/enable
+		
+		# start fpm service
+		sudo systemctl start php55-php-fpm.service
+		
+		# simplesamlphp
+		sudo sh -c "${MYDIR}/deploy_filesender_simplesamlphp_code.sh"
+		
+		# filesender self
+		sudo sh -c "${MYDIR}/deploy_filesender_code.sh"
+		
+		# Apache config files for filesender virtual host
+		sudo sh -c "${MYDIR}/deploy_filesender_apache_config.sh"
+		
+		# edit Galaxy config files
+		sudo -u ${GALAXYUSER} -H sh -c "${MYDIR}/deploy_filesender_galaxy_config.sh"
+		
+		# Last instructions:
+		echo "ATTENTION! The filesender storage directory must belong to 'apache' user (or nobody) and be writable for group 'galaxy'\n"
+		echo "Log into nh.abel as root, cd to ABEL_FILESENDER_PATH (e.g. /work/projects/galaxy/filesender) and run :"
+		echo "chown -R apache *"
+		echo "Restart apache web server!"
+		echo "Restart Galaxy if already running!"
+    fi
 fi
 
 ## copy daemon script to /etc/init.d
