@@ -5,7 +5,7 @@
 
 MYDIR="$(dirname "$(realpath "$0")")"
 # source settings
-. ${MYDIR}/settings.sh
+. ${MYDIR}/../settings.sh
 
 ## filesender php specs
 cp ${MYDIR}/filesender-php.ini /opt/rh/php55/root/etc/php.d/
@@ -37,7 +37,7 @@ sed -i  "s/FILESENDERUSER/${FILESENDERUSER}/" config/config.php
 sed -i  "s/FILESENDERPASSWORD/${FILESENDERPASSWORD}/" config/config.php
 
 ## File with customized welcome page
-cp site_splash.html.php language/en_AU/site_splash.html.php
+cp ${MYDIR}/site_splash.html.php language/en_AU/site_splash.html.php
 
 chgrp apache config/config.php
 semanage fcontext -a -t httpd_sys_content_t '/opt/filesender(/.*)?'

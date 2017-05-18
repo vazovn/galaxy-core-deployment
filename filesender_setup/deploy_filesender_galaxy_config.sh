@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # source settings
-. settings.sh
+. ${MYDIR}/../settings.sh
 
 
 # Set the correct paths in the cluster partition for filesender. This operation shall be done here
@@ -11,9 +11,9 @@
 
 echo "deploy_filesender_galaxy_config : Making Filesender storage directories on cluster ... "
 
-mkdir -p FILESENDER_STORAGE/log
-mkdir -p FILESENDER_STORAGE/tmp
-mkdir -p FILESENDER_STORAGE/files
+mkdir -p ${FILESENDER_STORAGE}/log
+mkdir -p ${FILESENDER_STORAGE}/tmp
+mkdir -p ${FILESENDER_STORAGE}/files
 
 echo "deploy_filesender_galaxy_config : Editing Galaxy configuration files required by Filesender setup..."
 

@@ -5,8 +5,9 @@
 echo "=== SimpleSamlphp installation start === "
 
 MYDIR="$(dirname "$(realpath "$0")")"
+
 # source settings
-. ${MYDIR}/settings.sh
+. ${MYDIR}/../settings.sh
 
 cd /opt
 mkdir filesender
@@ -60,6 +61,6 @@ sed -i  "s/'technicalcontact_email' => .*/\'technicalcontact_name\' => \'${tech_
 
 # 4. copy feide-idp file to metadata
 
-cp saml20-idp-remote.php metadata/saml20-idp-remote.php
+cp ${MYDIR}/saml20-idp-remote.php metadata/saml20-idp-remote.php
 
 echo "=== SimpleSamlphp installed and configured! === "

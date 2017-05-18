@@ -5,7 +5,7 @@
 MYDIR="$(dirname "$(realpath "$0")")"
 
 # source settings
-. ${MYDIR}/settings.sh
+. ${MYDIR}/../settings.sh
 
 cp ${MYDIR}/filesender.conf /etc/httpd/conf.d/filesender.conf
 
