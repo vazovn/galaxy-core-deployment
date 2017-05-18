@@ -67,7 +67,7 @@ running on your Galaxy instance!
   
 ## Filesender files :
 
-There have been added blocks into
+#### There have been added blocks into
     setting-template.sh
     local_env.sh
     
