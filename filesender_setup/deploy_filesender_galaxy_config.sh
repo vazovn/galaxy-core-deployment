@@ -55,6 +55,9 @@ if [ -n "${FILESENDER_STORAGE}" ]; then
     fi
 
 ## edit galaxy.ini
+
+sed_replace '^# webhooks_dir=.*' "webhooks_dir = config/plugins/webhooks/demo" ${GALAXYTREE}/config/galaxy.ini
+
 sed_replace '^#ftp_upload_dir=.*' "ftp_upload_dir = ${GALAXYTREE}/database/ftp/user_upload" ${GALAXYTREE}/config/galaxy.ini
 sed_replace '^#ftp_upload_site=.*' "ftp_upload_site = Galaxy FTP Upload site for big files" ${GALAXYTREE}/config/galaxy.ini
 sed_replace '^#ftp_upload_dir_identifier=.*' "ftp_upload_dir_identifier = email" ${GALAXYTREE}/config/galaxy.ini
