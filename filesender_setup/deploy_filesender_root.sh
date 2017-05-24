@@ -2,7 +2,7 @@
 
 ## Script deploying filesender (files reguiring root privileges)
 
-echo "=== Filesender installation start (root privilges) === "
+echo "=== Filesender installation start (root privileges) === "
 
 MYDIR="$(dirname "$(realpath "$0")")"
 
