@@ -1,5 +1,7 @@
 #!/bin/bash
 
+MYDIR="$(dirname "$(realpath "$0")")"
+
 # source settings
 . ${MYDIR}/../settings.sh
 
@@ -56,13 +58,13 @@ if [ -n "${FILESENDER_STORAGE}" ]; then
 
 ## edit galaxy.ini
 
-sed_replace '^# webhooks_dir=.*' "webhooks_dir = config/plugins/webhooks/demo" ${GALAXYTREE}/config/galaxy.ini
+sed_replace '^# webhooks_dir = .*' "webhooks_dir = config/plugins/webhooks/demo" ${GALAXYTREE}/config/galaxy.ini
 
-sed_replace '^#ftp_upload_dir=.*' "ftp_upload_dir = ${GALAXYTREE}/database/ftp/user_upload" ${GALAXYTREE}/config/galaxy.ini
-sed_replace '^#ftp_upload_site=.*' "ftp_upload_site = Galaxy FTP Upload site for big files" ${GALAXYTREE}/config/galaxy.ini
-sed_replace '^#ftp_upload_dir_identifier=.*' "ftp_upload_dir_identifier = email" ${GALAXYTREE}/config/galaxy.ini
+sed_replace '^#ftp_upload_dir = .*' "ftp_upload_dir = ${GALAXYTREE}/database/ftp/user_upload" ${GALAXYTREE}/config/galaxy.ini
+sed_replace '^#ftp_upload_site = .*' "ftp_upload_site = Galaxy FTP Upload site for big files" ${GALAXYTREE}/config/galaxy.ini
+sed_replace '^#ftp_upload_dir_identifier = .*' "ftp_upload_dir_identifier = email" ${GALAXYTREE}/config/galaxy.ini
 sed_replace '^#ftp_upload_dir_template' "ftp_upload_dir_template" ${GALAXYTREE}/config/galaxy.ini
-sed_replace '^#ftp_upload_purge=.*' "ftp_upload_purge = False" ${GALAXYTREE}/config/galaxy.ini
+sed_replace '^#ftp_upload_purge = .*' "ftp_upload_purge = False" ${GALAXYTREE}/config/galaxy.ini
 
 # edit filesender webhook file
 sed_replace 'FILESENDER_URL' "${FILESENDER_URL}" ${GALAXYTREE}/config/plugins/webhooks/demo/filesender/config/filesender.yaml

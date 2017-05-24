@@ -116,13 +116,19 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 		
 		# edit Galaxy config files
 		sudo -u ${GALAXYUSER} -H sh -c "./deploy_filesender_galaxy_config.sh"
-		
+
+
 		# Last instructions:
-		echo "ATTENTION! The filesender storage directory must belong to 'apache' user (or nobody) and be writable for group 'galaxy'\n"
+		echo -e "\n==== LAST INSTRUCTIONS FOR Filesender SETUP ==== "
+		echo -e "The filesender storage directory must belong to 'apache' user (or nobody) and be writable for group 'galaxy'\n"
 		echo "Log into nh.abel as root, cd to ABEL_FILESENDER_PATH (e.g. /work/projects/galaxy/filesender) and run :"
 		echo "chown -R apache *"
-		echo "Restart apache web server!"
-		echo "Restart Galaxy if already running!"
+		echo "chmod -R g+w *"
+		echo -e "\n==== Filesender setu READY! ====\n\n"
+
+				
+		# Get back to the main level
+		cd ${MYDIR}
     fi
 fi
 

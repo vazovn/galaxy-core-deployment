@@ -12,7 +12,7 @@ cp ${MYDIR}/filesender-php.ini /opt/rh/php55/root/etc/php.d/
 
 ## edit nfs mount context
 umount /work
-sed -i  "s/admin.abel.uio.no.*/#&\nadmin.abel.uio.no:\/work    \/work    nfs4    defaults,context=system_u:object_r:httpd_sys_rw_co–ntent_t:s0    0 0/"  /etc/fstab
+sed -i  "s/admin.abel.uio.no.*/#&\nadmin.abel.uio.no:\/work    \/work    nfs4    defaults,context=system_u:object_r:httpd_sys_rw_content_t:s0    0 0/"  /etc/fstab
 mount /work
 echo "Check context of /work below, must contain context=system_u:object_r:httpd_sys_rw_content_t:s0 :"
 echo "====="
@@ -20,8 +20,17 @@ echo $(cat echo /etc/fstab | grep httpd)
 
 ## filesender tree
 cd /opt/filesender
+
+if [ -d filesender-2.0 ]; then
+	rm -rf filesender-2.0
+fi
 git clone https://github.com/filesender/filesender.git filesender-2.0
-ln -s filesender-2.0/ filesender
+
+
+if [ ! -L filesender ]; then
+	ln -s filesender-2.0/ filesender
+fi
+
 cd filesender
 
 
