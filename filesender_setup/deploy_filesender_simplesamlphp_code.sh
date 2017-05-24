@@ -25,6 +25,10 @@ cd simplesamlphp
 cp -r config-templates/* config/
 cp -r metadata-templates/* metadata/
 
+echo "PHP BINARY " $(which php)
+echo "Running composer on simplesamlphp setup"
+php /opt/composer/composer.phar install
+
 # 1. edit config/authmemcookie.php
 sed -i  "s#'username' => NULL#'username' => 'mail'#" config/authmemcookie.php
 
@@ -56,8 +60,13 @@ sed -i  "s/'logging.level' => .*/\'logging.level\' => SimpleSAML_Logger::INFO,/"
 sed -i  "s/'logging.handler' => .*/\'logging.handler\' => \'file\',/"  config/config.php
 sed -i  "s/\/\/'logging.format'/\'logging.format\'/"  config/config.php
 
-echo "In a separate terminal, run /opt/filesender/simplesamlphp/bin/pwgen.php, set a value to 'Enter password', press enter for [sha256] and type 'yes' for salt"
+echo "In a separate terminal, run :"
+echo "source /opt/rh/php55/enable"
+echo "/opt/filesender/simplesamlphp/bin/pwgen.php"
+echo "then set a value to 'Enter password', press enter for [sha256] and type 'yes' for salt"
+
 read -p "Paste the encrypted password here : " password_hash
+password_hash=$(echo  ${password_hash} | sed 's/\//\\\//g')
 sed -i  "s/'auth.adminpassword' => '123',/\'auth.adminpassword\' => \'${password_hash}\',/"  config/config.php
 
 read -p "Technical contact name : " tech_contact
