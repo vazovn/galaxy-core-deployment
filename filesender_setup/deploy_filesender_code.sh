@@ -16,7 +16,7 @@ sed -i  "s/admin.abel.uio.no.*/#&\nadmin.abel.uio.no:\/work    \/work    nfs4   
 mount /work
 echo "Check context of /work below, must contain context=system_u:object_r:httpd_sys_rw_content_t:s0 :"
 echo "====="
-echo $(cat echo /etc/fstab | grep httpd)
+echo "New /etc/fsyab file : " $(grep httpd /etc/fstab)
 
 ## filesender tree
 cd /opt/filesender
