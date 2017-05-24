@@ -16,6 +16,10 @@ fi
 
 cd filesender
 
+if [ -d simplesamlphp ]; then
+  rm -rf simplesamlphp
+fi
+
 git clone https://github.com/simplesamlphp/simplesamlphp.git
 cd simplesamlphp
 cp -r config-templates/* config/
@@ -45,14 +49,14 @@ sed -i  "s/'idp' => null,/\/\/&\n\t\t${IDPLINE}/"  	config/authsources.php
 
 # 3. edit config/config.php
 
-sed -i  "s/'loggingdir' => .*/\'loggingdir\' => \'\/opt\/filesender\/simplesaml\/log\',/"  config/config.php
+sed -i  "s/'loggingdir' => .*/\'loggingdir\' => \'\/opt\/filesender\/simplesamlphp\/log\',/"  config/config.php
 sed -i  "s/'timezone' => .*/\'timezone\' => \'Europe\/Oslo\',/"  config/config.php
 sed -i  "s/'secretsalt' => 'defaultsecretsalt',/\'secretsalt\' => \'0xvv95xqmxt340owo0je0fu84uwhnet1\',/"  config/config.php
 sed -i  "s/'logging.level' => .*/\'logging.level\' => SimpleSAML_Logger::INFO,/"  config/config.php
 sed -i  "s/'logging.handler' => .*/\'logging.handler\' => \'file\',/"  config/config.php
 sed -i  "s/\/\/'logging.format'/\'logging.format\'/"  config/config.php
 
-echo "In a separate terminal, run /opt/filesender/simplesaml/bin/pwgen.php, set a value to 'Enter password', press enter for [sha256] and type 'yes' for salt"
+echo "In a separate terminal, run /opt/filesender/simplesamlphp/bin/pwgen.php, set a value to 'Enter password', press enter for [sha256] and type 'yes' for salt"
 read -p "Paste the encrypted password here : " password_hash
 sed -i  "s/'auth.adminpassword' => '123',/\'auth.adminpassword\' => \'${password_hash}\',/"  config/config.php
 
