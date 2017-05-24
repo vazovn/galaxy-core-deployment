@@ -112,30 +112,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     if [ "${installfilesender}" == "y" ]; then 
 		
 		cd ${MYDIR}/filesender_setup
-		
-		# Install php55 and fastcgi server
-		sudo yum install php55.x86_64
-		sudo yum install php55-php-pgsql.x86_64
-		sudo yum install yum install php55-php-pdo.x86_64
-		sudo yum install php55-php-mbstring.x86_64
-		sudo yum install php55-php-fpm.x86_64
-		# fast-cgi server config
-		sudo cp php.conf /etc/httpd/conf.d/
-		
-		# check if the following is permanent, if not edit /etc/profile.d/bash_login.sh
-		sudo source /opt/rh/php55/enable
-		
-		# start fpm service
-		sudo systemctl start php55-php-fpm.service
-		
-		# simplesamlphp
-		sudo sh -c "./deploy_filesender_simplesamlphp_code.sh"
-		
-		# filesender self
-		sudo sh -c "./deploy_filesender_code.sh"
-		
-		# Apache config files for filesender virtual host
-		sudo sh -c "./deploy_filesender_apache_config.sh"
+		sudo sh -c "${MYDIR}/deploy_filesender_root.sh"
 		
 		# edit Galaxy config files
 		sudo -u ${GALAXYUSER} -H sh -c "./deploy_filesender_galaxy_config.sh"
