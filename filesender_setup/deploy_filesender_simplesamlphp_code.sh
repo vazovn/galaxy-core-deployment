@@ -10,7 +10,10 @@ MYDIR="$(dirname "$(realpath "$0")")"
 . ${MYDIR}/../settings.sh
 
 cd /opt
-mkdir filesender
+if [ ! -d filesender ]; then
+  mkdir filesender
+fi
+
 cd filesender
 
 git clone https://github.com/simplesamlphp/simplesamlphp.git
