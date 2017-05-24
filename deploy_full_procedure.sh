@@ -112,7 +112,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     if [ "${installfilesender}" == "y" ]; then 
 		
 		cd ${MYDIR}/filesender_setup
-		sudo sh -c "${MYDIR}/deploy_filesender_root.sh"
+		sudo sh -c "./deploy_filesender_root.sh"
 		
 		# edit Galaxy config files
 		sudo -u ${GALAXYUSER} -H sh -c "./deploy_filesender_galaxy_config.sh"
