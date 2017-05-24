@@ -43,7 +43,7 @@ sed -i  "s/'idp' => null,/\/\/&\n\t\t${IDPLINE}/"  	config/authsources.php
 # 3. edit config/config.php
 
 sed -i  "s/'loggingdir' => .*/\'loggingdir\' => \'\/opt\/filesender\/simplesaml\/log\',/"  config/config.php
-sed -i  "s/'timezone' => .*/\'timezone\' => \'Europe\/Oslo\',/"  ./config.php
+sed -i  "s/'timezone' => .*/\'timezone\' => \'Europe\/Oslo\',/"  config/config.php
 sed -i  "s/'secretsalt' => 'defaultsecretsalt',/\'secretsalt\' => \'0xvv95xqmxt340owo0je0fu84uwhnet1\',/"  config/config.php
 sed -i  "s/'logging.level' => .*/\'logging.level\' => SimpleSAML_Logger::INFO,/"  config/config.php
 sed -i  "s/'logging.handler' => .*/\'logging.handler\' => \'file\',/"  config/config.php
