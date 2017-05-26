@@ -37,7 +37,6 @@ cd filesender
 ln -s ${FILESENDER_STORAGE}/log log
 ln -s ${FILESENDER_STORAGE}/tmp tmp
 ln -s ${FILESENDER_STORAGE}/files files
-ln -s ${FILESENDER_STORAGE}/filesender_httpd_logs filesender_httpd_logs
 
 ## For INFO : All filesender configs are located actually in the file 
 ## ..filesender/includes/ConfigDefaults.php

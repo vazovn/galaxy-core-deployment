@@ -16,7 +16,6 @@ echo "deploy_filesender_galaxy_config : Making Filesender storage and logs direc
 mkdir -p ${FILESENDER_STORAGE}/log
 mkdir -p ${FILESENDER_STORAGE}/tmp
 mkdir -p ${FILESENDER_STORAGE}/files
-mkdir -p ${FILESENDER_STORAGE}
 touch ${FILESENDER_STORAGE}/ssl_error_log
 touch ${FILESENDER_STORAGE}/ssl_access_log
 
