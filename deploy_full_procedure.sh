@@ -124,7 +124,9 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 		echo "Log into nh.abel as root, cd to ABEL_FILESENDER_PATH (e.g. /work/projects/galaxy/filesender) and run :"
 		echo "chown -R apache *"
 		echo "chmod -R g+w *"
-		echo -e "\n==== Filesender setu READY! ====\n\n"
+		echo "chmod a+w ${GALAXY_PUBLIC_HOSTNAME}/ssl_error_log"
+		echo "chmod a+w ${GALAXY_PUBLIC_HOSTNAME}/ssl_access_log"
+		echo -e "\n==== Filesender setup READY! ====\n\n"
 
 				
 		# Get back to the main level
