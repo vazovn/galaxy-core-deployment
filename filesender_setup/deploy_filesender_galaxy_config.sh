@@ -11,11 +11,15 @@ MYDIR="$(dirname "$(realpath "$0")")"
 # To complete the setup, log into nielshenrik and run 
 # chown -R apache FILESENDER_STORAGE
 
-echo "deploy_filesender_galaxy_config : Making Filesender storage directories on cluster ... "
+echo "deploy_filesender_galaxy_config : Making Filesender storage and logs directories on cluster ... "
 
 mkdir -p ${FILESENDER_STORAGE}/log
 mkdir -p ${FILESENDER_STORAGE}/tmp
 mkdir -p ${FILESENDER_STORAGE}/files
+mkdir -p ${FILESENDER_STORAGE}
+touch ${FILESENDER_STORAGE}/ssl_error_log
+touch ${FILESENDER_STORAGE}/ssl_access_log
+
 
 echo "deploy_filesender_galaxy_config : Editing Galaxy configuration files required by Filesender setup..."
 
