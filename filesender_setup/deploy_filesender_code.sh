@@ -71,8 +71,6 @@ restorecon -vFR /var/log/filesender/
 cp ${MYDIR}/site_splash.html.php language/en_AU/site_splash.html.php
 
 chgrp apache config/config.php
-#semanage fcontext -a -t httpd_sys_content_t '/opt/filesender(/.*)?'
-#restorecon -R /opt/filesender
 
 echo "=== Filesender installed and configured! === "
 
