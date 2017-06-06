@@ -135,6 +135,10 @@ FILESENDERHOST=
 ABEL_FILESENDER_PATH=/work/projects/galaxy/filesender
 FILESENDER_STORAGE=${ABEL_FILESENDER_PATH}/${GALAXY_PUBLIC_HOSTNAME}
 FILESENDER_URL=filesender.${GALAXY_PUBLIC_HOSTNAME}
+SIMPLESAMLPHP_VERSION=
+ABEL_SIMPLESAML_PATH=/work/projects/galaxy/simplesaml
+FILESENDER_SIMPLESAML=${ABEL_SIMPLESAML_PATH}/${GALAXY_PUBLIC_HOSTNAME}
+
 
 ## Certificates must be provided for the domain FILESENDER_URL
 ## Could be a multi-domain certificate (galaxy + filesender) or only for filesender's virt host

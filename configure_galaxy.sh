@@ -235,6 +235,11 @@ fi
 
 # Uglify the new main Galaxy menu
 cd ${GALAXYTREE}
+source /etc/profile.d/bash_login.sh
+
+echo NODEJS PATH $(which npm)
+echo "WARN : Running 'make client'. If it fails or hangs, read the info in the file NODEJS_UPDATE.md"
+
 make client
     
 echo "Exiting configure_galaxy.sh!!"

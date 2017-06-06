@@ -16,12 +16,17 @@ fi
 
 cd filesender
 
-if [ -d simplesamlphp ]; then
-  rm -rf simplesamlphp
+if [ -d simplesamlphp-${SIMPLESAMLPHP_VERSION} ]; then
+  rm -rf simplesamlphp-${SIMPLESAMLPHP_VERSION}
 fi
 
-git clone https://github.com/simplesamlphp/simplesamlphp.git
-cd simplesamlphp
+git clone https://github.com/simplesamlphp/simplesamlphp.git simplesamlphp-${SIMPLESAMLPHP_VERSION}
+ln -s simplesamlphp-${SIMPLESAMLPHP_VERSION} simplesaml
+cd simplesaml
+
+# create link to log directory
+ln -s ${FILESENDER_SIMPLESAML} log
+
 cp -r config-templates/* config/
 cp -r metadata-templates/* metadata/
 
@@ -53,7 +58,7 @@ sed -i  "s/'idp' => null,/\/\/&\n\t\t${IDPLINE}/"  	config/authsources.php
 
 # 3. edit config/config.php
 
-sed -i  "s/'loggingdir' => .*/\'loggingdir\' => \'\/opt\/filesender\/simplesamlphp\/log\',/"  config/config.php
+sed -i  "s/'loggingdir' => .*/\'loggingdir\' => \'\/opt\/filesender\/simplesaml\/log\',/"  config/config.php
 sed -i  "s/'timezone' => .*/\'timezone\' => \'Europe\/Oslo\',/"  config/config.php
 sed -i  "s/'secretsalt' => 'defaultsecretsalt',/\'secretsalt\' => \'0xvv95xqmxt340owo0je0fu84uwhnet1\',/"  config/config.php
 sed -i  "s/'logging.level' => .*/\'logging.level\' => SimpleSAML_Logger::INFO,/"  config/config.php
@@ -62,7 +67,7 @@ sed -i  "s/\/\/'logging.format'/\'logging.format\'/"  config/config.php
 
 echo "In a separate terminal, run :"
 echo "source /opt/rh/php55/enable"
-echo "/opt/filesender/simplesamlphp/bin/pwgen.php"
+echo "/opt/filesender/simplesaml/bin/pwgen.php"
 echo "then set a value to 'Enter password', press enter for [sha256] and type 'yes' for salt"
 
 read -p "Paste the encrypted password here : " password_hash
