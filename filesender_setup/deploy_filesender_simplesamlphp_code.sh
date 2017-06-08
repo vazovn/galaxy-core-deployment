@@ -78,7 +78,7 @@ read -p "Technical contact name : " tech_contact
 sed -i  "s/'technicalcontact_name' => .*/\'technicalcontact_name\' => \'${tech_contact}\',/"  config/config.php
 
 read -p"Technical contact email : " tech_contact_email
-sed -i  "s/'technicalcontact_email' => .*/\'technicalcontact_name\' => \'${tech_contact_email}\',/"  config/config.php
+sed -i  "s/'technicalcontact_email' => .*/\'technicalcontact_email\' => \'${tech_contact_email}\',/"  config/config.php
 
 # 4. copy feide-idp file to metadata
 
