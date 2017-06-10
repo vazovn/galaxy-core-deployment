@@ -52,11 +52,21 @@ sudo yum install git
 
 # Needed  to uglify the js files
 
-NODE_EXISTS=$(which node)
-if [ $NODE_EXISTS  ]; then
-	echo "Node/npm is installed and run from $NODE_EXISTS"
+if [ -f /etc/profile.d/bash_login.sh ]; then
+	source /etc/profile.d/bash_login.sh
 else
-	sudo yum install npm.x86_64
+	sudo touch /etc/profile.d/bash_login.sh
+fi
+
+if  [ -x "$(command -v npm)" ]; then
+	echo "Node/npm is installed and run from $(command -v npm)"	
+else
+	echo "Installing Nodejs/npm ... "
+	sudo yum install nodejs010*
+	sudo yum install v8314*
+	sudo echo -e "export PATH=/opt/rh/nodejs010/root/usr/bin/:$PATH" >> /etc/profile.d/bash_login.sh
+	sudo echo -e "export PATH=/opt/rh/v8314/root/bin/:$PATH" >> /etc/profile.d/bash_login.sh
+	source /etc/profile.d/bash_login.sh
 fi
 
 ## Check it /work is a mounted directory
@@ -121,6 +131,7 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 		sudo sh -c "./deploy_filesender_root.sh"
 
 		## fix the selinux context for filesender and simplesaml
+
 		sudo semanage fcontext -a -t httpd_sys_content_t -s system_u '/opt/filesender(/.*)?'
 		sudo semanage fcontext -a -t httpd_sys_rw_content_t -s system_u '/opt/filesender/filesender/(log|tmp|files)(/.*)?'
 		sudo semanage fcontext -a -t httpd_sys_rw_content_t -s system_u '/opt/filesender/simplesaml/log(/.*)?'
@@ -133,12 +144,14 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
 		echo -e "\n==== LAST INSTRUCTIONS FOR Filesender SETUP ==== \n"
 		## The filesender storage and simplesaml logs directory must belong to 'apache' user (or nobody) and be writable for group 'galaxy'
 		echo "Log into nh.abel as root"
-		echo "cd to ABEL_FILESENDER_PATH (e.g. /work/projects/galaxy/filesender) and run :"
-		echo "chown -R apache *"
-		echo "chmod -R g+w *"
-                echo "cd to ABEL_SIMPLESAML_PATH (e.g. /work/projects/galaxy/simplesaml) and run :"
-                echo "chown -R apache *"
-                echo "chmod -R g+w *"
+		echo "cd to ABEL_FILESENDER_PATH (e.g. /work/projects/galaxy/) and run :"
+		echo "chown -R apache filesender"
+		echo "chmod -R g+w filesender"
+                echo "cd to ABEL_SIMPLESAML_PATH (e.g. /work/projects/galaxy/) and run :"
+                echo "chown -R apache simplesaml"
+                echo "chmod -R g+w simplesaml"
+		echo -e "\nInitilalize filesender database ====\n"
+		echo "sudo php /opt/filesender/filesender/scripts/upgrade/database.php"
 		echo -e "\n==== Filesender setup READY! ====\n\n"
 
 		# Get back to the main level

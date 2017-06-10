@@ -5,6 +5,8 @@ production=$1
 
 # source settings
 . settings.sh
+. /etc/profile.d/bash_login.sh
+
 
 MYDIR="$(dirname "$(realpath "$0")")"
 
@@ -53,8 +55,6 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     ## Change path to the Galaxy database (all files) directory (from local to cluster database)
     mv ${GALAXYTREE}/database ${GALAXYTREE}/database.orig-$(date "+%y-%m-%d-%H%M") 2>&1 || echo $?
     ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
-
-
 
     # Customized environment variables file (local_env.sh)
     
@@ -235,11 +235,10 @@ fi
 
 # Uglify the new main Galaxy menu
 cd ${GALAXYTREE}
-source /etc/profile.d/bash_login.sh
 
 echo NODEJS PATH $(which npm)
-echo "WARN : Running 'make client'. If it fails or hangs, read the info in the file NODEJS_UPDATE.md"
+echo "WARN : Running 'make client'. If it fails or hangs, NODEJS has been moved to another directory. Read the info in the file NODEJS_UPDATE.md"
 
 make client
     
-echo "Exiting configure_galaxy.sh!!"
+echo "=== Ready configuring Galaxy. Exiting configure_galaxy.sh == "

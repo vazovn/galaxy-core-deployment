@@ -10,7 +10,7 @@ MYDIR="$(dirname "$(realpath "$0")")"
 . ${MYDIR}/../settings.sh
 
 # Install php55 and fastcgi server
-yum install php55.x86_64 php55-php-pgsql.x86_64 php55-php-pdo.x86_64 php55-php-mbstring.x86_64 php55-php-fpm.x86_64
+yum install php55.x86_64 php55-php-pgsql.x86_64 php55-php-pdo.x86_64 php55-php-mbstring.x86_64 php55-php-fpm.x86_64 php55-php-gmp.x86_64
 
 # fast-cgi server config
 cp php.conf /etc/httpd/conf.d/
@@ -18,15 +18,11 @@ cp php.conf /etc/httpd/conf.d/
 # check if the following is permanent, if not edit /etc/profile.d/bash_login.sh
 source /opt/rh/php55/enable
 
-# create bash_login.sh and add php path there; do nothing if already there
-if [ ! -f /etc/profile.d/bash_login.sh ] ; then
-	touch /etc/profile.d/bash_login.sh
-	echo -e "export PATH=/opt/rh/php55/root/usr/bin:/opt/rh/php55/root/usr/sbin${PATH:+:${PATH}}" >> /etc/profile.d/bash_login.sh
-else
-	PHP_CHECK=$(cat /etc/profile.d/bash_login.sh | grep php ; echo $?)
-	if [ $PHP_CHECK == 1 ]; then
-		echo -e "export PATH=/opt/rh/php55/root/usr/bin:/opt/rh/php55/root/usr/sbin${PATH:+:${PATH}}" >> /etc/profile.d/bash_login.sh
-	fi
+PHP_CHECK=$(cat /etc/profile.d/bash_login.sh | grep php55 ; echo $?)
+if [ $PHP_CHECK == 1 ]; then
+	echo "Adding PATH to bash_login.sh"
+	echo -e "export PATH=/opt/rh/php55/root/usr/bin/:$PATH" >> /etc/profile.d/bash_login.sh
+	source /etc/profile.d/bash_login.sh
 fi
 
 # install composer

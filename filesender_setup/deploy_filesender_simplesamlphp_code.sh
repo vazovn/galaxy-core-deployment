@@ -2,12 +2,12 @@
 
 ## Script deploying and configuring simplesamlphp
 
-echo "=== SimpleSamlphp installation start === "
-
 MYDIR="$(dirname "$(realpath "$0")")"
 
 # source settings
 . ${MYDIR}/../settings.sh
+
+echo "=== SimpleSamlphp version ${SIMPLESAMLPHP_VERSION} installation start === "
 
 cd /opt
 if [ ! -d filesender ]; then
@@ -20,11 +20,23 @@ if [ -d simplesamlphp-${SIMPLESAMLPHP_VERSION} ]; then
   rm -rf simplesamlphp-${SIMPLESAMLPHP_VERSION}
 fi
 
-git clone https://github.com/simplesamlphp/simplesamlphp.git simplesamlphp-${SIMPLESAMLPHP_VERSION}
+if [ -e simplesaml ]; then
+	if [ -L simplesaml ]; then 
+		echo "simplesaml link exists, deleting ..."
+		unlink simplesaml
+	fi
+fi
+
+
+wget https://github.com/simplesamlphp/simplesamlphp/releases/download/v${SIMPLESAMLPHP_VERSION}/simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
+tar -zxvf simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
+rm simplesamlphp-${SIMPLESAMLPHP_VERSION}.tar.gz
 ln -s simplesamlphp-${SIMPLESAMLPHP_VERSION} simplesaml
+
 cd simplesaml
 
 # create link to log directory
+mv log oldlogdir
 ln -s ${FILESENDER_SIMPLESAML} log
 
 cp -r config-templates/* config/
@@ -77,7 +89,7 @@ sed -i  "s/'auth.adminpassword' => '123',/\'auth.adminpassword\' => \'${password
 read -p "Technical contact name : " tech_contact
 sed -i  "s/'technicalcontact_name' => .*/\'technicalcontact_name\' => \'${tech_contact}\',/"  config/config.php
 
-read -p"Technical contact email : " tech_contact_email
+read -p "Technical contact email : " tech_contact_email
 sed -i  "s/'technicalcontact_email' => .*/\'technicalcontact_email\' => \'${tech_contact_email}\',/"  config/config.php
 
 # 4. copy feide-idp file to metadata
