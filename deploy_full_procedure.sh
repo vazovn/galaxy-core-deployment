@@ -38,6 +38,7 @@ read -p "Install GOLD? [yN] " installgold
 read -p "Install Slurm and Munge? [yN] " installslurmandmunge
 read -p "Install DRMAA poznan? [yN] " installdrmaapoznan
 read -p "Install Galaxy maintenance kit ? [yN] " installgalaxymaintenancekit
+read -p "Install Filesender (Big file upload) ? [yN] " installfilesender
 
 if [ "${addgalaxyuser}" == "y" ]; then
     passwdstring="${GALAXYUSER}:x:${GALAXYUSERUID}:${GALAXYUSERGID}"
@@ -50,7 +51,23 @@ fi
 sudo yum install git
 
 # Needed  to uglify the js files
-sudo yum install npm.x86_64
+
+if [ -f /etc/profile.d/bash_login.sh ]; then
+	source /etc/profile.d/bash_login.sh
+else
+	sudo touch /etc/profile.d/bash_login.sh
+fi
+
+if  [ -x "$(command -v npm)" ]; then
+	echo "Node/npm is installed and run from $(command -v npm)"	
+else
+	echo "Installing Nodejs/npm ... "
+	sudo yum install nodejs010*
+	sudo yum install v8314*
+	sudo echo -e "export PATH=/opt/rh/nodejs010/root/usr/bin/:$PATH" >> /etc/profile.d/bash_login.sh
+	sudo echo -e "export PATH=/opt/rh/v8314/root/bin/:$PATH" >> /etc/profile.d/bash_login.sh
+	source /etc/profile.d/bash_login.sh
+fi
 
 ## Check it /work is a mounted directory
 if [ "${workonabel}" == "y" ]; then
@@ -106,7 +123,40 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
         sudo -u ${GALAXYUSER} -H sh -c "${MYDIR}/deploy-galaxy-maintenance.sh"
         sudo -H sh -c "echo 30 0 \* \* \* $GALAXYUSER $GALAXYUSERHOME/galaxy-maintenance/scripts/mas_projects_maintenance/run_mas_projects_management.sh >> /etc/crontab"
     fi
+    
+    # Install Filesender
+    if [ "${installfilesender}" == "y" ]; then 
+		
+		cd ${MYDIR}/filesender_setup
+		sudo sh -c "./deploy_filesender_root.sh"
 
+		## fix the selinux context for filesender and simplesaml
+
+		sudo semanage fcontext -a -t httpd_sys_content_t -s system_u '/opt/filesender(/.*)?'
+		sudo semanage fcontext -a -t httpd_sys_rw_content_t -s system_u '/opt/filesender/filesender/(log|tmp|files)(/.*)?'
+		sudo semanage fcontext -a -t httpd_sys_rw_content_t -s system_u '/opt/filesender/simplesaml/log(/.*)?'
+		sudo restorecon -FR /opt/filesender
+		
+		# edit Galaxy config files
+		sudo -u ${GALAXYUSER} -H sh -c "./deploy_filesender_galaxy_config.sh"
+
+		# Last instructions:
+		echo -e "\n==== LAST INSTRUCTIONS FOR Filesender SETUP ==== \n"
+		## The filesender storage and simplesaml logs directory must belong to 'apache' user (or nobody) and be writable for group 'galaxy'
+		echo "Log into nh.abel as root"
+		echo "cd to ABEL_FILESENDER_PATH (e.g. /work/projects/galaxy/) and run :"
+		echo "chown -R apache filesender"
+		echo "chmod -R g+w filesender"
+                echo "cd to ABEL_SIMPLESAML_PATH (e.g. /work/projects/galaxy/) and run :"
+                echo "chown -R apache simplesaml"
+                echo "chmod -R g+w simplesaml"
+		echo -e "\nInitilalize filesender database ====\n"
+		echo "sudo php /opt/filesender/filesender/scripts/upgrade/database.php"
+		echo -e "\n==== Filesender setup READY! ====\n\n"
+
+		# Get back to the main level
+		cd ${MYDIR}
+    fi
 fi
 
 ## copy daemon script to /etc/init.d
@@ -125,5 +175,3 @@ if [[ "${GALAXY_ABEL_MOUNT}" == "1" ]]; then
 else
     cat ${MYDIR}/POST_INSTALLATION_INDEPENDENT.md
 fi
-
-

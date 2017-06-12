@@ -64,4 +64,28 @@ running on your Galaxy instance!
 
 - /etc/init.d/galaxyd is not modified according to settings.sh, and may need 
   manual changes.
+  
+## Filesender files :
+
+#### There have been added blocks into
+    setting-template.sh
+    local_env.sh
+    
+#### Scripts (called by deploy_full_procedure.sh):
+
+    deploy_filesender_apache_config.sh
+    deploy_filesender_code.sh
+    deploy_filesender_galaxy_config.sh
+    deploy_filesender_simplesamlphp_code.sh
+
+#### Configuration files
+    filesender.conf
+    filesender-php.ini
+    php.conf
+    config-filesender.php
+    saml20-idp-remote.php
+    
+#### Customized files (to be copied)
+    site_splash.html.php
+    
 
