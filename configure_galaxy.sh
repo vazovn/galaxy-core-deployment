@@ -66,10 +66,19 @@ if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
     if [[ -n "${GOLDDBUSER}" && -n "${GOLDDBPASSWD}" && -n "${GOLDDBHOST}" && -n "${GOLDDB}" ]]; then
         golddbstring="postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB}"
         sed_replace '^export GOLDDB=.*' "export GOLDDB=${golddbstring}" ${GALAXYTREE}/config/local_env.sh
-        echo "replaced db in local_env.sh"
+        echo "replaced golddbstring in local_env.sh"
     else
 	echo "Gold db settings missing from settings.sh"
     fi
+
+    if [[ -n "${GALAXYDBUSER}" && -n "${GALAXYDBPASSWD}" && -n "${GALAXYDBHOST}" && -n "${GALAXYDB}" ]]; then
+        galaxydbstring="postgresql://${GALAXYDBUSER}:${GALAXYDBPASSWD}@${GALAXYDBHOST}/${GALAXYDB}"
+        sed_replace '^export GALAXYDB_FORTOOLS=.*' "export GALAXYDB_FORTOOLS=${galaxydbstring}" ${GALAXYTREE}/config/local_env.sh
+        echo "replaced galaxydbstring in local_env.sh"
+    else
+	echo "galaxydb settings missing from settings.sh"
+    fi
+
 
     if [ -n "${GALAXYUSERHOME}" ]; then
 		sed_replace '^export GALAXY_HOME=.*' "export GALAXY_HOME=${GALAXYUSERHOME}" ${GALAXYTREE}/config/local_env.sh

@@ -36,3 +36,7 @@ echo "PDF_REPORTS_DIRECTORY : " $PDF_REPORTS_DIRECTORY
 ## Galaxy home containing Galaxy root
 export GALAXY_HOME="<GALAXYUSERHOME>"
 echo "GALAXY_HOME: " $GALAXY_HOME
+
+### Used by jobstate.py, used to check job state and find intermediate files
+export GALAXYDB_FORTOOLS=
+echo "GALAXYDB_FORTOOLS : " $GALAXYDB_FORTOOLS
