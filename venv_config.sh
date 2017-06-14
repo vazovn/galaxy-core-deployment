@@ -6,12 +6,8 @@ MYDIR="$(dirname "$(realpath "$0")")"
 
 # Modify $PYTHONPATH in .venv
 sudo -u galaxy -H sh -c "echo export GALAXY_LIB=${GALAXYTREE}/lib >> ${GALAXYTREE}/.venv/bin/activate"
-sudo -u galaxy -H sh -c "echo export PYTHONPATH='$'GALAXY_LIB:${GALAXYTREE}/lib/usit/python >> ${GALAXYTREE}/.venv/bin/activate"
 
 
-read -p "Install module for project report generation (PDF)? [yN] " installpdfreport
-
-if [ "${installpdfreport}" == "y" ]; then
-    # Deploy PDF modules needed to print the pdf reports
-    sudo -u galaxy -H sh -c "${MYDIR}/deploy-pdf-modules.sh"
-fi
+## This line is used to source all the python packages which you have introduced to the system
+## Replace MY_PACKAGES_DIRECTORY by your own directory name, place your python packages there and uncomment
+# sudo -u galaxy -H sh -c "echo export PYTHONPATH='$'GALAXY_LIB:${GALAXYTREE}/lib/MY_PACKAGES_DIRECTORY/python >> ${GALAXYTREE}/.venv/bin/activate"
