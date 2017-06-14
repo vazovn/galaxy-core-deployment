@@ -1,9 +1,0 @@
-840,842c840,843
-<         unless( defined @Log::Log4perl::ALLOWED_CODE_OPS_IN_CONFIG_FILE ) {
-<             return;
-<         }
----
->         #unless( defined @Log::Log4perl::ALLOWED_CODE_OPS_IN_CONFIG_FILE ) {
->         #    return;
->         #}
->         return;
