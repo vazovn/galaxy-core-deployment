@@ -29,7 +29,6 @@ trap 'error "${BASH_SOURCE}" "${LINENO}"' ERR
 # Galaxy version (branch)
 GALAXY_GIT_BRANCH=release_17.01
 # Galaxy repository
-uiouser=
 GALAXY_GIT_REPO=https://github.com/galaxyproject/galaxy.git
 
 # Galaxy user (for /etc/passwd)
@@ -47,13 +46,28 @@ GALAXYDBUSER=
 GALAXYDBPASSWD=
 GALAXYDBHOST=
 
+# Config files
+# Set to SKIP for skipping change
+# ------------------------------------------
+
+## config/tool_conf.xml
+GALAXY_TOOL_CONF=
+## config/job_conf.xml
+GALAXY_JOB_CONF=
+## config/tool_data_table_conf.xml
+GALAXY_TOOL_DATA_TABLE_CONF=
+GALAXY_DATATYPES_CONF=SKIP
+
+# Tools and tools_data folder
+GALAXY_TOOL_PATH=${GALAXYTREE}/tools
+GALAXY_TOOL_DATA_LOCAL=${GALAXYTREE}/tool_data
+
 
 # Galaxy.ini settings in configure_galaxy.sh
 # Set to SKIP for skipping change
 # ------------------------------------------
 
 # Brand and public hostname
-GALAXY_BRAND=Lifeportal
-GALAXY_PUBLIC_HOSTNAME=
+GALAXY_BRAND=MyFirstGalaxy
 GALAXY_ADMIN_USERS=
 GALAXY_HELP_EMAIL=

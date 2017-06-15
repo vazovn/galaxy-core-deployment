@@ -24,14 +24,25 @@ else
     read -p "Is this a production server? [yN] " production
 fi
 
-read -p "Add galaxy user? [yN] " addgalaxyuser
+## Create galaxy user
+passwdstring="${GALAXYUSER}:x:${GALAXYUSERUID}:${GALAXYUSERGID}"
+passwdstring+=":${GALAXYGROUP}:${GALAXYUSERHOME}:/bin/bash"
+sudo sh -c "${passwdstring} >> /etc/passwd"
+sudo mkdir ${GALAXYUSERHOME}
+sudo chown ${GALAXYUSER}:${GALAXYGROUP} ${GALAXYUSERHOME}
 
-if [ "${addgalaxyuser}" == "y" ]; then
-    passwdstring="${GALAXYUSER}:x:${GALAXYUSERUID}:${GALAXYUSERGID}"
-    passwdstring+=":${GALAXYGROUP}:${GALAXYUSERHOME}:/bin/bash"
-    sudo sh -c "${passwdstring} >> /etc/passwd"
-	sudo mkdir ${GALAXYUSERHOME}
-	sudo chown ${GALAXYUSER}:${GALAXYGROUP} ${GALAXYUSERHOME}
+## Install Apache
+if  [ -x "$(command -v httpd)" ]; then
+	echo "Apache is installed, nothing to do "
+else	
+	sudo sh -c "./deploy_apache.sh"
+fi
+
+## Install Postgresql server (9.4): 
+if  [ -x "$(command -v postgres)" ]; then
+	echo "Postgresql server is installed"
+else	
+	sudo sh -c "./deploy_postgresql.sh"
 fi
 
 sudo yum install git

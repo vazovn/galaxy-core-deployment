@@ -5,7 +5,6 @@ production=$1
 
 # source settings
 . settings.sh
-. /etc/profile.d/bash_login.sh
 
 
 MYDIR="$(dirname "$(realpath "$0")")"
@@ -38,78 +37,6 @@ function sed_replace {
     fi
     }
 
-## Customize Galaxy platform with Cluster and Project Management issues
-if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
-
-	mkdir -p ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER}     	# /work/projects/galaxy/data/database... /files
-	
-    mkdir -p ${GALAXY_FILEPATH}     	# /work/projects/galaxy/data/database... /files
-    mkdir -p ${GALAXY_NEW_FILEPATH}   # /work/projects/galaxy/data/database... /tmp
-    mkdir -p ${GALAXY_JOB_WORKING_DIRECTORY} # /work/projects/galaxy/data/database... /job_working_directory
-    mkdir -p ${GALAXY_CLUSTER_FILES_DIRECTORY} # /work/projects/galaxy/data/database... /slurm
-    mkdir -p ${GALAXY_TOOL_DATA_PATH} # work/projects/galaxy/data/galaxy-tool-data
-
-    ## Install Project management issues (most of them come from the lifeportal galaxy branch)
-    ln -sf ${EXTERNAL_DBS_PATH} ${EXTERNAL_DBS_LINK_NAME}
-    
-    ## Change path to the Galaxy database (all files) directory (from local to cluster database)
-    mv ${GALAXYTREE}/database ${GALAXYTREE}/database.orig-$(date "+%y-%m-%d-%H%M") 2>&1 || echo $?
-    ln -s ${GALAXY_DATABASE_DIRECTORY_ON_CLUSTER} ${GALAXYTREE}/database
-
-    # Customized environment variables file (local_env.sh)
-    
-    ## GOLD DB setup
-
-    # if [ -f ${MYDIR}/local_env.sh ]; then
-    cp ${MYDIR}/local_env.sh ${GALAXYTREE}/config
-
-    if [[ -n "${GOLDDBUSER}" && -n "${GOLDDBPASSWD}" && -n "${GOLDDBHOST}" && -n "${GOLDDB}" ]]; then
-        golddbstring="postgresql://${GOLDDBUSER}:${GOLDDBPASSWD}@${GOLDDBHOST}/${GOLDDB}"
-        sed_replace '^export GOLDDB=.*' "export GOLDDB=${golddbstring}" ${GALAXYTREE}/config/local_env.sh
-        echo "replaced db in local_env.sh"
-    else
-	echo "Gold db settings missing from settings.sh"
-    fi
-
-    if [ -n "${GALAXYUSERHOME}" ]; then
-		sed_replace '^export GALAXY_HOME=.*' "export GALAXY_HOME=${GALAXYUSERHOME}" ${GALAXYTREE}/config/local_env.sh
-    fi
-
-    # fi
-
-    # job_resource_params_conf.xml :
-    if [ -f ${MYDIR}/job_resource_params_conf.xml ]; then
-        cp ${MYDIR}/job_resource_params_conf.xml ${GALAXYTREE}/config
-    else
-        echo -e "\nSomething is wrong here!!! Your job_resource_params_conf.xml is missing, copying job_resource_params_conf.xml.sample  ..."
-        echo -e "Are you going to use cluster job parameters?\n"
-        cp ${GALAXYTREE}/config/job_resource_params_conf.xml.sample ${GALAXYTREE}/config/job_resource_params_conf.xml
-    fi
-fi
-
-if [[ ${GALAXY_TOOLS_REPO} != "SKIP" ]]; then
-    if [ -d "${GALAXY_TOOL_PATH}/.git" ]; then
-        THISDIR=${PWD}
-        cd ${GALAXY_TOOL_PATH}
-        git remote set-url origin ${GALAXY_TOOLS_REPO}
-        git pull
-        cd ${THISDIR}
-    else
-        git clone ${GALAXY_TOOLS_REPO} ${GALAXY_TOOL_PATH}
-    fi
-fi
-if [[ ${GALAXY_TOOL_DATA_REPO} != "SKIP" ]]; then
-    if [ -d "${GALAXY_TOOL_DATA_PATH}/.git" ]; then
-        THISDIR=${PWD}
-        cd ${GALAXY_TOOL_DATA_PATH}
-        git remote set-url origin ${GALAXY_TOOL_DATA_REPO}
-        git pull
-        cd ${THISDIR}
-    else
-        git clone ${GALAXY_TOOL_DATA_REPO} ${GALAXY_TOOL_DATA_PATH}
-    fi
-fi
-
 # Manage Galaxy config files
 
 cd ${GALAXYTREE}/config
@@ -132,27 +59,11 @@ fi
 sed_replace '^#port =.*' 'port = 8080' galaxy.ini
 sed_replace '^#host =.*' 'host = 127.0.0.1' galaxy.ini
 
-## DB
-# sed_replace '^#database_engine_option_pool_size =.*' 'database_engine_option_pool_size = 5' galaxy.ini
-# sed_replace '^#database_engine_option_max_overflow =.*' 'database_engine_option_max_overflow = 10' galaxy.ini
-# sed_replace '^#database_engine_option_server_side_cursors = False' 'database_engine_option_server_side_cursors = True' galaxy.ini
-
-
 ## DB config
 if [[ -n "${GALAXYDB}" && -n "${GALAXYDBUSER}" && -n "${GALAXYDBPASSWD}" && -n "${GALAXYDBHOST}" ]]; then
     dbstring="postgresql://${GALAXYDBUSER}:${GALAXYDBPASSWD}@${GALAXYDBHOST}/${GALAXYDB}"
     sed_replace '#database_connection.*' "database_connection = ${dbstring}" galaxy.ini
     echo "replaced db in galaxy.ini"
-fi
-
-## PATHS / DIRS
-## Abel specific
-if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
-    sed_replace '^#new_file_path =.*' "new_file_path = ${GALAXY_NEW_FILEPATH}" galaxy.ini
-    sed_replace '^#file_path =.*' "file_path = ${GALAXY_FILEPATH}" galaxy.ini
-    sed_replace '^#job_working_directory =.*' "job_working_directory =  ${GALAXY_JOB_WORKING_DIRECTORY}" galaxy.ini
-    sed_replace '^#cluster_files_directory =.*' "cluster_files_directory = ${GALAXY_CLUSTER_FILES_DIRECTORY}" galaxy.ini
-    sed_replace '^#collect_outputs_from =.*' 'collect_outputs_from = new_file_path,job_working_directory ' galaxy.ini
 fi
 
 ## CONFS
@@ -163,11 +74,8 @@ sed_replace '^#datatypes_config_file.*' "datatypes_config_file = ${GALAXY_DATATY
 # sed_replace '^#integrated_tool_panel_config.*' 'integrated_tool_panel_config = integrated_tool_panel.xml' galaxy.ini
 sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' "tool_data_table_config_path = ${GALAXY_TOOL_DATA_TABLE_CONF}" galaxy.ini
 
-if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
-	sed_replace '^#tool_data_path = tool-data' "tool_data_path = ${GALAXY_TOOL_DATA_PATH}" galaxy.ini
-else
-	sed_replace '^#tool_data_path = tool-data' "tool_data_path = ${GALAXY_TOOL_DATA_LOCAL}" galaxy.ini
-fi
+## TOOL-DATA FOLDER
+sed_replace '^#tool_data_path = tool-data' "tool_data_path = ${GALAXY_TOOL_DATA_LOCAL}" galaxy.ini
 
 ## TOOLS FOLDER
 sed_replace '^#tool_path.*' "tool_path = ${GALAXY_TOOL_PATH}" galaxy.ini
@@ -198,18 +106,10 @@ sed_replace '^#library_import_dir = None' 'library_import_dir = database/admin_u
 sed_replace '^#user_library_import_dir = None' 'user_library_import_dir = database/user_upload' galaxy.ini
 
 ## USERS / SECURITY
-sed_replace '^#use_remote_user = False' 'use_remote_user = True' galaxy.ini
+sed_replace '^#use_remote_user = False' 'use_remote_user = False' galaxy.ini
 
-if [ -n "${GALAXY_LOGOUT_URL}" ]; then
-    sed_replace '^#remote_user_logout_href = None' "remote_user_logout_href = ${GALAXY_LOGOUT_URL}" galaxy.ini
-fi
 sed_replace '^#normalize_remote_user_email = False' 'normalize_remote_user_email = True ' galaxy.ini
 sed_replace '^#admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
-
-if [ "${GALAXY_ABEL_MOUNT}" == "1" ]; then
-    sed -i  "s/admin_users =.*/&\n## Project Admins\nproject_admin_users = ${PROJECT_ADMIN_USERS}/"  galaxy.ini
-fi
-
 
 sed_replace '^#require_login = False' 'require_login = True' galaxy.ini
 sed_replace '^#allow_user_creation = True' 'allow_user_creation = False' galaxy.ini
@@ -226,12 +126,18 @@ sed_replace '^#cleanup_job = .*' 'cleanup_job = never' galaxy.ini
 sed_replace '^#job_resource_params_file = config/job_resource_params_conf.xml' 'job_resource_params_file = config/job_resource_params_conf.xml' galaxy.ini
 
 
-# job_conf.xml:
-if [ ! -f job_conf.xml ]; then
-    cp job_conf.xml.sample_basic job_conf.xml
-else
-    cp job_conf.xml job_conf.xml.orig-$(date "+%y-%m-%d-%H%M") 
+# tool_conf.xml:
+if [ -f tool_conf.xml ]; then
+    cp tool_conf.xml tool_conf.xml.orig-$(date "+%y-%m-%d-%H%M") 
 fi
+cp tool_conf.xml.sample ${GALAXYTREE}/${GALAXY_TOOL_CONF}
+
+# job_conf.xml
+if [ -f job_conf.xml ]; then
+    cp  job_conf.xml job_conf.xml.orig-$(date "+%y-%m-%d-%H%M") 
+fi
+cp job_conf.xml.sample_basic ${GALAXYTREE}/${GALAXY_JOB_CONF}
+
 
 # Uglify the new main Galaxy menu
 cd ${GALAXYTREE}
@@ -240,5 +146,5 @@ echo NODEJS PATH $(which npm)
 echo "WARN : Running 'make client'. If it fails or hangs, NODEJS has been moved to another directory. Read the info in the file NODEJS_UPDATE.md"
 
 make client
-    
+
 echo "=== Ready configuring Galaxy. Exiting configure_galaxy.sh == "
