@@ -2,15 +2,15 @@
 
 MYDIR="$(dirname "$(realpath "$0")")"
 
-# 1  edit /etc/yum.repos.d/CentOS-Base.repo
-sed -i  "s/\[base\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
-sed -i  "s/\[updates\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
-
-# 2
+# 1
 yum localinstall http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg/centos94-9.4-1.noarch.rpm
 
-# 3
+# 2
 yum install postgresql94*
+
+# 3  edit /etc/yum.repos.d/CentOS-Base.repo
+sed -i  "s/\[base\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
+sed -i  "s/\[updates\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
 
 # 4 (equivalent of chkconfig on to start at reboot)
 systemctl enable postgresql-9.4

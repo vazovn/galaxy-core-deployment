@@ -3,10 +3,9 @@
 ## This is the main script for the full portal "Galaxy installation"
 
 ## Install Apache
-APACHE=$(systemctl --all | grep httpd | awk '{print $5, $6}')
+APACHE=$(systemctl --all | grep httpd)
 if  [ ! -z "$APACHE" ]; then
 	echo "Apache is installed and must be started if down!"
-	echo "Version " $APACHE
 else	
 	echo "Apache server is not installed.\nPlease run the script 'deploy_apache.sh' in 'Apache' directory to install the Apache server, then run this script again."
 	exit 1
@@ -21,6 +20,9 @@ else
 	echo -e "Postgresql server is not installed.\nPlease run the script 'deploy_postgresql.sh' in 'Postgresql' directory to install the postgresql server, then run this script again."
 	exit 1
 fi
+
+echo "SO FAR SO GOOD TEST"
+exit 1
 
 # add prompt rule
 sudo cp galaxyprompt.sh /etc/profile.d/z_galaxyprompt.sh
