@@ -2,12 +2,19 @@
 
 ## This is the main script for the full portal "Galaxy installation"
 
+MYDIR="$(dirname "$(realpath "$0")")"
+echo ${MYDIR}
+
 ## Install Apache
 APACHE=$(systemctl --all | grep httpd)
 if  [ ! -z "$APACHE" ]; then
 	echo "Apache is installed and must be started if down!"
 else	
 	echo "Apache server is not installed.\nPlease run the script 'deploy_apache.sh' in 'Apache' directory to install the Apache server, then run this script again."
+		read -p "Do you want to run the script now? [yN] " installapache
+	if [ "${installapache}" == "y" ]; then
+		sudo sh -c "${MYDIR}/Apache/deploy_apache.sh"
+	fi
 	exit 1
 fi
 
@@ -18,7 +25,10 @@ if  [ ! -z "$POSTGRESQL" ]; then
 	echo "Version " $POSTGRESQL
 else	
 	echo -e "Postgresql server is not installed.\nPlease run the script 'deploy_postgresql.sh' in 'Postgresql' directory to install the postgresql server, then run this script again."
-	exit 1
+	read -p "Do you want to run the script now? [yN] " installpostgresql
+	if [ "${installpostgresql}" == "y" ]; then
+		sudo sh -c "${MYDIR}/Postgresql/deploy_postgresql.sh"
+	fi
 fi
 
 echo "SO FAR SO GOOD TEST"
@@ -35,9 +45,6 @@ if [ ! -f settings.sh ]; then
 fi
 
 . settings.sh
-
-MYDIR="$(dirname "$(realpath "$0")")"
-echo ${MYDIR}
 
 # setup
 if [ "$1" == "production" ]; then
