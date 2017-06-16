@@ -13,8 +13,6 @@
 
 * Galaxy main config file (galaxy.ini)
 * Galaxy custom environment file (local_env.sh)
-* file (.venv/bin/activate) which sets the path for the custom python packs
-  (like drmaa_usit.py)
 
 
 ## Deploying

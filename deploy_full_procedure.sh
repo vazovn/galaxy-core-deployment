@@ -5,6 +5,22 @@
 # add prompt rule
 sudo cp galaxyprompt.sh /etc/profile.d/z_galaxyprompt.sh
 
+## Install Apache
+if  [ -x "$(systemctl --all | grep httpd)" ]; then
+	echo "Apache is installed, nothing to do, must be started if down!"
+else	
+	echo "Please run the script 'deploy_apache.sh' in 'Apache' directory to install the Apache server, then run this script again.echo "
+	exit 1
+fi
+
+## Install Postgresql server (9.4): 
+if  [ ! -z "$(systemctl --all | grep postgresql-9.4)" ]; then
+	echo "Postgresql server is installed, nothing to do, must be started if down!"
+else	
+	echo "Please run the script 'deploy_postgresql.sh' in 'Postgresql' directory to install the postgresql server, then run this script again."
+	exit 1
+fi
+
 # source settings
 if [ ! -f settings.sh ]; then
     echo Please fill in the variables in the file settings.sh
@@ -31,40 +47,7 @@ sudo sh -c "${passwdstring} >> /etc/passwd"
 sudo mkdir ${GALAXYUSERHOME}
 sudo chown ${GALAXYUSER}:${GALAXYGROUP} ${GALAXYUSERHOME}
 
-## Install Apache
-if  [ -x "$(command -v httpd)" ]; then
-	echo "Apache is installed, nothing to do "
-else	
-	sudo sh -c "./deploy_apache.sh"
-fi
-
-## Install Postgresql server (9.4): 
-if  [ -x "$(command -v postgres)" ]; then
-	echo "Postgresql server is installed"
-else	
-	sudo sh -c "./deploy_postgresql.sh"
-fi
-
 sudo yum install git
-
-# Needed  to uglify the js files
-
-if [ -f /etc/profile.d/bash_login.sh ]; then
-	source /etc/profile.d/bash_login.sh
-else
-	sudo touch /etc/profile.d/bash_login.sh
-fi
-
-if  [ -x "$(command -v npm)" ]; then
-	echo "Node/npm is installed and run from $(command -v npm)"	
-else
-	echo "Installing Nodejs/npm ... "
-	sudo yum install nodejs010*
-	sudo yum install v8314*
-	sudo echo -e "export PATH=/opt/rh/nodejs010/root/usr/bin/:$PATH" >> /etc/profile.d/bash_login.sh
-	sudo echo -e "export PATH=/opt/rh/v8314/root/bin/:$PATH" >> /etc/profile.d/bash_login.sh
-	source /etc/profile.d/bash_login.sh
-fi
 
 ## Start main Galaxy platform installation/configuration script
 sudo -u ${GALAXYUSER} -H sh -c "${MYDIR}/configure_galaxy.sh ${production}"

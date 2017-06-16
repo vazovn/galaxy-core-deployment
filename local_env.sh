@@ -5,7 +5,7 @@
 
 ### The PYTHONPATH is set in .venv/bin/activate
 ### If not using vurtualenv, activate the line below
-#export PYTHONPATH=/home/galaxy/usit_galaxy/lib/usit/python:$PYTHONPATH
+#export PYTHONPATH=/home/galaxy/galaxy/lib/YOUR_PACKAGES_DIRECTORY/python:$PYTHONPATH
 
 ### If not using vurtualenv, activate the line below
 #export GALAXY_LIB="/home/galaxy/usit_galaxy/lib"

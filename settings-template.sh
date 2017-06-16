@@ -41,10 +41,10 @@ GALAXYTREE=/home/galaxy/galaxy
 
 # Galaxy DB
 # If left empty, local sqlite3 is used:
-GALAXYDB=
-GALAXYDBUSER=
-GALAXYDBPASSWD=
-GALAXYDBHOST=
+GALAXYDB=galaxydb1
+GALAXYDBUSER=galaxydb1_user
+GALAXYDBPASSWD=12345
+GALAXYDBHOST=127.0.0.1:5432
 
 # Config files
 # Set to SKIP for skipping change
