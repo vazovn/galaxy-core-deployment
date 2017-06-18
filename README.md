@@ -7,7 +7,7 @@
 
 ## The script deploys (on CentOS7 or RHEL7):
 
-* Postgresql server
+* Postgresql server (9.4 in the example but can be configured for any version)
 * Apache server
 * Galaxy framework 
 
