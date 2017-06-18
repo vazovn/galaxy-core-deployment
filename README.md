@@ -2,15 +2,19 @@
 
 ## Prerequistes
 
-* If using data from existing galaxy, it should be dumped
-  and imported to the current database
+* Git
+    sudo yum install git
 
-## The script deploys:
+## The script deploys (on CentOS7 or RHEL7):
 
+* Postgresql server
+* Apache server
 * Galaxy framework 
 
 ## Configures 
 
+* Postgresql server
+* Apache server
 * Galaxy main config file (galaxy.ini)
 * Galaxy custom environment file (local_env.sh)
 
