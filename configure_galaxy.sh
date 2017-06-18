@@ -138,13 +138,10 @@ if [ -f job_conf.xml ]; then
 fi
 cp job_conf.xml.sample_basic ${GALAXYTREE}/${GALAXY_JOB_CONF}
 
+# tool_data_table_conf.xml
+cp tool_data_table_conf.xml.sample ${GALAXYTREE}/${GALAXY_TOOL_DATA_TABLE_CONF}
 
-# Uglify the new main Galaxy menu
-cd ${GALAXYTREE}
+# dependency_resolvers_conf.xml
+cp dependency_resolvers_conf.xml.sample dependency_resolvers_conf.xml
 
-echo NODEJS PATH $(which npm)
-echo "WARN : Running 'make client'. If it fails or hangs, NODEJS has been moved to another directory. Read the info in the file NODEJS_UPDATE.md"
-
-make client
-
-echo "=== Ready configuring Galaxy. Exiting configure_galaxy.sh == "
+echo -e "\n\n=== Ready configuring Galaxy. Exiting configure_galaxy.sh ==\n"

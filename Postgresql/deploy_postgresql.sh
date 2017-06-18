@@ -1,11 +1,20 @@
 #!/bin/bash
 
 MYDIR="$(dirname "$(realpath "$0")")"
+echo "MYDIR in deploy_postgresql.sh : " ${MYDIR}
 
-# 1
-yum localinstall http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg/centos94-9.4-1.noarch.rpm
+
+# 1  edit /etc/yum.repos.d/CentOS-Base.repo
+EXLUDE_POSTGRES=$(echo /etc/yum.repos.d/CentOS-Base.repo | grep "exclude=postgresql" ; echo $)
+if [  $EXLUDE_POSTGRES  ]; then
+	sed -i  "s/\[base\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
+	sed -i  "s/\[updates\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
+fi
 
 # 2
+yum localinstall http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg/centos94-9.4-1.noarch.rpm
+
+# 3
 yum install postgresql94*
 
 # 3  edit /etc/yum.repos.d/CentOS-Base.repo
@@ -26,7 +35,7 @@ cp /var/lib/pgsql/9.4/data/pg_hba.conf /var/lib/pgsql/9.4/data/pg_hba.conf.orig-
 cp ${MYDIR}/pg_hba.conf  /var/lib/pgsql/9.4/data/pg_hba.conf
 
 # 8 enable postgresql ssl  
-sed -i  "s/^#ssl =.*/ssl = on/" /var/lib/pgsql/9.4/data/postgresq.conf
+sed -i  "s/^#ssl =.*/ssl = on/" /var/lib/pgsql/9.4/data/postgresql.conf
 
 # 8 generate postgresql certificate
 
@@ -38,5 +47,8 @@ chown postgres.postgres server.key
 openssl req -new -key server.key -days 5000 -out server.crt -x509
 cp server.crt root.crt
 
-echo " === Postgresql server installed successfully! Please read the last instructions here below :"
-cat "LAST_INSTRUCTIONS.md"
+
+echo "==============================================================================================="
+echo "==============    Postgresql server installed successfully!  =================================="
+echo "==============================================================================================="
+

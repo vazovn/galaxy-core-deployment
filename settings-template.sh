@@ -34,8 +34,8 @@ GALAXY_GIT_REPO=https://github.com/galaxyproject/galaxy.git
 # Galaxy user (for /etc/passwd)
 GALAXYUSER=galaxy
 GALAXYGROUP=galaxy
-GALAXYUSERUID=182649
-GALAXYUSERGID=70731
+GALAXYUSERUID=1003
+GALAXYUSERGID=1003
 GALAXYUSERHOME=/home/galaxy
 GALAXYTREE=/home/galaxy/galaxy
 
