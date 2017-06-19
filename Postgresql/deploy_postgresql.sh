@@ -6,6 +6,7 @@ echo "MYDIR in deploy_postgresql.sh : " ${MYDIR}
 
 # 1  edit /etc/yum.repos.d/CentOS-Base.repo
 EXLUDE_POSTGRES=$(echo /etc/yum.repos.d/CentOS-Base.repo | grep "exclude=postgresql" ; echo $)
+# if true, set the line in CentOS-Base.repo file
 if [  $EXLUDE_POSTGRES  ]; then
 	sed -i  "s/\[base\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
 	sed -i  "s/\[updates\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
