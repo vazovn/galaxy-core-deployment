@@ -2,8 +2,7 @@
 
 ## Prerequistes
 
-* Git
-    sudo yum install git
+* Git (sudo yum install git)
 
 ## The script deploys (on CentOS7 or RHEL7):
 
@@ -33,3 +32,7 @@ displayed at the end of the script execution.
 
 - /etc/init.d/galaxyd is not modified according to settings.sh, and may need 
   manual changes.
+  
+## Reading (guidelines how to proceed with a production site)
+
+https://galaxyproject.org/admin/ten-simple-steps-galaxy-as-a-service/
