@@ -4,7 +4,7 @@ MYDIR="$(dirname "$(realpath "$0")")"
 echo "MYDIR in deploy_apache.sh : " ${MYDIR}
 
 # install Apache
-yum install http.x86_64 httpd-devel.x86_64 httpd-tools.x86_64
+yum install httpd.x86_64 httpd-devel.x86_64 httpd-tools.x86_64
 yum install mod_ssl  mod_proxy_html
 	
 # Make it start at boot
