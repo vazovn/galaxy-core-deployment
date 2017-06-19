@@ -22,4 +22,4 @@
     nano /etc/passwd and delete row containing user 'galaxy'
     rm /etc/profile.d/z_galaxyprompt.sh
 
-## Then you can launch the installaiton script again
+## Then you can launch the installation script again
