@@ -109,9 +109,8 @@ sed_replace '^#use_remote_user = False' 'use_remote_user = False' galaxy.ini
 
 sed_replace '^#normalize_remote_user_email = False' 'normalize_remote_user_email = True ' galaxy.ini
 sed_replace '^#admin_users =.*' "admin_users = ${GALAXY_ADMIN_USERS}" galaxy.ini
-
 sed_replace '^#require_login = False' 'require_login = True' galaxy.ini
-sed_replace '^#allow_user_creation = True' 'allow_user_creation = False' galaxy.ini
+sed_replace '^#allow_user_creation = True' 'allow_user_creation = True' galaxy.ini
 sed_replace '^#allow_user_deletion = False' 'allow_user_deletion = True' galaxy.ini
 sed_replace '^#allow_user_impersonation = False' 'allow_user_impersonation = True' galaxy.ini
 sed_replace '^#allow_user_dataset_purge = True' 'allow_user_dataset_purge = True' galaxy.ini

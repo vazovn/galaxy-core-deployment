@@ -3,13 +3,14 @@
 MYDIR="$(dirname "$(realpath "$0")")"
 echo "MYDIR in deploy_postgresql.sh : " ${MYDIR}
 
-
 # 1  edit /etc/yum.repos.d/CentOS-Base.repo
-EXLUDE_POSTGRES=$(echo /etc/yum.repos.d/CentOS-Base.repo | grep "exclude=postgresql" ; echo $)
-# if true, set the line in CentOS-Base.repo file
-if [  $EXLUDE_POSTGRES  ]; then
-	sed -i  "s/\[base\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
-	sed -i  "s/\[updates\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
+if grep  -q "exclude=postgresql" /etc/yum.repos.d/CentOS-Base.repo
+then
+    	echo "Found exclude=postgresql setting ..."
+else
+    	echo " Set exclude=postgresql in /etc/yum.repo.d/CentOS-Base.repo"
+        sed -i  "s/\[base\]/&\nexclude=postgresql*/"  /etc/yum.repo.d/CentOS-Base.repo
+        sed -i  "s/\[updates\]/&\nexclude=postgresql*/"  /etc/yum.repo.d/CentOS-Base.repo
 fi
 
 # 2
@@ -17,10 +18,6 @@ yum localinstall http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg/centos9
 
 # 3
 yum install postgresql94*
-
-# 3  edit /etc/yum.repos.d/CentOS-Base.repo
-sed -i  "s/\[base\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
-sed -i  "s/\[updates\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
 
 # 4 (equivalent of chkconfig on to start at reboot)
 systemctl enable postgresql-9.4
