@@ -7,6 +7,7 @@ echo "MYDIR full procedure " ${MYDIR}
 
 # source settings
 if [ ! -f settings.sh ]; then
+    echo The file settings.sh has been generated for you!
     echo Please fill in the variables in the file settings.sh
     cp settings-template.sh settings.sh
     exit 1
@@ -56,6 +57,8 @@ echo  "Creating galaxy user ..."
 passwdstring="${GALAXYUSER}:x:${GALAXYUSERUID}:${GALAXYUSERGID}"
 passwdstring+=":${GALAXYGROUP}:${GALAXYUSERHOME}:/bin/bash"
 sudo sh -c "echo ${passwdstring} >> /etc/passwd"
+groupstring="${GALAXYGROUP}:x:${GALAXYUSERGID}:"
+sudo sh -c "echo ${groupstring} >> /etc/group"
 sudo mkdir ${GALAXYUSERHOME}
 sudo chown ${GALAXYUSER}:${GALAXYGROUP} ${GALAXYUSERHOME}
 
