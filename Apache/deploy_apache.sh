@@ -52,4 +52,9 @@ echo "==========================================================================
 echo "==================    Apache server installed successfully!  =================================="
 echo "==============================================================================================="
 
+read -p "Do you want to proceed with the rest of the Galaxy installation ? [yN]" proceed_after_apache
+if [ ! "${proceed_after_apache}" == "y" ]; then
+	echo "Galaxy installation will quit now!"	
+	exit 1
+fi
 

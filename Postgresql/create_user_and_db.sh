@@ -15,3 +15,9 @@ sudo -i -u postgres -H sh -c "psql -c \"CREATE DATABASE $GALAXYDB OWNER $GALAXYD
 echo "==============================================================================================="
 echo "==========================  User and Database created ========================================="
 echo "==============================================================================================="
+
+read -p "Do you want to proceed with the rest of the Galaxy installation ? [yN]" proceed_after_user_db_created
+if [ ! "${proceed_after_user_db_created}" == "y" ]; then
+	echo "Galaxy installation will quit now!"	
+	exit 1
+fi

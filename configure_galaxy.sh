@@ -20,6 +20,8 @@ else
     git clone -b ${GALAXY_GIT_BRANCH} ${GALAXY_GIT_REPO} 
 fi
 
+echo "Galaxy code pulled from the repo ... ready"
+
 function sed_replace {
     if [ -z "$2" ]; then
         echo "Error in replacing of line $1 in $3"
@@ -40,23 +42,24 @@ function sed_replace {
 
 cd ${GALAXYTREE}/config
 
-# galaxy ini:
+read -p "Starting Galaxy configuration ? [yN]" configure_galaxy
+if [ ! "${configure_galaxy}" == "y" ]; then
+	echo "Galaxy installation will quit now!"	
+	exit 1
+fi
+
+# create galaxy ini:
 if [ -f galaxy.ini ]; then
     cp galaxy.ini galaxy.ini.orig-$(date "+%y-%m-%d-%H%M") 
 fi
 cp galaxy.ini.sample galaxy.ini
 
-# disable debug and use_interactive for production
-echo "production?"
-echo ${production}
-if [ "${production}" == "y" ]; then
-        sed_replace '^use_interactive = .*' 'use_interactive = False' galaxy.ini
-        echo "replaced debug and use_interactive from galaxy.ini"
-fi
-
 ## General
 sed_replace '^#port =.*' 'port = 8080' galaxy.ini
 sed_replace '^#host =.*' 'host = 127.0.0.1' galaxy.ini
+
+# Debugging
+sed_replace '^use_interactive = .*' 'use_interactive = False' galaxy.ini
 
 ## DB config
 if [[ -n "${GALAXYDB}" && -n "${GALAXYDBUSER}" && -n "${GALAXYDBPASSWD}" && -n "${GALAXYDBHOST}" ]]; then
@@ -70,6 +73,7 @@ if [ "${GALAXY_TOOL_CONF}" != "" ]; then
     sed_replace '^#tool_config_file =.*' "tool_config_file = ${GALAXY_TOOL_CONF}" galaxy.ini
 fi
 sed_replace '^#datatypes_config_file.*' "datatypes_config_file = ${GALAXY_DATATYPES_CONF}" galaxy.ini
+
 # sed_replace '^#integrated_tool_panel_config.*' 'integrated_tool_panel_config = integrated_tool_panel.xml' galaxy.ini
 sed_replace '^#tool_data_table_config_path = config/tool_data_table_conf.xml' "tool_data_table_config_path = ${GALAXY_TOOL_DATA_TABLE_CONF}" galaxy.ini
 
@@ -142,4 +146,7 @@ cp tool_data_table_conf.xml.sample ${GALAXYTREE}/${GALAXY_TOOL_DATA_TABLE_CONF}
 # dependency_resolvers_conf.xml
 cp dependency_resolvers_conf.xml.sample dependency_resolvers_conf.xml
 
-echo -e "\n\n=== Ready configuring Galaxy. Exiting configure_galaxy.sh ==\n"
+echo -e "\n\n==============================================================================================="
+echo -e "==================    Ready configuring Galaxy. Exiting configure_galaxy.sh  =================="
+echo -e "===============================================================================================\n\n"
+

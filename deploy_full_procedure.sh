@@ -65,6 +65,12 @@ sudo chown ${GALAXYUSER}:${GALAXYGROUP} ${GALAXYUSERHOME}
 # Otherwise other users can not execute scripts from this directory
 sudo chmod go+xr $HOME
 
+read -p "Creating galaxy user ... ready. Continue? [yN]" go_to_galaxy_code
+if [ ! "${go_to_galaxy_code}" == "y" ]; then
+	echo "Galaxy installation will quit now!"	
+	exit 1
+fi
+
 echo "Start main Galaxy platform installation/configuration script ..."
 
 ## Start main Galaxy platform installation/configuration script
