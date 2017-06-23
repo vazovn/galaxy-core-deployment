@@ -8,9 +8,9 @@ if grep  -q "exclude=postgresql" /etc/yum.repos.d/CentOS-Base.repo
 then
     	echo "Found exclude=postgresql setting ..."
 else
-    	echo " Set exclude=postgresql in /etc/yum.repo.d/CentOS-Base.repo"
-        sed -i  "s/\[base\]/&\nexclude=postgresql*/"  /etc/yum.repo.d/CentOS-Base.repo
-        sed -i  "s/\[updates\]/&\nexclude=postgresql*/"  /etc/yum.repo.d/CentOS-Base.repo
+    	echo " Set exclude=postgresql in /etc/yum.repos.d/CentOS-Base.repo"
+        sed -i  "s/\[base\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
+        sed -i  "s/\[updates\]/&\nexclude=postgresql*/"  /etc/yum.repos.d/CentOS-Base.repo
 fi
 
 # 2
