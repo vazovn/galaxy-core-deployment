@@ -11,6 +11,7 @@
 ## Uninstal Postgresql 
 
     systemctl stop postgresql-9.4.service
+    yum erase postgresql94*
     cd /var/lib
     rm -rf pgsql
     nano /etc/yum.repo.d.CentOS-Base.repo and delete line "exclude=postgresql*"
@@ -20,6 +21,7 @@
     cd /home
     rm -rf galaxy
     nano /etc/passwd and delete row containing user 'galaxy'
+    nano /etc/group and delete row containing group 'galaxy'
     rm /etc/profile.d/z_galaxyprompt.sh
 
 ## Then you can launch the installation script again

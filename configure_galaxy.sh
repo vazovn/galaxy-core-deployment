@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "Params: $1"
-production=$1
-
 # source settings
 . settings.sh
 

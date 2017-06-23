@@ -44,13 +44,6 @@ fi
 # add prompt rule
 sudo cp galaxyprompt.sh /etc/profile.d/z_galaxyprompt.sh
 
-# setup
-if [ "$1" == "production" ]; then
-    production=y
-else
-    read -p "Is this a production server? [yN] " production
-fi
-
 echo  "Creating galaxy user ..."
 
 ## Create galaxy user
@@ -74,7 +67,7 @@ fi
 echo "Start main Galaxy platform installation/configuration script ..."
 
 ## Start main Galaxy platform installation/configuration script
-sudo -u ${GALAXYUSER} -H sh -c "${MYDIR}/configure_galaxy.sh ${production}"
+sudo -u ${GALAXYUSER} -H sh -c "${MYDIR}/configure_galaxy.sh"
 
 ## copy daemon script to /etc/init.d
 sudo cp ${MYDIR}/galaxyd /etc/init.d/
