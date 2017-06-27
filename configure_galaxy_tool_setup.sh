@@ -31,9 +31,8 @@ cd ${GALAXYTREE}/config
 
 sed_replace '^library_import_dir = .*' 'library_import_dir = /home/gcc2017/data/' galaxy.ini
 sed_replace '#allow_library_path_paste = .*' 'allow_library_path_paste = True' galaxy.ini
-sed_replace '^admin_users = .*' '&,admin' galaxy.ini
 
-## ??
+## Just in case, explain
 sed_replace '^allow_user_impersonation = .*' '#allow_user_impersonation = True' galaxy.ini
 sed_replace '^allow_user_dataset_purge = .*' '#allow_user_dataset_purge = True' galaxy.ini
 
