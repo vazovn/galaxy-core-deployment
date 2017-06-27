@@ -46,7 +46,7 @@ displayed at the end of the script execution.
 
 for tool setup, stop galaxy and run 
 
-    ./deploy_toll_setup.sh
+    ./deploy_tool_setup.sh
 
   
 ## Reading (guidelines how to proceed with a production site, aknowledgements to Hans-Rudolf Hotz and Bjoern Gruening)
