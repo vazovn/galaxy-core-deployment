@@ -27,7 +27,7 @@ trap 'error "${BASH_SOURCE}" "${LINENO}"' ERR
 # ---------------- 
 
 # Galaxy version (branch)
-GALAXY_GIT_BRANCH=release_17.01
+GALAXY_GIT_BRANCH=release_17.05
 # Galaxy repository
 GALAXY_GIT_REPO=https://github.com/galaxyproject/galaxy.git
 
@@ -51,12 +51,19 @@ GALAXYDBHOST=127.0.0.1:5432
 # ------------------------------------------
 
 ## config/tool_conf.xml
-GALAXY_TOOL_CONF=
+GALAXY_TOOL_CONF=config/tool_conf.xml
 ## config/job_conf.xml
-GALAXY_JOB_CONF=
+GALAXY_JOB_CONF=config/job_conf.xml
 ## config/tool_data_table_conf.xml
-GALAXY_TOOL_DATA_TABLE_CONF=
+GALAXY_TOOL_DATA_TABLE_CONF=config/tool_data_table_conf.xml
 GALAXY_DATATYPES_CONF=SKIP
+
+
+## Toolshed files
+GALAXY_DATA_MANAGER_CONF=config/data_manager_conf.xml
+GALAXY_SHED_TOOL_CONF=config/shed_tool_conf.xml
+GALAXY_SHED_TOOL_DATA_TABLE_CONF=config/shed_tool_data_table_conf.xml
+GALAXY_SHED_DATA_MANAGER_CONF=config/shed_data_manager_conf.xml
 
 # Tools and tools_data folder
 GALAXY_TOOL_PATH=${GALAXYTREE}/tools
@@ -69,5 +76,5 @@ GALAXY_TOOL_DATA_LOCAL=${GALAXYTREE}/tool_data
 
 # Brand and public hostname
 GALAXY_BRAND=MyFirstGalaxy
-GALAXY_ADMIN_USERS=
-GALAXY_HELP_EMAIL=
+GALAXY_ADMIN_USERS=admin@admin.com,n.a.vazov@usit.uio.no
+GALAXY_HELP_EMAIL=n.a.vazov@usit.uio.no

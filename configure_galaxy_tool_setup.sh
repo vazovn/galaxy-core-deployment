@@ -22,6 +22,10 @@ function sed_replace {
     fi
     }
 
+cp -rf ${MYDIR}/data $GALAXYUSERHOME
+cp -rf ${MYDIR}/genomes $GALAXYUSERHOME
+cp -rf ${MYDIR}/mytools $GALAXYUSERHOME
+
 # Manage Galaxy config files
 
 cd ${GALAXYTREE}/config
@@ -29,14 +33,19 @@ cd ${GALAXYTREE}/config
 
 ## Edit galaxy.ini
 
-sed_replace '^library_import_dir = .*' 'library_import_dir = /home/gcc2017/data/' galaxy.ini
+sed_replace '^library_import_dir = .*' 'library_import_dir = /home/galaxy/data/' galaxy.ini
 sed_replace '#allow_library_path_paste = .*' 'allow_library_path_paste = True' galaxy.ini
 
 ## Just in case, explain
 sed_replace '^allow_user_impersonation = .*' '#allow_user_impersonation = True' galaxy.ini
 sed_replace '^allow_user_dataset_purge = .*' '#allow_user_dataset_purge = True' galaxy.ini
 
-sed_replace '^#galaxy_data_manager_data_path = .*'  'galaxy_data_manager_data_path = /home/gcc2017/genomes/' galaxy.ini
+sed_replace '^#galaxy_data_manager_data_path = .*'  'galaxy_data_manager_data_path = /home/galaxy/genomes/' galaxy.ini
+
+sed_replace '^#data_manager_config_file = .*' "data_manager_config_file = ${GALAXY_DATA_MANAGER_CONF}" galaxy.ini
+sed_replace '^tool_config_file = .*' "&,${GALAXY_SHED_TOOL_CONF}" galaxy.ini
+sed_replace '^#shed_tool_data_table_config = .*' "shed_tool_data_table_config = ${GALAXY_SHED_TOOL_DATA_TABLE_CONF}" galaxy.ini
+sed_replace '^#shed_data_manager_config_file = .*' "shed_data_manager_config_file = ${GALAXY_SHED_DATA_MANAGER_CONF}" galaxy.ini
 
 sed_replace '^#conda_prefix = .*' 'conda_prefix = /home/galaxy/_conda' galaxy.ini
 sed_replace '^#conda_auto_install = .*' 'conda_auto_install = True' galaxy.ini

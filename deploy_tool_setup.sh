@@ -16,12 +16,7 @@ echo "MYDIR full procedure " ${MYDIR}
 
 sudo yum install gcc.x86_64 gcc-c++.x86_64 patch.x86_64 zlib.x86_64 zlib-devel.x86_64 -y
 
-cp -rf ${MYDIR}/data $HOME
-cp -rf ${MYDIR}/genomes $HOME
-cp -rf ${MYDIR}/mytools $HOME
-sudo chmod go+xr $HOME
-
-
+sudo chown -R galaxy.galaxy $GALAXYUSERHOME/
 
 echo "Start Galaxy tool setup script script ..."
 
