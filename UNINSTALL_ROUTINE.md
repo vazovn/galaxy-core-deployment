@@ -1,3 +1,8 @@
+
+## This routine describes the steps to uninstall a failed setup carried out by the string
+
+    deploy_full_procedure.sh
+
 # All commands shall be executed as root (sudo)
 
     user : gcc2017
