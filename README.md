@@ -28,7 +28,7 @@
 
 For a clean start (if you already have galaxy-core-deployment code) :
 
-    cd <DIRECTORY-WITH-THE-CODE>
+    cd <DIRECTORY-WITH-THE-GALAXY-CORE-DEPLOYMENT-CODE>
     rm -rf galaxy-core-deployment
 
 clone the repo to your /home directory (in our case /home/gcc2017)
