@@ -1,9 +1,9 @@
 
-## This routine describes the steps to uninstall a failed setup carried out by the string
+## This routine describes the steps to uninstall a failed setup carried out by
 
     deploy_full_procedure.sh
 
-# All commands shall be executed as root (sudo)
+## All commands shall be executed as root (sudo)
 
     user : gcc2017
     passwd (also sudo) : galaxy2017
