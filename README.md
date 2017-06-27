@@ -1,5 +1,11 @@
 # galaxy-core-management   
 
+
+## Login credentials
+
+* username : gcc2017
+* password : galaxy2017
+
 ## Prerequistes
 
 * Git (sudo yum install git)
