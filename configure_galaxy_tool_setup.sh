@@ -44,6 +44,6 @@ sed_replace '^#conda_auto_install = .*' 'conda_auto_install = True' galaxy.ini
 sed_replace '^#conda_auto_init = .*' 'conda_auto_init = True' galaxy.ini
 
 echo -e "\n\n==============================================================================================="
-echo -e "========================    Ready configuring Galaxy Tool Setup  =================================="
+echo -e "======================    Ready configuring Galaxy Tool Setup  ================================"
 echo -e "===============================================================================================\n\n"
 
