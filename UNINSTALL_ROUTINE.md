@@ -1,5 +1,5 @@
 
-## This routine describes the steps to uninstall a failed setup carried out by
+## This routine describes the steps to uninstall a failed setup carried out by (uninstall_all.sh in this repo does the procedure automatically)
 
     deploy_full_procedure.sh
 
