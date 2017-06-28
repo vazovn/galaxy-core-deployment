@@ -14,7 +14,7 @@ if [ -e "${GALAXYTREE}" ]; then
     git pull
     #exit 1
 else
-    git clone -b ${GALAXY_GIT_BRANCH} ${GALAXY_GIT_REPO} 
+    git clone -b ${GALAXY_GIT_BRANCH} --depth 1 ${GALAXY_GIT_REPO} 
 fi
 
 echo "Galaxy code pulled from the repo ... ready"
