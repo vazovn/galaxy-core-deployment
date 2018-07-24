@@ -3,8 +3,9 @@
 
 ## Login credentials
 
-* username : gcc2017
-* password : galaxy2017
+* username : galaxy
+* password : galaxy2018
+* dbname : galaxydb
 
 ## Prerequistes
 
@@ -13,42 +14,17 @@
 ## The script deploys (on CentOS7 or RHEL7):
 
 * Postgresql server (9.4 in the example but can be configured for any version)
-* Apache server
-* Galaxy framework 
 
 ## Configures 
 
 * Postgresql server
-* Apache server
-* Galaxy main config file (galaxy.ini)
-* Galaxy custom environment file (local_env.sh)
 
+## WARNING :
 
-## Deploying
+* When installing Postgres server
 
-For a clean start (if you already have galaxy-core-deployment code) :
+    select "hostname" for hostname in the SSL routine
 
-    cd <DIRECTORY-WITH-THE-GALAXY-CORE-DEPLOYMENT-CODE>
-    rm -rf galaxy-core-deployment
+* When logging into the server 
 
-clone the repo to your /home directory (in our case /home/gcc2017)
-
-    git clone -b gcc2017 https:/github.com/vazovn/galaxy-core-deployment.git
-
-and run
-
-    ./deploy_full_procedure.sh
-
-Follow the procedures in the script. The script will deploy the setup of the
-features mentioned above. Please refer to the final requirements which will be
-displayed at the end of the script execution.
-
-
-for tool setup, stop galaxy and run 
-
-    ./deploy_tool_setup.sh
-
-  
-## Reading (guidelines how to proceed with a production site, aknowledgements to Hans-Rudolf Hotz and Bjoern Gruening)
-
-https://galaxyproject.org/admin/ten-simple-steps-galaxy-as-a-service/
+   psql -U galaxy -h 127.0.0.1 -d galaxydb -W
