@@ -13,7 +13,7 @@
 
 ## The script deploys (on CentOS7 or RHEL7):
 
-* Postgresql server (9.4 in the example but can be configured for any version)
+* Postgresql server (9.6 in the example but can be configured for any version)
 
 ## Configures 
 
